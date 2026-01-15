@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ExpenseInput, type Expense } from "@/app/components/ExpenseInput";
 import { IncomeCalculator, type IncomeSettings } from "@/app/components/IncomeCalculator";
-import { ServicePricing } from "@/app/components/ServicePricing";
+import { ServicePricing, type ServicePricingRef } from "@/app/components/ServicePricing";
 import { Button } from "@/app/components/ui/button";
-import { ArrowRight, ArrowLeft } from "lucide-react";
-import logo from "figma:asset/72e2173591b6a9d3c1947e527c26a5b7485f43a9.png";
+import { ArrowRight, ArrowLeft, FileImage, FileText } from "lucide-react";
+import { Download } from "lucide-react";
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
+  const servicePricingRef = useRef<ServicePricingRef>(null);
 
   const [expenses, setExpenses] = useState<Expense[]>([
     { id: crypto.randomUUID(), category: "Rent", monthlyCost: 1500 },
@@ -49,59 +50,58 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background pb-12">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-secondary/80 border-b border-border/50 shadow-sm">
+      {/* Unified Sticky Header with Progress Steps - Enhanced Liquid Glass */}
+      <header className="sticky top-0 z-50 backdrop-blur-3xl bg-secondary/70 border-b border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className="flex flex-col gap-4">
-            <img src={logo} alt="Stella Achenbach" className="h-12 sm:h-20 w-auto object-contain" />
-            <div>
-              <h1 className="mb-1 sm:mb-2">Creator Pricing Calculator</h1>
-              <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl">
-                Calculate your floor price based on your actual expenses. Never work for free again.
+          <div className="flex flex-col gap-6 w-full">
+            {/* Title Section */}
+            <div className="w-full text-left pl-2 sm:pl-2">
+              <h1 className="mb-1 sm:mb-2 text-left text-[30px] font-bold">Creator Pricing Calculator</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground text-left max-w-2xl text-[16px]">
+                Calculate your floor price based on your actual expenses and know what you NEED to charge your clients.
               </p>
+            </div>
+            
+            {/* Progress Steps */}
+            <div className="flex items-center w-full border-t border-white/10 pl-2 sm:pl-2">
+              {steps.map((step, index) => (
+                <div key={step.number} className="flex items-center flex-1">
+                  <button
+                    onClick={() => {
+                      setCurrentStep(step.number);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`flex items-center gap-2 sm:gap-3 ${
+                      currentStep === step.number ? "opacity-100" : "opacity-50"
+                    } hover:opacity-100 transition-opacity`}
+                  >
+                    <div
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm flex-shrink-0 ${
+                        currentStep === step.number
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-foreground"
+                      }`}
+                    >
+                      {step.number}
+                    </div>
+                    <div className="text-left hidden sm:block">
+                      <div className="text-sm whitespace-nowrap">{step.title}</div>
+                      <div className="text-xs text-muted-foreground whitespace-nowrap">{step.description}</div>
+                    </div>
+                  </button>
+                  {index < steps.length - 1 && (
+                    <div className="flex-1 h-px bg-border/50 mx-2 sm:mx-4" />
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </header>
 
-      {/* Floating Progress Steps */}
-      <div className="sticky top-[140px] sm:top-[156px] z-40 backdrop-blur-xl bg-card/80 border-b border-border/50 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-          <div className="flex items-center justify-between gap-2">
-            {steps.map((step, index) => (
-              <div key={step.number} className="flex items-center flex-1 min-w-0">
-                <button
-                  onClick={() => setCurrentStep(step.number)}
-                  className={`flex items-center gap-2 sm:gap-3 min-w-0 ${
-                    currentStep === step.number ? "opacity-100" : "opacity-50"
-                  } hover:opacity-100 transition-opacity`}
-                >
-                  <div
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm flex-shrink-0 ${
-                      currentStep === step.number
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-foreground"
-                    }`}
-                  >
-                    {step.number}
-                  </div>
-                  <div className="text-left hidden sm:block min-w-0">
-                    <div className="text-sm truncate">{step.title}</div>
-                    <div className="text-xs text-muted-foreground truncate">{step.description}</div>
-                  </div>
-                </button>
-                {index < steps.length - 1 && (
-                  <div className="flex-1 h-px bg-border/50 mx-2 sm:mx-4 min-w-[20px]" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12">
-        <div className="backdrop-blur-xl bg-card/60 border border-border/50 rounded-2xl shadow-lg p-4 sm:p-8">
+        <div className="backdrop-blur-2xl bg-card/50 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] p-4 sm:p-8">
           {currentStep === 1 && (
             <ExpenseInput expenses={expenses} onExpensesChange={setExpenses} />
           )}
@@ -118,6 +118,7 @@ function App() {
             <ServicePricing
               targetIncome={targetIncome}
               billableHours={billableHoursPerYear}
+              ref={servicePricingRef}
             />
           )}
 
@@ -134,25 +135,65 @@ function App() {
             </Button>
 
             {currentStep < 3 ? (
-              <Button onClick={() => setCurrentStep(currentStep + 1)} className="w-full sm:w-auto">
+              <Button onClick={() => {
+                setCurrentStep(currentStep + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }} className="w-full sm:w-auto">
                 Next
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             ) : (
-              <Button variant="outline" onClick={() => setCurrentStep(1)} className="border-border w-full sm:w-auto">
+              <Button variant="outline" onClick={() => {
+                setCurrentStep(1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }} className="border-border w-full sm:w-auto">
                 Start Over
               </Button>
             )}
           </div>
+
+          {/* Save Reminder for Step 3 */}
+          {currentStep === 3 && (
+            <div className="mt-6 backdrop-blur-2xl bg-primary/5 border border-primary/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-4 sm:p-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                  <div className="flex-1">
+                    <h3 className="mb-1">Don't forget to save your calculations!</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      Download your pricing to track your rates over time and reference them when quoting clients.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    onClick={() => servicePricingRef.current?.downloadAsImage()}
+                    variant="outline"
+                    className="border-border w-full sm:flex-1"
+                  >
+                    <FileImage className="h-4 w-4 mr-2" />
+                    Download as PNG
+                  </Button>
+                  <Button
+                    onClick={() => servicePricingRef.current?.downloadAsPDF()}
+                    variant="outline"
+                    className="border-border w-full sm:flex-1"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Download as PDF
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
         <div className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-4">
           <p>
-            Share this calculator, use it, and adjust as your career grows. 💜
+            Share this calculator, use it, and adjust as your career grows.
           </p>
           <p className="mt-2">
-            Made with love by{' '}
+            Made with 💜 by{' '}
             <a 
               href="https://paragraph.xyz/@stellaachenbach" 
               target="_blank" 

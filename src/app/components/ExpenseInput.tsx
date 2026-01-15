@@ -108,14 +108,14 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
         Add Expense
       </Button>
 
-      <div className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6 space-y-3">
+      <div className="backdrop-blur-2xl bg-primary border border-primary/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] p-4 sm:p-6 space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm text-muted-foreground">Total Monthly Expenses</span>
-          <span className="font-medium text-sm sm:text-base">${totalMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <span className="text-xs sm:text-sm text-primary-foreground/70 text-[rgb(254,230,234)]">Total Monthly Expenses</span>
+          <span className="font-medium text-sm sm:text-base text-primary-foreground">${totalMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm text-muted-foreground">Total Annual Expenses</span>
-          <span className="font-medium text-sm sm:text-base">${totalAnnual.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <span className="text-xs sm:text-sm text-primary-foreground/70 text-[rgb(254,230,234)]">Total Annual Expenses</span>
+          <span className="font-medium text-sm sm:text-base text-primary-foreground">${totalAnnual.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>

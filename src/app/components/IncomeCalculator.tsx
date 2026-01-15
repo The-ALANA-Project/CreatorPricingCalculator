@@ -42,7 +42,7 @@ export function IncomeCalculator({
         </p>
       </div>
 
-      <div className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6 space-y-4">
+      <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] p-4 sm:p-6 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="tax-rate" className="text-sm">
@@ -92,7 +92,7 @@ export function IncomeCalculator({
         </div>
       </div>
 
-      <div className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6 space-y-4">
+      <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] p-4 sm:p-6 space-y-4">
         <h3 className="mb-4">Billable Time</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-2">
@@ -145,7 +145,7 @@ export function IncomeCalculator({
         </div>
       </div>
 
-      <div className="backdrop-blur-xl bg-primary text-primary-foreground rounded-xl shadow-lg p-4 sm:p-6 space-y-3">
+      <div className="backdrop-blur-2xl bg-primary text-primary-foreground rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] p-4 sm:p-6 space-y-3">
         <div className="flex justify-between items-center pb-3 border-b border-primary-foreground/20">
           <span className="text-xs sm:text-sm opacity-90">Annual Expenses</span>
           <span className="text-sm sm:text-base">${totalAnnualExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>

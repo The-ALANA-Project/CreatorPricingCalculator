@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Button } from "@/app/components/ui/button";
@@ -18,199 +18,171 @@ interface ServiceOption {
   description: string;
 }
 
-export function ServicePricing({ targetIncome, billableHours }: ServicePricingProps) {
-  const baseHourlyRate = billableHours > 0 ? targetIncome / billableHours : 0;
-  const recommendedHourlyRate = baseHourlyRate * 1.25;
+export interface ServicePricingRef {
+  downloadAsImage: () => Promise<void>;
+  downloadAsPDF: () => Promise<void>;
+}
 
-  const [markup, setMarkup] = useState(25);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const downloadRef = useRef<HTMLDivElement>(null);
+export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>(
+  ({ targetIncome, billableHours }, ref) => {
+    const baseHourlyRate = billableHours > 0 ? targetIncome / billableHours : 0;
+    const recommendedHourlyRate = baseHourlyRate * 1.25;
 
-  const services: ServiceOption[] = [
-    { id: "hourly", name: "Hourly Rate", hoursOrScope: 1, description: "Per hour of work" },
-    { id: "small", name: "Small Project", hoursOrScope: 15, description: "15 hours" },
-    { id: "medium", name: "Medium Project", hoursOrScope: 30, description: "30 hours" },
-    { id: "large", name: "Large Project", hoursOrScope: 60, description: "60 hours" },
-    { id: "day", name: "Day Rate", hoursOrScope: 8, description: "Full day (8 hours)" },
-    { id: "retainer", name: "Monthly Retainer", hoursOrScope: 40, description: "40 hours/month" },
-  ];
+    const [markup, setMarkup] = useState(25);
+    const [isDownloading, setIsDownloading] = useState(false);
+    const downloadRef = useRef<HTMLDivElement>(null);
 
-  const calculatePrice = (hours: number, isRetainer: boolean = false) => {
-    const basePrice = baseHourlyRate * hours;
-    const recommendedPrice = basePrice * (1 + markup / 100);
-    const retainerDiscount = isRetainer ? 0.9 : 1; // 10% discount for retainers
-    return {
-      base: basePrice,
-      recommended: recommendedPrice * retainerDiscount,
+    const services: ServiceOption[] = [
+      { id: "hourly", name: "Hourly Rate", hoursOrScope: 1, description: "Per hour of work" },
+      { id: "small", name: "Small Project", hoursOrScope: 15, description: "15 hours" },
+      { id: "medium", name: "Medium Project", hoursOrScope: 30, description: "30 hours" },
+      { id: "large", name: "Large Project", hoursOrScope: 60, description: "60 hours" },
+      { id: "day", name: "Day Rate", hoursOrScope: 8, description: "Full day (8 hours)" },
+      { id: "retainer", name: "Monthly Retainer", hoursOrScope: 40, description: "40 hours/month" },
+    ];
+
+    const calculatePrice = (hours: number, isRetainer: boolean = false) => {
+      const basePrice = baseHourlyRate * hours;
+      const recommendedPrice = basePrice * (1 + markup / 100);
+      const retainerDiscount = isRetainer ? 0.9 : 1; // 10% discount for retainers
+      return {
+        base: basePrice,
+        recommended: recommendedPrice * retainerDiscount,
+      };
     };
-  };
 
-  const downloadAsImage = async () => {
-    if (!downloadRef.current) return;
-    
-    setIsDownloading(true);
-    try {
-      const canvas = await html2canvas(downloadRef.current, {
-        backgroundColor: '#FEE6EA',
-        scale: 2,
-        logging: true,
-        useCORS: true,
-        onclone: (clonedDoc) => {
-          // Remove all external stylesheets that contain oklch
-          const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
-          stylesheets.forEach((sheet) => {
-            const element = sheet as HTMLElement;
-            if (element.textContent?.includes('oklch') || element.textContent?.includes('oklab')) {
-              element.remove();
-            }
-          });
-          
-          // Add inline styles with safe colors
-          const style = clonedDoc.createElement('style');
-          style.textContent = `
-            * {
-              --background: #FEE6EA !important;
-              --foreground: #131718 !important;
-              --card: #ffffff !important;
-              --muted: #f5d3d8 !important;
-              --muted-foreground: #4a4a4a !important;
-              --primary: #131718 !important;
-              --border: rgba(19, 23, 24, 0.1) !important;
-            }
-            .bg-background { background: #FEE6EA !important; }
-            .bg-card { background: #ffffff !important; }
-            .bg-muted { background: #f5d3d8 !important; }
-            .text-foreground { color: #131718 !important; }
-            .text-primary { color: #131718 !important; }
-            .text-muted-foreground { color: #4a4a4a !important; }
-            .border-border { border-color: rgba(19, 23, 24, 0.1) !important; }
-          `;
-          clonedDoc.head.appendChild(style);
-        },
-      });
+    const downloadAsImage = async () => {
+      if (!downloadRef.current) return;
       
-      const link = document.createElement('a');
-      link.download = `pricing-calculator-${new Date().toISOString().split('T')[0]}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch (error) {
-      console.error('Error generating image:', error);
-      alert('Error creating image. Please try again.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+      setIsDownloading(true);
+      try {
+        const canvas = await html2canvas(downloadRef.current, {
+          backgroundColor: '#FEE6EA',
+          scale: 2,
+          logging: true,
+          useCORS: true,
+          onclone: (clonedDoc) => {
+            // Remove all external stylesheets that contain oklch
+            const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
+            stylesheets.forEach((sheet) => {
+              const element = sheet as HTMLElement;
+              if (element.textContent?.includes('oklch') || element.textContent?.includes('oklab')) {
+                element.remove();
+              }
+            });
+            
+            // Add inline styles with safe colors
+            const style = clonedDoc.createElement('style');
+            style.textContent = `
+              * {
+                --background: #FEE6EA !important;
+                --foreground: #131718 !important;
+                --card: #ffffff !important;
+                --muted: #f5d3d8 !important;
+                --muted-foreground: #4a4a4a !important;
+                --primary: #131718 !important;
+                --border: rgba(19, 23, 24, 0.1) !important;
+              }
+              .bg-background { background: #FEE6EA !important; }
+              .bg-card { background: #ffffff !important; }
+              .bg-muted { background: #f5d3d8 !important; }
+              .text-foreground { color: #131718 !important; }
+              .text-primary { color: #131718 !important; }
+              .text-muted-foreground { color: #4a4a4a !important; }
+              .border-border { border-color: rgba(19, 23, 24, 0.1) !important; }
+            `;
+            clonedDoc.head.appendChild(style);
+          },
+        });
+        
+        const link = document.createElement('a');
+        link.download = `pricing-calculator-${new Date().toISOString().split('T')[0]}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (error) {
+        console.error('Error generating image:', error);
+        alert('Error creating image. Please try again.');
+      } finally {
+        setIsDownloading(false);
+      }
+    };
 
-  const downloadAsPDF = async () => {
-    if (!downloadRef.current) return;
-    
-    setIsDownloading(true);
-    try {
-      const canvas = await html2canvas(downloadRef.current, {
-        backgroundColor: '#FEE6EA',
-        scale: 2,
-        logging: true,
-        useCORS: true,
-        onclone: (clonedDoc) => {
-          // Remove all external stylesheets that contain oklch
-          const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
-          stylesheets.forEach((sheet) => {
-            const element = sheet as HTMLElement;
-            if (element.textContent?.includes('oklch') || element.textContent?.includes('oklab')) {
-              element.remove();
-            }
-          });
-          
-          // Add inline styles with safe colors
-          const style = clonedDoc.createElement('style');
-          style.textContent = `
-            * {
-              --background: #FEE6EA !important;
-              --foreground: #131718 !important;
-              --card: #ffffff !important;
-              --muted: #f5d3d8 !important;
-              --muted-foreground: #4a4a4a !important;
-              --primary: #131718 !important;
-              --border: rgba(19, 23, 24, 0.1) !important;
-            }
-            .bg-background { background: #FEE6EA !important; }
-            .bg-card { background: #ffffff !important; }
-            .bg-muted { background: #f5d3d8 !important; }
-            .text-foreground { color: #131718 !important; }
-            .text-primary { color: #131718 !important; }
-            .text-muted-foreground { color: #4a4a4a !important; }
-            .border-border { border-color: rgba(19, 23, 24, 0.1) !important; }
-          `;
-          clonedDoc.head.appendChild(style);
-        },
-      });
+    const downloadAsPDF = async () => {
+      if (!downloadRef.current) return;
       
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'px',
-        format: [canvas.width, canvas.height]
-      });
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-      pdf.save(`pricing-calculator-${new Date().toISOString().split('T')[0]}.pdf`);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Error creating PDF. Please try again.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+      setIsDownloading(true);
+      try {
+        const canvas = await html2canvas(downloadRef.current, {
+          backgroundColor: '#FEE6EA',
+          scale: 2,
+          logging: true,
+          useCORS: true,
+          onclone: (clonedDoc) => {
+            // Remove all external stylesheets that contain oklch
+            const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
+            stylesheets.forEach((sheet) => {
+              const element = sheet as HTMLElement;
+              if (element.textContent?.includes('oklch') || element.textContent?.includes('oklab')) {
+                element.remove();
+              }
+            });
+            
+            // Add inline styles with safe colors
+            const style = clonedDoc.createElement('style');
+            style.textContent = `
+              * {
+                --background: #FEE6EA !important;
+                --foreground: #131718 !important;
+                --card: #ffffff !important;
+                --muted: #f5d3d8 !important;
+                --muted-foreground: #4a4a4a !important;
+                --primary: #131718 !important;
+                --border: rgba(19, 23, 24, 0.1) !important;
+              }
+              .bg-background { background: #FEE6EA !important; }
+              .bg-card { background: #ffffff !important; }
+              .bg-muted { background: #f5d3d8 !important; }
+              .text-foreground { color: #131718 !important; }
+              .text-primary { color: #131718 !important; }
+              .text-muted-foreground { color: #4a4a4a !important; }
+              .border-border { border-color: rgba(19, 23, 24, 0.1) !important; }
+            `;
+            clonedDoc.head.appendChild(style);
+          },
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'px',
+          format: [canvas.width, canvas.height]
+        });
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save(`pricing-calculator-${new Date().toISOString().split('T')[0]}.pdf`);
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('Error creating PDF. Please try again.');
+      } finally {
+        setIsDownloading(false);
+      }
+    };
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="mb-2">Service Pricing</h2>
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          Your minimum rates to cover all costs, and recommended rates with profit margin.
-        </p>
-      </div>
+    useImperativeHandle(ref, () => ({
+      downloadAsImage,
+      downloadAsPDF,
+    }));
 
-      {/* Download Buttons */}
-      <div className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div>
-            <h3 className="mb-1">Save Your Calculations</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Download your pricing to compare over time
-            </p>
-          </div>
-          <div className="flex gap-2 w-full sm:w-auto">
-            <Button
-              onClick={downloadAsImage}
-              disabled={isDownloading}
-              variant="outline"
-              className="flex-1 sm:flex-none border-border"
-            >
-              <FileImage className="h-4 w-4 mr-2" />
-              PNG
-            </Button>
-            <Button
-              onClick={downloadAsPDF}
-              disabled={isDownloading}
-              className="flex-1 sm:flex-none"
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              PDF
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Downloadable Content */}
-      <div ref={downloadRef} className="space-y-4 p-6 bg-background rounded-xl">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl mb-2">My Creator Pricing</h2>
-          <p className="text-sm text-muted-foreground">
-            Generated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="mb-2">My Creator Pricing</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Your minimum rates to cover all costs, and recommended rates with profit margin and safety buffer.
           </p>
         </div>
 
+        {/* Markup Input - Visible on Website */}
         <div className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6">
           <div className="space-y-3">
             <Label htmlFor="markup" className="text-sm">
@@ -231,6 +203,7 @@ export function ServicePricing({ targetIncome, billableHours }: ServicePricingPr
           </div>
         </div>
 
+        {/* Service Pricing Cards - Visible on Website */}
         <div className="space-y-3">
           {services.map((service) => {
             const isRetainer = service.id === "retainer";
@@ -239,7 +212,7 @@ export function ServicePricing({ targetIncome, billableHours }: ServicePricingPr
             return (
               <div
                 key={service.id}
-                className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-5 hover:border-primary/30 transition-colors"
+                className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-4 sm:p-5 hover:shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] hover:border-white/30 transition-all duration-300"
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex-1">
@@ -273,17 +246,199 @@ export function ServicePricing({ targetIncome, billableHours }: ServicePricingPr
           })}
         </div>
 
-        <div className="backdrop-blur-xl bg-muted/50 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6 space-y-4">
-          <h3>Key Principles 💜</h3>
-          <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
-            <li>• <strong>Never price below Base Rate</strong> — that's working for free</li>
-            <li>• <strong>Recommended Rate is your starting point</strong> — you can charge more based on experience, reputation, and demand</li>
-            <li>• <strong>Use higher markup for rush jobs</strong> — 50%+ for tight deadlines or high-visibility work</li>
-            <li>• <strong>Retainers get discounts</strong> — recurring revenue is worth 10-15% off</li>
-            <li>• <strong>Review quarterly</strong> — update as your expenses and skills grow</li>
+        {/* Key Principles - Visible on Website */}
+        <div className="backdrop-blur-xl bg-primary border border-primary/20 rounded-lg shadow-sm p-4 sm:p-6 space-y-4">
+          <h3 className="text-primary-foreground">Key Principles</h3>
+          <ul className="space-y-2 text-xs sm:text-sm text-primary-foreground/70">
+            <li>• <strong className="text-primary-foreground">Never price below Base Rate</strong> — that's working for free</li>
+            <li>• <strong className="text-primary-foreground">Recommended Rate is your starting point</strong> — you can charge more based on experience, reputation, and demand</li>
+            <li>• <strong className="text-primary-foreground">Use higher markup for rush jobs</strong> — 50%+ for tight deadlines or high-visibility work</li>
+            <li>• <strong className="text-primary-foreground">Retainers get discounts</strong> — recurring revenue is worth 10-15% off</li>
+            <li>• <strong className="text-primary-foreground">Review quarterly</strong> — update as your expenses and skills grow</li>
           </ul>
         </div>
+
+        {/* Hidden Download Content - Only Captured by html2canvas */}
+        <div ref={downloadRef} className="hidden">
+          <div style={{ 
+            width: '800px', 
+            padding: '48px', 
+            backgroundColor: '#FEE6EA',
+            fontFamily: 'Work Sans, system-ui, sans-serif'
+          }}>
+            {/* Header */}
+            <div style={{ marginBottom: '32px', textAlign: 'center' }}>
+              <h1 style={{ 
+                fontSize: '32px', 
+                fontWeight: '700', 
+                color: '#131718',
+                marginBottom: '12px',
+                letterSpacing: '-0.02em'
+              }}>
+                My Creator Pricing
+              </h1>
+              <p style={{ 
+                fontSize: '14px', 
+                color: 'rgba(19, 23, 24, 0.6)',
+                marginBottom: '24px'
+              }}>
+                Generated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+              <div style={{
+                backgroundColor: 'white',
+                padding: '16px 24px',
+                borderRadius: '8px',
+                border: '1px solid rgba(19, 23, 24, 0.1)',
+                display: 'inline-block'
+              }}>
+                <p style={{ 
+                  fontSize: '14px', 
+                  color: '#131718',
+                  margin: 0,
+                  fontWeight: '500'
+                }}>
+                  Markup: {markup}% profit margin
+                </p>
+              </div>
+            </div>
+
+            {/* Service Cards */}
+            <div style={{ marginBottom: '32px' }}>
+              {services.map((service, index) => {
+                const isRetainer = service.id === "retainer";
+                const prices = calculatePrice(service.hoursOrScope, isRetainer);
+
+                return (
+                  <div
+                    key={service.id}
+                    style={{
+                      backgroundColor: 'white',
+                      border: '1px solid rgba(19, 23, 24, 0.1)',
+                      borderRadius: '8px',
+                      padding: '20px',
+                      marginBottom: index < services.length - 1 ? '12px' : '0'
+                    }}
+                  >
+                    <div style={{ marginBottom: '16px' }}>
+                      <h3 style={{ 
+                        fontSize: '18px', 
+                        fontWeight: '600', 
+                        color: '#131718',
+                        marginBottom: '4px'
+                      }}>
+                        {service.name}
+                      </h3>
+                      <p style={{ 
+                        fontSize: '14px', 
+                        color: 'rgba(19, 23, 24, 0.6)',
+                        margin: 0
+                      }}>
+                        {service.description}
+                        {isRetainer && ' • 10% discount applied'}
+                      </p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '24px' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: 'rgba(19, 23, 24, 0.6)',
+                          marginBottom: '4px'
+                        }}>
+                          Base Rate
+                        </div>
+                        <div style={{ 
+                          fontSize: '24px', 
+                          fontWeight: '600', 
+                          color: '#131718'
+                        }}>
+                          ${prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </div>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: 'rgba(19, 23, 24, 0.6)'
+                        }}>
+                          break-even
+                        </div>
+                      </div>
+                      <div style={{ 
+                        flex: 1,
+                        backgroundColor: '#FEE6EA',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        border: '2px solid #131718'
+                      }}>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: 'rgba(19, 23, 24, 0.6)',
+                          marginBottom: '4px'
+                        }}>
+                          Recommended
+                        </div>
+                        <div style={{ 
+                          fontSize: '24px', 
+                          fontWeight: '700', 
+                          color: '#131718'
+                        }}>
+                          ${prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </div>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: 'rgba(19, 23, 24, 0.6)'
+                        }}>
+                          +{markup}% profit
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Key Principles */}
+            <div style={{
+              backgroundColor: '#131718',
+              border: '1px solid rgba(19, 23, 24, 0.2)',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
+              <h3 style={{ 
+                fontSize: '18px', 
+                fontWeight: '600', 
+                color: '#FEE6EA',
+                marginBottom: '16px'
+              }}>
+                Key Principles
+              </h3>
+              <ul style={{ 
+                margin: 0, 
+                padding: 0, 
+                listStyle: 'none',
+                fontSize: '14px',
+                color: 'rgba(254, 230, 234, 0.9)',
+                lineHeight: '1.6'
+              }}>
+                <li style={{ marginBottom: '8px' }}>
+                  • <strong style={{ color: '#FEE6EA' }}>Never price below Base Rate</strong> — that's working for free
+                </li>
+                <li style={{ marginBottom: '8px' }}>
+                  • <strong style={{ color: '#FEE6EA' }}>Recommended Rate is your starting point</strong> — you can charge more based on experience
+                </li>
+                <li style={{ marginBottom: '8px' }}>
+                  • <strong style={{ color: '#FEE6EA' }}>Use higher markup for rush jobs</strong> — 50%+ for tight deadlines
+                </li>
+                <li style={{ marginBottom: '8px' }}>
+                  • <strong style={{ color: '#FEE6EA' }}>Retainers get discounts</strong> — recurring revenue is worth 10-15% off
+                </li>
+                <li>
+                  • <strong style={{ color: '#FEE6EA' }}>Review quarterly</strong> — update as your expenses and skills grow
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
+
+ServicePricing.displayName = 'ServicePricing';
