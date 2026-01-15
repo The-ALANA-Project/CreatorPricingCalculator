@@ -1,1 +1,5 @@
-<img width="48" height="48" alt="Image" src="https://github.com/user-attachments/assets/b9f32bf4-27a4-43fa-a14f-9d8860beb016" />
+PLACEHOLDER: This should be replaced with the actual favicon image.
+To get the real image:
+1. Open /generate-public-assets.html in your browser
+2. Download the favicon from there
+3. Replace this file
