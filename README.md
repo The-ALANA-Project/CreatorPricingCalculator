@@ -44,55 +44,42 @@ This app is configured for Netlify deployment:
 
 ### ⚠️ IMPORTANT: Adding Favicon and OG Image
 
-After deploying, you need to manually add these files to your GitHub repository:
+**BEFORE DEPLOYING**, you need to add the images to the `/public` folder:
 
-**Step 1: Create a `/public` folder in your repository root**
+**Quick Steps:**
 
-**Step 2: Add these two image files:**
-- `/public/favicon.png` - The "S" logo favicon (48x48px or larger)
-- `/public/og-image.png` - The social sharing banner (1200x630px recommended)
+1. **In Figma Make preview**, open this URL in your browser:
+   ```
+   http://localhost:5173/generate-public-assets.html
+   ```
 
-**How to add them:**
+2. **Download both images** by clicking the buttons on that page:
+   - Download `favicon.png`
+   - Download `og-image.png`
+
+3. **Add them to `/public` folder** in Figma Make:
+   - The `/public` folder already exists
+   - Use the file upload feature or copy the files there
+   
+4. **Then deploy!** Everything will work together.
+
+**Alternative - After Deploy:**
+
+If you prefer to deploy first and add images later:
 
 1. **Via GitHub Web Interface:**
    - Go to your repository on GitHub
-   - Click "Add file" → "Create new file"
-   - Type `public/favicon.png` in the filename field (this creates the folder)
-   - Click "Choose your files" and upload the favicon image
-   - Commit the file
-   - Repeat for `public/og-image.png`
+   - Navigate to the `public` folder
+   - Click "Add file" → "Upload files"
+   - Upload both `favicon.png` and `og-image.png`
+   - Commit the changes
+   - Netlify will auto-redeploy
 
-2. **Via Git locally:**
-   ```bash
-   # Clone your repo
-   git clone <your-repo-url>
-   cd <your-repo>
-   
-   # Create public folder
-   mkdir public
-   
-   # Copy your images
-   cp /path/to/favicon.png public/favicon.png
-   cp /path/to/og-image.png public/og-image.png
-   
-   # Commit and push
-   git add public/
-   git commit -m "Add favicon and OG image"
-   git push
-   ```
+**What These Do:**
+- `/public/favicon.png` → Browser tab icon
+- `/public/og-image.png` → Social media preview image
 
-3. **Image Specifications:**
-   - **favicon.png**: Square image, preferably 512x512px (will be scaled down)
-   - **og-image.png**: 1200x630px (standard social media preview size)
-
-**Why manual upload?**
-Vite's `/public` folder gets copied directly to the build output. Files here need to be actual image files in your Git repository, not virtual imports from Figma Make.
-
-Once added, these will be available at:
-- `https://creatorpricing.com/favicon.png`
-- `https://creatorpricing.com/og-image.png`
-
-And the meta tags in `index.html` will automatically display them for favicons and social sharing!
+The HTML meta tags are already configured to use these files!
 
 ## License
 
