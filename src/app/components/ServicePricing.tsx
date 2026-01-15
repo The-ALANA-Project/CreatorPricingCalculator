@@ -52,106 +52,89 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
     };
 
     const downloadAsImage = async () => {
-      if (!downloadRef.current) return;
+      if (!downloadRef.current) {
+        console.error('Download ref is null');
+        return;
+      }
       
       setIsDownloading(true);
       try {
+        // Wait a moment for any fonts/styles to load
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        console.log('Starting image capture...');
+        console.log('Element dimensions:', downloadRef.current.offsetWidth, downloadRef.current.offsetHeight);
+        
         const canvas = await html2canvas(downloadRef.current, {
           backgroundColor: '#FEE6EA',
           scale: 2,
           logging: true,
-          useCORS: true,
-          onclone: (clonedDoc) => {
-            // Remove all external stylesheets that contain oklch
-            const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
-            stylesheets.forEach((sheet) => {
-              const element = sheet as HTMLElement;
-              if (element.textContent?.includes('oklch') || element.textContent?.includes('oklab')) {
-                element.remove();
-              }
-            });
-            
-            // Add inline styles with safe colors
-            const style = clonedDoc.createElement('style');
-            style.textContent = `
-              * {
-                --background: #FEE6EA !important;
-                --foreground: #131718 !important;
-                --card: #ffffff !important;
-                --muted: #f5d3d8 !important;
-                --muted-foreground: #4a4a4a !important;
-                --primary: #131718 !important;
-                --border: rgba(19, 23, 24, 0.1) !important;
-              }
-              .bg-background { background: #FEE6EA !important; }
-              .bg-card { background: #ffffff !important; }
-              .bg-muted { background: #f5d3d8 !important; }
-              .text-foreground { color: #131718 !important; }
-              .text-primary { color: #131718 !important; }
-              .text-muted-foreground { color: #4a4a4a !important; }
-              .border-border { border-color: rgba(19, 23, 24, 0.1) !important; }
-            `;
-            clonedDoc.head.appendChild(style);
-          },
+          allowTaint: true,
+          useCORS: false,
         });
+        
+        console.log('Canvas created:', canvas.width, canvas.height);
+        
+        if (canvas.width === 0 || canvas.height === 0) {
+          throw new Error('Canvas has zero dimensions');
+        }
+        
+        const dataUrl = canvas.toDataURL('image/png');
+        console.log('Data URL length:', dataUrl.length);
+        
+        if (!dataUrl || dataUrl === 'data:,') {
+          throw new Error('Canvas toDataURL returned empty');
+        }
         
         const link = document.createElement('a');
         link.download = `pricing-calculator-${new Date().toISOString().split('T')[0]}.png`;
-        link.href = canvas.toDataURL('image/png');
+        link.href = dataUrl;
         link.click();
+        
+        console.log('Image download triggered successfully');
       } catch (error) {
         console.error('Error generating image:', error);
-        alert('Error creating image. Please try again.');
+        alert(`Error creating image: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setIsDownloading(false);
       }
     };
 
     const downloadAsPDF = async () => {
-      if (!downloadRef.current) return;
+      if (!downloadRef.current) {
+        console.error('Download ref is null');
+        return;
+      }
       
       setIsDownloading(true);
       try {
+        // Wait a moment for any fonts/styles to load
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        console.log('Starting PDF capture...');
+        console.log('Element dimensions:', downloadRef.current.offsetWidth, downloadRef.current.offsetHeight);
+        
         const canvas = await html2canvas(downloadRef.current, {
           backgroundColor: '#FEE6EA',
           scale: 2,
           logging: true,
-          useCORS: true,
-          onclone: (clonedDoc) => {
-            // Remove all external stylesheets that contain oklch
-            const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
-            stylesheets.forEach((sheet) => {
-              const element = sheet as HTMLElement;
-              if (element.textContent?.includes('oklch') || element.textContent?.includes('oklab')) {
-                element.remove();
-              }
-            });
-            
-            // Add inline styles with safe colors
-            const style = clonedDoc.createElement('style');
-            style.textContent = `
-              * {
-                --background: #FEE6EA !important;
-                --foreground: #131718 !important;
-                --card: #ffffff !important;
-                --muted: #f5d3d8 !important;
-                --muted-foreground: #4a4a4a !important;
-                --primary: #131718 !important;
-                --border: rgba(19, 23, 24, 0.1) !important;
-              }
-              .bg-background { background: #FEE6EA !important; }
-              .bg-card { background: #ffffff !important; }
-              .bg-muted { background: #f5d3d8 !important; }
-              .text-foreground { color: #131718 !important; }
-              .text-primary { color: #131718 !important; }
-              .text-muted-foreground { color: #4a4a4a !important; }
-              .border-border { border-color: rgba(19, 23, 24, 0.1) !important; }
-            `;
-            clonedDoc.head.appendChild(style);
-          },
+          allowTaint: true,
+          useCORS: false,
         });
         
+        console.log('Canvas created:', canvas.width, canvas.height);
+        
+        if (canvas.width === 0 || canvas.height === 0) {
+          throw new Error('Canvas has zero dimensions');
+        }
+        
         const imgData = canvas.toDataURL('image/png');
+        console.log('Image data length:', imgData.length);
+        
+        if (!imgData || imgData === 'data:,') {
+          throw new Error('Canvas toDataURL returned empty');
+        }
+        
         const pdf = new jsPDF({
           orientation: 'portrait',
           unit: 'px',
@@ -160,9 +143,11 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         
         pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
         pdf.save(`pricing-calculator-${new Date().toISOString().split('T')[0]}.pdf`);
+        
+        console.log('PDF download triggered successfully');
       } catch (error) {
         console.error('Error generating PDF:', error);
-        alert('Error creating PDF. Please try again.');
+        alert(`Error creating PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setIsDownloading(false);
       }
@@ -259,7 +244,12 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         </div>
 
         {/* Hidden Download Content - Only Captured by html2canvas */}
-        <div ref={downloadRef} className="hidden">
+        <div ref={downloadRef} style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: 0,
+          pointerEvents: 'none'
+        }}>
           <div style={{ 
             width: '800px', 
             padding: '48px', 
