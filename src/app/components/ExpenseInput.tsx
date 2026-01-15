@@ -1,0 +1,123 @@
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
+import { Button } from "@/app/components/ui/button";
+import { Trash2, Plus } from "lucide-react";
+
+export interface Expense {
+  id: string;
+  category: string;
+  monthlyCost: number;
+}
+
+interface ExpenseInputProps {
+  expenses: Expense[];
+  onExpensesChange: (expenses: Expense[]) => void;
+}
+
+export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) {
+  const addExpense = () => {
+    const newExpense: Expense = {
+      id: crypto.randomUUID(),
+      category: "",
+      monthlyCost: 0,
+    };
+    onExpensesChange([...expenses, newExpense]);
+  };
+
+  const updateExpense = (id: string, field: keyof Expense, value: string | number) => {
+    onExpensesChange(
+      expenses.map((exp) =>
+        exp.id === id ? { ...exp, [field]: value } : exp
+      )
+    );
+  };
+
+  const deleteExpense = (id: string) => {
+    onExpensesChange(expenses.filter((exp) => exp.id !== id));
+  };
+
+  const totalMonthly = expenses.reduce((sum, exp) => sum + (exp.monthlyCost || 0), 0);
+  const totalAnnual = totalMonthly * 12;
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="mb-2">Monthly Expenses</h2>
+        <p className="text-sm text-muted-foreground">
+          Add all your monthly costs: housing, food, health, software, tools, equipment, etc.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {expenses.map((expense) => (
+          <div key={expense.id} className="flex gap-3 items-start">
+            <div className="flex-1 space-y-2">
+              <Label htmlFor={`category-${expense.id}`} className="text-sm">
+                Category
+              </Label>
+              <Input
+                id={`category-${expense.id}`}
+                placeholder="e.g., Rent, Groceries, Software"
+                value={expense.category}
+                onChange={(e) => updateExpense(expense.id, "category", e.target.value)}
+                className="bg-input-background border border-border"
+              />
+            </div>
+            <div className="w-40 space-y-2">
+              <Label htmlFor={`cost-${expense.id}`} className="text-sm">
+                Monthly Cost
+              </Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  $
+                </span>
+                <Input
+                  id={`cost-${expense.id}`}
+                  type="number"
+                  placeholder="0"
+                  value={expense.monthlyCost || ""}
+                  onChange={(e) =>
+                    updateExpense(expense.id, "monthlyCost", parseFloat(e.target.value) || 0)
+                  }
+                  className="bg-input-background border border-border pl-7"
+                />
+              </div>
+            </div>
+            <div className="pt-7">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => deleteExpense(expense.id)}
+                className="h-10 w-10"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Button
+        type="button"
+        variant="outline"
+        onClick={addExpense}
+        className="w-full border-border"
+      >
+        <Plus className="h-4 w-4 mr-2" />
+        Add Expense
+      </Button>
+
+      <div className="bg-card border border-border rounded-lg p-6 space-y-3">
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-muted-foreground">Total Monthly Expenses</span>
+          <span className="font-medium">${totalMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-muted-foreground">Total Annual Expenses</span>
+          <span className="font-medium">${totalAnnual.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
