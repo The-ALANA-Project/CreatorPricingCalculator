@@ -5,6 +5,7 @@ import { Button } from "@/app/components/ui/button";
 import { Download, FileImage, FileText } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import logoImage from "figma:asset/72e2173591b6a9d3c1947e527c26a5b7485f43a9.png";
 
 interface ServicePricingProps {
   targetIncome: number;
@@ -266,40 +267,38 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
             backgroundColor: '#FEE6EA',
             fontFamily: 'Work Sans, system-ui, sans-serif'
           }}>
-            {/* Header */}
-            <div style={{ marginBottom: '32px', textAlign: 'center' }}>
+            {/* Header with Logo */}
+            <div style={{ marginBottom: '32px' }}>
+              {/* Logo */}
+              <div style={{ 
+                marginBottom: '24px',
+                textAlign: 'left'
+              }}>
+                <img src={logoImage} alt="Logo" style={{ 
+                  height: '40px',
+                  width: 'auto',
+                  objectFit: 'contain'
+                }} />
+              </div>
+              
               <h1 style={{ 
                 fontSize: '32px', 
                 fontWeight: '700', 
                 color: '#131718',
                 marginBottom: '12px',
-                letterSpacing: '-0.02em'
+                letterSpacing: '-0.02em',
+                textAlign: 'left'
               }}>
                 My Creator Pricing
               </h1>
               <p style={{ 
                 fontSize: '14px', 
                 color: 'rgba(19, 23, 24, 0.6)',
-                marginBottom: '24px'
+                marginBottom: '24px',
+                textAlign: 'left'
               }}>
                 Generated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </p>
-              <div style={{
-                backgroundColor: 'white',
-                padding: '16px 24px',
-                borderRadius: '8px',
-                border: '1px solid rgba(19, 23, 24, 0.1)',
-                display: 'inline-block'
-              }}>
-                <p style={{ 
-                  fontSize: '14px', 
-                  color: '#131718',
-                  margin: 0,
-                  fontWeight: '500'
-                }}>
-                  Markup: {markup}% profit margin
-                </p>
-              </div>
             </div>
 
             {/* Service Cards */}
@@ -324,14 +323,16 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                         fontSize: '18px', 
                         fontWeight: '600', 
                         color: '#131718',
-                        marginBottom: '4px'
+                        marginBottom: '4px',
+                        textAlign: 'left'
                       }}>
                         {service.name}
                       </h3>
                       <p style={{ 
                         fontSize: '14px', 
                         color: 'rgba(19, 23, 24, 0.6)',
-                        margin: 0
+                        margin: 0,
+                        textAlign: 'left'
                       }}>
                         {service.description}
                         {isRetainer && ' • 10% discount applied'}
@@ -342,20 +343,23 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                         <div style={{ 
                           fontSize: '12px', 
                           color: 'rgba(19, 23, 24, 0.6)',
-                          marginBottom: '4px'
+                          marginBottom: '4px',
+                          textAlign: 'left'
                         }}>
                           Base Rate
                         </div>
                         <div style={{ 
                           fontSize: '24px', 
                           fontWeight: '600', 
-                          color: '#131718'
+                          color: '#131718',
+                          textAlign: 'left'
                         }}>
                           ${prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </div>
                         <div style={{ 
                           fontSize: '12px', 
-                          color: 'rgba(19, 23, 24, 0.6)'
+                          color: 'rgba(19, 23, 24, 0.6)',
+                          textAlign: 'left'
                         }}>
                           break-even
                         </div>
@@ -370,20 +374,23 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                         <div style={{ 
                           fontSize: '12px', 
                           color: 'rgba(19, 23, 24, 0.6)',
-                          marginBottom: '4px'
+                          marginBottom: '4px',
+                          textAlign: 'left'
                         }}>
                           Recommended
                         </div>
                         <div style={{ 
                           fontSize: '24px', 
                           fontWeight: '700', 
-                          color: '#131718'
+                          color: '#131718',
+                          textAlign: 'left'
                         }}>
                           ${prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </div>
                         <div style={{ 
                           fontSize: '12px', 
-                          color: 'rgba(19, 23, 24, 0.6)'
+                          color: 'rgba(19, 23, 24, 0.6)',
+                          textAlign: 'left'
                         }}>
                           +{markup}% profit
                         </div>
@@ -399,13 +406,15 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               backgroundColor: '#131718',
               border: '1px solid rgba(19, 23, 24, 0.2)',
               borderRadius: '8px',
-              padding: '24px'
+              padding: '24px',
+              marginBottom: '32px'
             }}>
               <h3 style={{ 
                 fontSize: '18px', 
                 fontWeight: '600', 
                 color: '#FEE6EA',
-                marginBottom: '16px'
+                marginBottom: '16px',
+                textAlign: 'left'
               }}>
                 Key Principles
               </h3>
@@ -415,7 +424,8 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 listStyle: 'none',
                 fontSize: '14px',
                 color: 'rgba(254, 230, 234, 0.9)',
-                lineHeight: '1.6'
+                lineHeight: '1.6',
+                textAlign: 'left'
               }}>
                 <li style={{ marginBottom: '8px' }}>
                   • <strong style={{ color: '#FEE6EA' }}>Never price below Base Rate</strong> — that's working for free
@@ -433,6 +443,30 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                   • <strong style={{ color: '#FEE6EA' }}>Review quarterly</strong> — update as your expenses and skills grow
                 </li>
               </ul>
+            </div>
+
+            {/* Footer */}
+            <div style={{ 
+              borderTop: '1px solid rgba(19, 23, 24, 0.1)',
+              paddingTop: '24px',
+              textAlign: 'left'
+            }}>
+              <p style={{ 
+                fontSize: '14px', 
+                color: 'rgba(19, 23, 24, 0.7)',
+                margin: '0 0 8px 0',
+                textAlign: 'left'
+              }}>
+                Share this calculator, use it, and adjust as your career grows.
+              </p>
+              <p style={{ 
+                fontSize: '14px', 
+                color: 'rgba(19, 23, 24, 0.6)',
+                margin: 0,
+                textAlign: 'left'
+              }}>
+                Made with 💜 by @stellaachenbach
+              </p>
             </div>
           </div>
         </div>
