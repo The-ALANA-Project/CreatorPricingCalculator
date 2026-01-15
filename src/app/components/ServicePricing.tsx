@@ -6,9 +6,6 @@ import { Download, FileImage, FileText } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
-// Inline SVG logo as data URL for reliable rendering in html2canvas
-const logoDataURL = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="48" viewBox="0 0 240 48"><text x="0" y="32" font-family="Work Sans, system-ui, sans-serif" font-size="22" font-weight="700" fill="#131718">Creator Pricing</text></svg>`)}`;
-
 interface ServicePricingProps {
   targetIncome: number;
   billableHours: number;
@@ -269,20 +266,8 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
             backgroundColor: '#FEE6EA',
             fontFamily: 'Work Sans, system-ui, sans-serif'
           }}>
-            {/* Header with Logo */}
+            {/* Header */}
             <div style={{ marginBottom: '32px' }}>
-              {/* Logo */}
-              <div style={{ 
-                marginBottom: '24px',
-                textAlign: 'left'
-              }}>
-                <img src={logoDataURL} alt="Logo" style={{ 
-                  height: '40px',
-                  width: 'auto',
-                  objectFit: 'contain'
-                }} />
-              </div>
-              
               <h1 style={{ 
                 fontSize: '32px', 
                 fontWeight: '700', 
