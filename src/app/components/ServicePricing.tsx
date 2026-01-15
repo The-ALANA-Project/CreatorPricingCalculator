@@ -5,7 +5,9 @@ import { Button } from "@/app/components/ui/button";
 import { Download, FileImage, FileText } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import logoImage from "figma:asset/72e2173591b6a9d3c1947e527c26a5b7485f43a9.png";
+
+// Inline SVG logo as data URL for reliable rendering in html2canvas
+const logoDataURL = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="48" viewBox="0 0 240 48"><text x="0" y="32" font-family="Work Sans, system-ui, sans-serif" font-size="22" font-weight="700" fill="#131718">Creator Pricing</text></svg>`)}`;
 
 interface ServicePricingProps {
   targetIncome: number;
@@ -274,7 +276,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 marginBottom: '24px',
                 textAlign: 'left'
               }}>
-                <img src={logoImage} alt="Logo" style={{ 
+                <img src={logoDataURL} alt="Logo" style={{ 
                   height: '40px',
                   width: 'auto',
                   objectFit: 'contain'
