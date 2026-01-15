@@ -43,15 +43,15 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
     <div className="space-y-6">
       <div>
         <h2 className="mb-2">Monthly Expenses</h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Add all your monthly costs: housing, food, health, software, tools, equipment, etc.
         </p>
       </div>
 
       <div className="space-y-4">
         {expenses.map((expense) => (
-          <div key={expense.id} className="flex gap-3 items-start">
-            <div className="flex-1 space-y-2">
+          <div key={expense.id} className="flex flex-col sm:flex-row gap-3 items-start">
+            <div className="flex-1 w-full space-y-2">
               <Label htmlFor={`category-${expense.id}`} className="text-sm">
                 Category
               </Label>
@@ -63,7 +63,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
                 className="bg-input-background border border-border"
               />
             </div>
-            <div className="w-40 space-y-2">
+            <div className="w-full sm:w-40 space-y-2">
               <Label htmlFor={`cost-${expense.id}`} className="text-sm">
                 Monthly Cost
               </Label>
@@ -83,7 +83,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
                 />
               </div>
             </div>
-            <div className="pt-7">
+            <div className="pt-0 sm:pt-7 w-full sm:w-auto">
               <Button
                 type="button"
                 variant="ghost"
@@ -108,14 +108,14 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
         Add Expense
       </Button>
 
-      <div className="bg-card border border-border rounded-lg p-6 space-y-3">
+      <div className="backdrop-blur-xl bg-card/80 border border-border/50 rounded-xl shadow-sm p-4 sm:p-6 space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Total Monthly Expenses</span>
-          <span className="font-medium">${totalMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <span className="text-xs sm:text-sm text-muted-foreground">Total Monthly Expenses</span>
+          <span className="font-medium text-sm sm:text-base">${totalMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Total Annual Expenses</span>
-          <span className="font-medium">${totalAnnual.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <span className="text-xs sm:text-sm text-muted-foreground">Total Annual Expenses</span>
+          <span className="font-medium text-sm sm:text-base">${totalAnnual.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>
