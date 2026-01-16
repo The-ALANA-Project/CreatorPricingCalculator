@@ -35,24 +35,26 @@ npm run build
 
 ## Deployment
 
-This app is configured for Netlify deployment:
+This app is configured for Netlify deployment.
+
+### IMPORTANT: Before First Deploy
+
+**You need to manually add the favicon and OG image to GitHub AFTER deploying from Figma Make:**
+
+1. **Deploy from Figma Make first** (this creates placeholder files)
+2. **Go to your GitHub repo** → Navigate to the `/public` folder
+3. **Replace these two files:**
+   - `favicon.png` - Download from: https://github.com/user-attachments/assets/efeaa686-8807-48c4-a683-24c80ccf15fc
+   - `og-image.png` - Download from: https://github.com/user-attachments/assets/59ec8fc5-0c9c-4b4e-9b65-28542399c7f9
+4. **Upload them to GitHub** (delete the placeholder text files, upload the actual PNG images)
+5. **Netlify will auto-redeploy** and the images will work!
+
+**Why manual?** Figma Make can't create binary image files, only text files. The placeholders ensure the folder structure exists, then you replace them with real images in GitHub.
 
 1. Push changes to your GitHub repository
 2. Netlify will automatically build and deploy
 3. Build command: `npm run build`
 4. Publish directory: `dist`
-
-### Favicon and OG Image
-
-The favicon and social sharing images are **automatically downloaded during the build process** from GitHub Assets URLs. A custom Vite plugin fetches the images and saves them to the `/public` folder, which is then copied to the build output.
-
-**How it works:**
-- During `npm run build`, the Vite plugin downloads the images from GitHub
-- Files are saved to `/public/favicon.png` and `/public/og-image.png`
-- Vite copies the `/public` folder to the `dist` output
-- Images are served from your domain: `creatorpricing.com/favicon.png` and `creatorpricing.com/og-image.png`
-
-No manual uploads needed! 🎉
 
 ## License
 
