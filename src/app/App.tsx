@@ -136,7 +136,7 @@ function App() {
             </div>
             
             {/* Progress Steps */}
-            <div className="flex items-center w-full border-t border-white/10 pl-2 sm:pl-2">
+            <nav className="flex items-center w-full border-t border-white/10 pl-2 sm:pl-2" aria-label="Progress steps">
               {steps.map((step, index) => (
                 <div key={step.number} className="flex items-center flex-1">
                   <button
@@ -167,7 +167,7 @@ function App() {
                   )}
                 </div>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
       </header>
@@ -309,7 +309,7 @@ function App() {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-4">
+        <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-4">
           <p>
             Share this calculator, use it, and adjust as your career grows.
           </p>
@@ -324,7 +324,7 @@ function App() {
               @stellaachenbach
             </a>
           </p>
-        </div>
+        </footer>
       </main>
     </div>
   );

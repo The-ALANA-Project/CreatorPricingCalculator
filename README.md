@@ -11,6 +11,18 @@ A free pricing calculator for creators and creative freelancers that converts yo
 - Import previous calculations from JSON
 - Mobile-optimized with liquid glass aesthetic
 
+## SEO & Discoverability
+
+The app includes comprehensive SEO optimizations:
+- **Meta tags**: Title, description, keywords, author, robots
+- **Open Graph tags**: For Facebook, LinkedIn sharing
+- **Twitter Card tags**: For optimal Twitter/X previews
+- **Structured data**: JSON-LD schema for search engines
+- **Sitemap**: `/sitemap.xml` for search engine crawlers
+- **Robots.txt**: Allows all search engines to index the site
+- **Semantic HTML**: Proper use of header, main, nav, footer tags
+- **Canonical URL**: Prevents duplicate content issues
+
 ## Tech Stack
 
 - React 18
@@ -19,6 +31,7 @@ A free pricing calculator for creators and creative freelancers that converts yo
 - Tailwind CSS v4
 - Radix UI components
 - Motion (Framer Motion)
+- html2canvas & jsPDF for exports
 
 ## Development
 
