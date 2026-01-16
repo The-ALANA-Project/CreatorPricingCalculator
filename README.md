@@ -44,7 +44,15 @@ This app is configured for Netlify deployment:
 
 ### Favicon and OG Image
 
-The favicon and social sharing images are hosted directly via GitHub Assets URLs in `index.html`. No manual file uploads needed - they're automatically included with every deployment! 🎉
+The favicon and social sharing images are **automatically downloaded during the build process** from GitHub Assets URLs. A custom Vite plugin fetches the images and saves them to the `/public` folder, which is then copied to the build output.
+
+**How it works:**
+- During `npm run build`, the Vite plugin downloads the images from GitHub
+- Files are saved to `/public/favicon.png` and `/public/og-image.png`
+- Vite copies the `/public` folder to the `dist` output
+- Images are served from your domain: `creatorpricing.com/favicon.png` and `creatorpricing.com/og-image.png`
+
+No manual uploads needed! 🎉
 
 ## License
 
