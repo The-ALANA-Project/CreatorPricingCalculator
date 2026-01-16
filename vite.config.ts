@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import path from 'path'
-import fs from 'fs'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
@@ -26,57 +25,11 @@ function figmaAssetPlugin() {
   };
 }
 
-// Plugin to download and save favicon and OG image from GitHub
-function downloadPublicAssetsPlugin() {
-  return {
-    name: 'download-public-assets',
-    async buildStart() {
-      const publicDir = path.resolve(__dirname, 'public');
-      
-      // Ensure public directory exists
-      if (!fs.existsSync(publicDir)) {
-        fs.mkdirSync(publicDir, { recursive: true });
-      }
-      
-      const assets = [
-        {
-          url: 'https://github.com/user-attachments/assets/efeaa686-8807-48c4-a683-24c80ccf15fc',
-          filename: 'favicon.png'
-        },
-        {
-          url: 'https://github.com/user-attachments/assets/59ec8fc5-0c9c-4b4e-9b65-28542399c7f9',
-          filename: 'og-image.png'
-        }
-      ];
-      
-      console.log('📥 Downloading public assets...');
-      
-      for (const asset of assets) {
-        try {
-          const response = await fetch(asset.url);
-          if (!response.ok) {
-            console.warn(`⚠️  Failed to download ${asset.filename}: ${response.status}`);
-            continue;
-          }
-          
-          const buffer = await response.arrayBuffer();
-          const filePath = path.join(publicDir, asset.filename);
-          fs.writeFileSync(filePath, Buffer.from(buffer));
-          console.log(`✅ Downloaded ${asset.filename} (${buffer.byteLength} bytes)`);
-        } catch (error) {
-          console.error(`❌ Error downloading ${asset.filename}:`, error);
-        }
-      }
-    }
-  };
-}
-
 export default defineConfig({
   plugins: [
-    downloadPublicAssetsPlugin(), // Download assets before build
     figmaAssetPlugin(), // Must be before react plugin
     // The React and Tailwind plugins are both required for Make, even if
-    // Tailwind is not being actively used – do not remove them
+    // Tailwind is not being activated – do not remove them
     react(),
     tailwindcss(),
   ],
