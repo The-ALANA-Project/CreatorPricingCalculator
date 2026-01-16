@@ -18,9 +18,18 @@ function App() {
   const [isDragging, setIsDragging] = useState(false);
 
   const [expenses, setExpenses] = useState<Expense[]>([
-    { id: crypto.randomUUID(), category: "Rent", monthlyCost: 1500 },
-    { id: crypto.randomUUID(), category: "Groceries", monthlyCost: 400 },
-    { id: crypto.randomUUID(), category: "Health Insurance", monthlyCost: 300 },
+    { id: crypto.randomUUID(), category: "Housing", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Food", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Transport", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Health", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Internet", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Software", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "AI Tooling", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Equipment", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Subscriptions", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Professional", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Leisure", monthlyCost: 0 },
+    { id: crypto.randomUUID(), category: "Misc", monthlyCost: 0 },
   ]);
 
   const [incomeSettings, setIncomeSettings] = useState<IncomeSettings>({

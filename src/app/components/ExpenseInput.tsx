@@ -57,7 +57,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
               </Label>
               <Input
                 id={`category-${expense.id}`}
-                placeholder="e.g., Rent, Groceries, Software"
+                placeholder="Select or type a category"
                 value={expense.category}
                 onChange={(e) => updateExpense(expense.id, "category", e.target.value)}
                 className="bg-input-background border border-border"
