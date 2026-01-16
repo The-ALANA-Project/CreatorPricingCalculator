@@ -163,7 +163,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         <div>
           <h2 className="mb-2">My Creator Pricing</h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Your minimum rates to cover all costs, and recommended rates with profit margin and safety buffer.
+            Your minimum rates to cover all costs, and recommended rates with profit margin and safety buffer. <strong>All amounts in your currency.</strong>
           </p>
         </div>
 
@@ -213,14 +213,14 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                     <div className="text-left flex-1">
                       <div className="text-xs text-muted-foreground mb-1">Base Rate</div>
                       <div className="text-base sm:text-lg">
-                        ${prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        {prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </div>
                       <div className="text-xs text-muted-foreground">break-even</div>
                     </div>
                     <div className="text-left flex-1 backdrop-blur-xl bg-primary/5 px-3 sm:px-4 py-2 rounded-lg">
                       <div className="text-xs text-muted-foreground mb-1">Recommended</div>
                       <div className="text-base sm:text-lg text-primary">
-                        ${prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        {prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </div>
                       <div className="text-xs text-muted-foreground">+{markup}% profit</div>
                     </div>
@@ -331,7 +331,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                           color: '#131718',
                           textAlign: 'left'
                         }}>
-                          ${prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          {prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </div>
                         <div style={{ 
                           fontSize: '12px', 
@@ -362,7 +362,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                           color: '#131718',
                           textAlign: 'left'
                         }}>
-                          ${prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          {prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                         </div>
                         <div style={{ 
                           fontSize: '12px', 
