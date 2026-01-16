@@ -311,7 +311,15 @@ function App() {
         {/* Footer */}
         <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-4">
           <p>
-            Share this calculator, use it, and adjust as your career grows.
+            Share this calculator, use it, and adjust as your career grows.{' '}
+            <a 
+              href="https://github.com/The-ALANA-Project/CreatorPricingCalculator" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Open Source on GitHub
+            </a>
           </p>
           <p className="mt-2">
             Made with 💜 by{' '}
