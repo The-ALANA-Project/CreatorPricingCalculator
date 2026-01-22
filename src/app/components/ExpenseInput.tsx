@@ -50,22 +50,25 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
 
       <div className="space-y-4">
         {expenses.map((expense) => (
-          <div key={expense.id} className="flex flex-col sm:flex-row gap-3 items-start">
-            <div className="flex-1 w-full space-y-2">
-              <Label htmlFor={`category-${expense.id}`} className="text-sm">
+          <div key={expense.id} className="flex gap-2 items-end">
+            {/* Category */}
+            <div className="flex-1 min-w-0 space-y-1.5">
+              <Label htmlFor={`category-${expense.id}`} className="text-xs sm:text-sm">
                 Category
               </Label>
               <Input
                 id={`category-${expense.id}`}
-                placeholder="Select or type a category"
+                placeholder="Category"
                 value={expense.category}
                 onChange={(e) => updateExpense(expense.id, "category", e.target.value)}
-                className="bg-input-background border border-border"
+                className="bg-input-background border border-border h-9 text-sm"
               />
             </div>
-            <div className="w-full sm:w-40 space-y-2">
-              <Label htmlFor={`cost-${expense.id}`} className="text-sm">
-                Monthly Cost
+            
+            {/* Monthly Cost */}
+            <div className="w-24 sm:w-32 space-y-1.5">
+              <Label htmlFor={`cost-${expense.id}`} className="text-xs sm:text-sm">
+                Cost
               </Label>
               <Input
                 id={`cost-${expense.id}`}
@@ -75,20 +78,20 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
                 onChange={(e) =>
                   updateExpense(expense.id, "monthlyCost", parseFloat(e.target.value) || 0)
                 }
-                className="bg-input-background border border-border"
+                className="bg-input-background border border-border h-9 text-sm"
               />
             </div>
-            <div className="pt-0 sm:pt-7 w-full sm:w-auto">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => deleteExpense(expense.id)}
-                className="h-10 w-10"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            
+            {/* Trash Icon */}
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => deleteExpense(expense.id)}
+              className="h-9 w-9 flex-shrink-0"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
         ))}
       </div>
