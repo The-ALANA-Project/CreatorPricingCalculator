@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ExpenseInput, type Expense } from "@/app/components/ExpenseInput";
 import { IncomeCalculator, type IncomeSettings } from "@/app/components/IncomeCalculator";
 import { ServicePricing, type ServicePricingRef } from "@/app/components/ServicePricing";
+import { CookieBanner } from "@/app/components/CookieBanner";
 import { Button } from "@/app/components/ui/button";
 import { ArrowRight, ArrowLeft, FileImage, FileText, Upload, Download } from "lucide-react";
 
@@ -12,34 +13,68 @@ interface CalculatorData {
   version: string;
 }
 
+const DEFAULT_EXPENSES: Expense[] = [
+  { id: crypto.randomUUID(), category: "Housing", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Food", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Transport", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Health", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Internet", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Software", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "AI Tooling", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Equipment", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Subscriptions", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Professional", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Leisure", monthlyCost: 0 },
+  { id: crypto.randomUUID(), category: "Misc", monthlyCost: 0 },
+];
+
+const DEFAULT_INCOME_SETTINGS: IncomeSettings = {
+  taxRate: 30,
+  emergencyBuffer: 20,
+  reinvestment: 10,
+  weeksPerYear: 48,
+  daysPerWeek: 3,
+  hoursPerDay: 4,
+};
+
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const servicePricingRef = useRef<ServicePricingRef>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  const [expenses, setExpenses] = useState<Expense[]>([
-    { id: crypto.randomUUID(), category: "Housing", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Food", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Transport", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Health", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Internet", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Software", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "AI Tooling", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Equipment", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Subscriptions", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Professional", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Leisure", monthlyCost: 0 },
-    { id: crypto.randomUUID(), category: "Misc", monthlyCost: 0 },
-  ]);
+  const [expenses, setExpenses] = useState<Expense[]>(DEFAULT_EXPENSES);
+  const [incomeSettings, setIncomeSettings] = useState<IncomeSettings>(DEFAULT_INCOME_SETTINGS);
 
-  const [incomeSettings, setIncomeSettings] = useState<IncomeSettings>({
-    taxRate: 30,
-    emergencyBuffer: 20,
-    reinvestment: 10,
-    weeksPerYear: 48,
-    daysPerWeek: 3,
-    hoursPerDay: 4,
-  });
+  // Load data from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedData = localStorage.getItem('creatorPricingData');
+      if (savedData) {
+        const data: CalculatorData = JSON.parse(savedData);
+        if (data.expenses && data.incomeSettings) {
+          setExpenses(data.expenses);
+          setIncomeSettings(data.incomeSettings);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading saved data:', error);
+    }
+  }, []);
+
+  // Auto-save to localStorage whenever data changes
+  useEffect(() => {
+    try {
+      const data: CalculatorData = {
+        expenses,
+        incomeSettings,
+        exportDate: new Date().toISOString(),
+        version: "1.0"
+      };
+      localStorage.setItem('creatorPricingData', JSON.stringify(data));
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  }, [expenses, incomeSettings]);
 
   // Export data as JSON
   const exportData = () => {
@@ -343,6 +378,9 @@ function App() {
           </p>
         </footer>
       </main>
+
+      {/* Cookie Banner */}
+      <CookieBanner />
     </div>
   );
 }
