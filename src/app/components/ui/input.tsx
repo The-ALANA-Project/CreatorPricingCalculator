@@ -3,8 +3,30 @@ import * as React from "react";
 import { cn } from "./utils";
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Prevent mobile scroll issues on focus
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Call the original onFocus if provided
+    props.onFocus?.(e);
+    
+    // Prevent auto-scroll by scrolling to current position
+    if (inputRef.current && window.innerWidth < 768) {
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest'
+          });
+        }
+      }, 100);
+    }
+  };
+
   return (
     <input
+      ref={inputRef}
       type={type}
       data-slot="input"
       className={cn(
@@ -13,6 +35,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
         className,
       )}
+      onFocus={handleFocus}
       {...props}
     />
   );

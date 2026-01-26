@@ -51,6 +51,7 @@ export function IncomeCalculator({
             <Input
               id="tax-rate"
               type="number"
+              inputMode="decimal"
               value={settings.taxRate}
               onChange={(e) => updateSetting("taxRate", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
@@ -67,6 +68,7 @@ export function IncomeCalculator({
             <Input
               id="emergency-buffer"
               type="number"
+              inputMode="decimal"
               value={settings.emergencyBuffer}
               onChange={(e) => updateSetting("emergencyBuffer", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
@@ -81,6 +83,7 @@ export function IncomeCalculator({
             <Input
               id="reinvestment"
               type="number"
+              inputMode="decimal"
               value={settings.reinvestment}
               onChange={(e) => updateSetting("reinvestment", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
@@ -102,6 +105,7 @@ export function IncomeCalculator({
             <Input
               id="weeks-per-year"
               type="number"
+              inputMode="decimal"
               value={settings.weeksPerYear}
               onChange={(e) => updateSetting("weeksPerYear", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
@@ -118,6 +122,7 @@ export function IncomeCalculator({
             <Input
               id="days-per-week"
               type="number"
+              inputMode="decimal"
               value={settings.daysPerWeek}
               onChange={(e) => updateSetting("daysPerWeek", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
@@ -134,6 +139,7 @@ export function IncomeCalculator({
             <Input
               id="hours-per-day"
               type="number"
+              inputMode="decimal"
               value={settings.hoursPerDay}
               onChange={(e) => updateSetting("hoursPerDay", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"

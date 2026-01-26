@@ -177,6 +177,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               <Input
                 id="markup"
                 type="number"
+                inputMode="decimal"
                 value={markup}
                 onChange={(e) => setMarkup(parseFloat(e.target.value) || 25)}
                 className="bg-input-background border border-border w-full sm:w-32"

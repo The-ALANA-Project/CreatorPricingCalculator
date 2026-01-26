@@ -73,6 +73,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
               <Input
                 id={`cost-${expense.id}`}
                 type="number"
+                inputMode="decimal"
                 placeholder="0"
                 value={expense.monthlyCost || ""}
                 onChange={(e) =>
