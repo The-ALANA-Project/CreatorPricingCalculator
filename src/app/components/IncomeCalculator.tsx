@@ -1,5 +1,7 @@
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/app/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 export interface IncomeSettings {
   taxRate: number;
@@ -77,9 +79,21 @@ export function IncomeCalculator({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="reinvestment" className="text-sm">
-              Reinvestment (%)
-            </Label>
+            <div className="flex items-center gap-1.5">
+              <Label htmlFor="reinvestment" className="text-sm">
+                Reinvestment (%)
+              </Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="button" className="inline-flex">
+                    <Info className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>Budget for business growth: tools, software, courses, learning materials, professional development, equipment upgrades, marketing, and investments (stocks, funds, etc). This is about reinvesting in yourself and your business future.</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
             <Input
               id="reinvestment"
               type="number"
@@ -88,9 +102,7 @@ export function IncomeCalculator({
               onChange={(e) => updateSetting("reinvestment", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
             />
-            <p className="text-xs text-muted-foreground">
-              For tools, learning, growth
-            </p>
+            <p className="text-xs text-muted-foreground">Recommended: 10-20%</p>
           </div>
         </div>
       </div>
@@ -164,7 +176,7 @@ export function IncomeCalculator({
           <span className="text-xs sm:text-sm opacity-90">+ Emergency Buffer ({settings.emergencyBuffer}%)</span>
           <span className="text-sm sm:text-base">{bufferAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-center pb-3">
+        <div className="flex justify-between items-center">
           <span className="text-xs sm:text-sm opacity-90">+ Reinvestment ({settings.reinvestment}%)</span>
           <span className="text-sm sm:text-base">{reinvestmentAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>

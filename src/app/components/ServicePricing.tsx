@@ -62,25 +62,19 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         // Wait a moment for any fonts/styles to load
         await new Promise(resolve => setTimeout(resolve, 100));
         
-        console.log('Starting image capture...');
-        console.log('Element dimensions:', downloadRef.current.offsetWidth, downloadRef.current.offsetHeight);
-        
         const canvas = await html2canvas(downloadRef.current, {
           backgroundColor: '#FEE6EA',
           scale: 2,
-          logging: true,
+          logging: false,
           allowTaint: true,
           useCORS: false,
         });
-        
-        console.log('Canvas created:', canvas.width, canvas.height);
         
         if (canvas.width === 0 || canvas.height === 0) {
           throw new Error('Canvas has zero dimensions');
         }
         
         const dataUrl = canvas.toDataURL('image/png');
-        console.log('Data URL length:', dataUrl.length);
         
         if (!dataUrl || dataUrl === 'data:,') {
           throw new Error('Canvas toDataURL returned empty');
@@ -90,8 +84,6 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         link.download = `pricing-calculator-${new Date().toISOString().split('T')[0]}.png`;
         link.href = dataUrl;
         link.click();
-        
-        console.log('Image download triggered successfully');
       } catch (error) {
         console.error('Error generating image:', error);
         alert(`Error creating image: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -111,25 +103,19 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         // Wait a moment for any fonts/styles to load
         await new Promise(resolve => setTimeout(resolve, 100));
         
-        console.log('Starting PDF capture...');
-        console.log('Element dimensions:', downloadRef.current.offsetWidth, downloadRef.current.offsetHeight);
-        
         const canvas = await html2canvas(downloadRef.current, {
           backgroundColor: '#FEE6EA',
           scale: 2,
-          logging: true,
+          logging: false,
           allowTaint: true,
           useCORS: false,
         });
-        
-        console.log('Canvas created:', canvas.width, canvas.height);
         
         if (canvas.width === 0 || canvas.height === 0) {
           throw new Error('Canvas has zero dimensions');
         }
         
         const imgData = canvas.toDataURL('image/png');
-        console.log('Image data length:', imgData.length);
         
         if (!imgData || imgData === 'data:,') {
           throw new Error('Canvas toDataURL returned empty');
@@ -143,8 +129,6 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         
         pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
         pdf.save(`pricing-calculator-${new Date().toISOString().split('T')[0]}.pdf`);
-        
-        console.log('PDF download triggered successfully');
       } catch (error) {
         console.error('Error generating PDF:', error);
         alert(`Error creating PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
