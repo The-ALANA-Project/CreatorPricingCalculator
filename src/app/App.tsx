@@ -6,6 +6,10 @@ import { CookieBanner } from "@/app/components/CookieBanner";
 import { Button } from "@/app/components/ui/button";
 import { ArrowRight, ArrowLeft, FileImage, FileText, Upload, Download } from "lucide-react";
 
+// Import favicon and social crawler images
+import faviconImage from "figma:asset/a718d6c8d6aabc315261ff096eea2fee6ba18f3f.png";
+import socialCrawlerImage from "figma:asset/830068470b9580d3368d96d40f3ff3655ae6338d.png";
+
 interface CalculatorData {
   expenses: Expense[];
   incomeSettings: IncomeSettings;
@@ -44,6 +48,51 @@ function App() {
 
   const [expenses, setExpenses] = useState<Expense[]>(DEFAULT_EXPENSES);
   const [incomeSettings, setIncomeSettings] = useState<IncomeSettings>(DEFAULT_INCOME_SETTINGS);
+
+  // Set favicon and OG images dynamically
+  useEffect(() => {
+    // Update favicon
+    const setFavicon = (url: string) => {
+      let link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = url;
+
+      // Also set apple-touch-icon
+      let appleLink: HTMLLinkElement | null = document.querySelector("link[rel~='apple-touch-icon']");
+      if (!appleLink) {
+        appleLink = document.createElement('link');
+        appleLink.rel = 'apple-touch-icon';
+        document.head.appendChild(appleLink);
+      }
+      appleLink.href = url;
+    };
+
+    // Update OG image
+    const setOGImage = (url: string) => {
+      let ogImage: HTMLMetaElement | null = document.querySelector("meta[property='og:image']");
+      if (!ogImage) {
+        ogImage = document.createElement('meta');
+        ogImage.setAttribute('property', 'og:image');
+        document.head.appendChild(ogImage);
+      }
+      ogImage.content = url;
+
+      let twitterImage: HTMLMetaElement | null = document.querySelector("meta[property='twitter:image']");
+      if (!twitterImage) {
+        twitterImage = document.createElement('meta');
+        twitterImage.setAttribute('property', 'twitter:image');
+        document.head.appendChild(twitterImage);
+      }
+      twitterImage.content = url;
+    };
+
+    setFavicon(faviconImage);
+    setOGImage(socialCrawlerImage);
+  }, []);
 
   // Load data from localStorage on mount
   useEffect(() => {
