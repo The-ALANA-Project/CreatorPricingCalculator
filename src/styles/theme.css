@@ -178,4 +178,33 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+
+  /* Custom range slider styling */
+  input[type="range"].slider-custom::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #131718;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  input[type="range"].slider-custom::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+
+  input[type="range"].slider-custom::-moz-range-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #131718;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  input[type="range"].slider-custom::-moz-range-thumb:hover {
+    transform: scale(1.1);
+  }
 }

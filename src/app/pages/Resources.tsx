@@ -1,10 +1,43 @@
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { ExternalLink, ArrowLeft, BookOpen, FileText, Users } from "lucide-react";
+import { ExternalLink, ArrowLeft, BookOpen, FileText, Users, Shield, Zap } from "lucide-react";
 import { Link } from "react-router";
 
 export default function Resources() {
   const resources = [
+    {
+      category: "Help",
+      icon: Shield,
+      items: [
+        {
+          title: "HateAid",
+          description: "HateAid is a Berlin-based non-profit organization that supports victims of digital violence, such as hate speech, stalking, and defamation. They provide free emotional counseling and legal aid, including financing lawsuits against perpetrators and platforms. HateAid offers resources for documenting hate speech, takes on landmark cases against social media platforms, and advocates for better protection for victims.",
+          url: "https://hateaid.org/en/",
+          author: "",
+          authorUrl: "",
+        },
+      ],
+    },
+    {
+      category: "Platforms",
+      icon: Zap,
+      items: [
+        {
+          title: "Meet With",
+          description: "A scheduling platform that helps creators monetize their time through paid 1-on-1 calls, consultations, and meetings. Offer your expertise directly to your audience, set your own rates, and manage bookings seamlessly.",
+          url: "https://meetwith.xyz/",
+          author: "",
+          authorUrl: "",
+        },
+        {
+          title: "Paragraph",
+          description: "A newsletter and publishing platform for creators to build and monetize their audience. Write, publish, and grow your subscriber base with built-in monetization tools including subscriptions and web3 features.",
+          url: "https://paragraph.com/",
+          author: "",
+          authorUrl: "",
+        },
+      ],
+    },
     {
       category: "Tools",
       icon: FileText,
@@ -34,18 +67,18 @@ export default function Resources() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="backdrop-blur-2xl bg-primary/95 border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] py-8 sm:py-12">
+      <header className="backdrop-blur-2xl bg-primary/95 border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] py-8 sm:py-12 bg-[#131718]">
         <div className="container mx-auto px-4 sm:px-6">
           <Link to="/">
             <Button 
               variant="ghost" 
-              className="mb-6 text-[#FEE6EA] hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 -ml-3"
+              className="mb-6 bg-[#FEE6EA] text-[#131718] hover:bg-[#131718] hover:text-[#FEE6EA] hover:shadow-[0_0_0_1px_#FEE6EA] border border-[#FEE6EA] transition-all duration-300"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Calculator
             </Button>
           </Link>
-          <h1 className="mb-3 sm:mb-4 text-primary-foreground">Resources for Creators</h1>
+          <h1 className="mb-3 sm:mb-4 text-primary-foreground text-[30px]">Resources for Creators</h1>
           <p className="text-sm sm:text-base text-[#FEE6EA]/90 max-w-2xl">
             Curated tools, guides, and resources to help you advance your creative career beyond just pricing.
           </p>
@@ -61,7 +94,7 @@ export default function Resources() {
               <div key={section.category}>
                 <div className="flex items-center gap-3 mb-6">
                   <IconComponent className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl sm:text-3xl font-semibold">{section.category}</h2>
+                  <h2 className="font-semibold text-[25px]">{section.category}</h2>
                 </div>
 
                 <div className="grid gap-6">
@@ -98,7 +131,7 @@ export default function Resources() {
                               rel="noopener noreferrer"
                             >
                               <Button className="w-full sm:w-auto">
-                                Visit Tool
+                                {section.category === "Help" ? "Learn More" : section.category === "Platforms" ? "Visit Platform" : "Visit Tool"}
                                 <ExternalLink className="h-4 w-4 ml-2" />
                               </Button>
                             </a>
@@ -113,29 +146,26 @@ export default function Resources() {
           })}
 
           {/* Coming Soon Section */}
-          <Card className="backdrop-blur-2xl bg-primary/5 border border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
-            <CardContent className="p-6 sm:p-8 text-center">
-              <h3 className="text-lg font-semibold mb-2">More Resources Coming Soon</h3>
-              <p className="text-sm text-muted-foreground">
-                We're continuously adding helpful resources for freelancers and creators. Check back soon for books, templates, communities, and more!
-              </p>
-            </CardContent>
-          </Card>
+          
         </div>
       </main>
+
+      {/* Divider */}
+      <div className="border-t border-[#131718]" />
 
       {/* Footer */}
       <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-4 pb-6 sm:pb-8">
         <p>
-          Share this calculator, use it, and adjust as your career grows.{' '}
+          Share this calculator, use it, and consider{' '}
           <a 
-            href="https://github.com/The-ALANA-Project/CreatorPricingCalculator" 
+            href="https://ko-fi.com/stellaachenbach" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-primary hover:underline"
+            className="text-primary hover:underline font-bold"
           >
-            Open Source on GitHub
+            donating
           </a>
+          {' '}if you found it helpful.
         </p>
         <p className="mt-2">
           Made with 💜 by{' '}

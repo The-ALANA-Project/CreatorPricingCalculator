@@ -38,8 +38,8 @@ export function IncomeCalculator({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="mb-2">Income Calculator</h2>
-        <p className="text-xs sm:text-sm text-muted-foreground">
+        <h2 className="mb-2">Your Foundation</h2>
+        <p className="text-muted-foreground text-[16px]">
           Adjust these settings to match your work schedule and financial goals.
         </p>
       </div>

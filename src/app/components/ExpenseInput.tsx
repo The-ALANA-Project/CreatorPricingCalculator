@@ -43,7 +43,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
     <div className="space-y-6">
       <div>
         <h2 className="mb-2">Monthly Expenses</h2>
-        <p className="text-xs sm:text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-[16px]">
           Add all your monthly costs: housing, food, health, software, tools, equipment, etc. <strong>When filling these bare number fields think in your own native currency.</strong> (USD, EUR, GBP, etc.).
         </p>
       </div>
