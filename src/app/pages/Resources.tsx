@@ -49,6 +49,13 @@ export default function Resources() {
           author: "Shivani Shah",
           authorUrl: "https://www.linkedin.com/in/wordsbyshivani/",
         },
+        {
+          title: "Creator Branding Studio",
+          description: "An interactive personal branding journey studio that transforms your goals and aesthetics into a tailored personal brand concept in less than 30 minutes. Build your brand visually on a freeform canvas through a 10-step guided journey, then export a complete brief for a brand designer you hire or yourself to continue the work.",
+          url: "https://creator-branding.com/",
+          author: "Stella Achenbach",
+          authorUrl: "https://www.linkedin.com/in/stella-achenbach/",
+        },
       ],
     },
     // More categories can be added here in the future
