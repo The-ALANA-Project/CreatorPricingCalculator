@@ -238,7 +238,7 @@ export default function Calculator() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header 
-        className={`backdrop-blur-2xl bg-primary/95 border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] transition-all duration-500 ease-out ${isScrolled ? 'fixed top-0 left-0 right-0 z-50 py-3 sm:py-4' : 'py-8 sm:py-12'} bg-[#131718]`}
+        className={`backdrop-blur-2xl bg-primary border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] transition-all duration-500 ease-out ${isScrolled ? 'fixed top-0 left-0 right-0 z-50 py-3 sm:py-4' : 'py-8 sm:py-12'} bg-[#131718]`}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className={`

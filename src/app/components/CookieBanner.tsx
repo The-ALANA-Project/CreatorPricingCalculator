@@ -64,7 +64,7 @@ export function CookieBanner() {
         isAnimatingOut ? "translate-y-full" : "translate-y-0"
       }`}
     >
-      <div className="backdrop-blur-xl bg-primary/95 border-t border-primary/20 shadow-[0_-4px_16px_0_rgba(0,0,0,0.1)] bg-[#131718]">
+      <div className="backdrop-blur-xl bg-primary border-t border-primary/20 shadow-[0_-4px_16px_0_rgba(0,0,0,0.1)] bg-[#131718]">
         <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             {/* Text Content */}

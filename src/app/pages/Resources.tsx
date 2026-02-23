@@ -139,7 +139,7 @@ export default function Resources() {
                             >
                               <Button className="w-full sm:w-auto">
                                 {section.category === "Help" ? "Learn More" : section.category === "Platforms" ? "Visit Platform" : "Visit Tool"}
-                                <ExternalLink className="h-4 w-4 ml-2" />
+                                
                               </Button>
                             </a>
                           </div>
@@ -161,7 +161,7 @@ export default function Resources() {
       <div className="border-t border-[#131718]" />
 
       {/* Footer */}
-      <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-4 pb-6 sm:pb-8">
+      <footer className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-muted-foreground px-[16px] pt-[0px] pb-[16px]">
         <p>
           Share this calculator, use it, and consider{' '}
           <a 
