@@ -299,7 +299,7 @@ export default function Calculator() {
       </header>
 
       {/* Add padding top when header is sticky to prevent content jump */}
-      <div className={`transition-all duration-500 ease-out ${isScrolled ? 'pt-20 sm:pt-24' : ''}`}>
+      <div className={`transition-all duration-500 ease-out ${isScrolled ? 'pt-24 sm:pt-28' : ''}`}>
         {/* Main Content */}
         <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
           {/* Step 1 */}
