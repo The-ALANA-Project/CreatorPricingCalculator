@@ -1,7 +1,8 @@
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { ExternalLink, ArrowLeft, BookOpen, FileText, Users, Shield, Zap } from "lucide-react";
+import { ExternalLink, Shield, Zap, FileText } from "lucide-react";
 import { Link } from "react-router";
+import { FloatingToolbar } from "@/app/components/FloatingToolbar";
 
 export default function Resources() {
   const resources = [
@@ -58,42 +59,32 @@ export default function Resources() {
         },
       ],
     },
-    // More categories can be added here in the future
-    // {
-    //   category: "Books",
-    //   icon: BookOpen,
-    //   items: []
-    // },
-    // {
-    //   category: "Communities",
-    //   icon: Users,
-    //   items: []
-    // },
   ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Floating Toolbar - no steps on Resources page */}
+      <FloatingToolbar showSteps={false} />
+
       {/* Header */}
-      <header className="backdrop-blur-2xl bg-primary/95 border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] py-8 sm:py-12 bg-[#131718]">
-        <div className="container mx-auto px-4 sm:px-6">
-          <Link to="/">
-            <Button 
-              variant="ghost" 
-              className="mb-6 bg-[#FEE6EA] text-[#131718] hover:bg-[#131718] hover:text-[#FEE6EA] hover:shadow-[0_0_0_1px_#FEE6EA] border border-[#FEE6EA] transition-all duration-300"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Calculator
-            </Button>
-          </Link>
-          <h1 className="mb-3 sm:mb-4 text-primary-foreground text-[30px]">Resources for Creators</h1>
-          <p className="text-sm sm:text-base text-[#FEE6EA]/90 max-w-2xl">
-            Curated tools, guides, and resources to help you advance your creative career beyond just pricing.
-          </p>
+      <header className="sticky top-0 z-50 bg-primary border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] py-6 sm:py-6">
+        <div className="px-4 sm:px-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-primary-foreground">Resources for Creators</h1>
+              <p className="text-sm sm:text-sm text-[#fee6ea] mt-1">
+                Curated tools, guides, and resources to help you advance your creative career beyond just pricing.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Action area — reserved for future use */}
+            </div>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 lg:pl-24 pb-24 lg:pb-12">
         <div className="max-w-4xl mx-auto space-y-8">
           {resources.map((section) => {
             const IconComponent = section.icon;
@@ -139,7 +130,6 @@ export default function Resources() {
                             >
                               <Button className="w-full sm:w-auto">
                                 {section.category === "Help" ? "Learn More" : section.category === "Platforms" ? "Visit Platform" : "Visit Tool"}
-                                
                               </Button>
                             </a>
                           </div>
@@ -151,9 +141,6 @@ export default function Resources() {
               </div>
             );
           })}
-
-          {/* Coming Soon Section */}
-          
         </div>
       </main>
 
@@ -161,7 +148,7 @@ export default function Resources() {
       <div className="border-t border-[#131718]" />
 
       {/* Footer */}
-      <footer className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-muted-foreground px-[16px] pt-[0px] pb-[16px]">
+      <footer className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-muted-foreground px-[16px] pt-[0px] pb-24 lg:pb-[16px]">
         <p>
           Share this calculator, use it, and consider{' '}
           <a 

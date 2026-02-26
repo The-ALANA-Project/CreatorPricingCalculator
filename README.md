@@ -1,5 +1,7 @@
 # Creator Pricing Calculator
 
+![Creator Pricing Calculator – Social Preview](https://github.com/user-attachments/assets/59ec8fc5-0c9c-4b4e-9b65-28542399c7f9)
+
 A comprehensive free pricing calculator for creators and creative freelancers that helps you calculate sustainable rates based on your expenses, work capacity, and business goals. Whether you sell physical products or digital services, this tool guides you through a 4-step journey to find your floor price and recommended rates.
 
 ## Features

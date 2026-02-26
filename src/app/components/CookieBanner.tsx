@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/app/components/ui/button";
 import { X } from "lucide-react";
 
 export function CookieBanner() {
@@ -7,31 +6,26 @@ export function CookieBanner() {
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   useEffect(() => {
-    // Check if user has already made a choice
     const cookieConsent = localStorage.getItem("cookieConsent");
     if (!cookieConsent) {
-      // Show banner after a short delay for better UX
-      setTimeout(() => setIsVisible(true), 1000);
+      setTimeout(() => setIsVisible(true), 2500);
     } else if (cookieConsent === "accepted") {
-      // Enable Google Analytics if previously accepted
       enableGoogleAnalytics();
     }
   }, []);
 
   const enableGoogleAnalytics = () => {
-    // Enable Google Analytics
     if (window.gtag) {
-      window.gtag('consent', 'update', {
-        'analytics_storage': 'granted'
+      window.gtag("consent", "update", {
+        analytics_storage: "granted",
       });
     }
   };
 
   const disableGoogleAnalytics = () => {
-    // Disable Google Analytics
     if (window.gtag) {
-      window.gtag('consent', 'update', {
-        'analytics_storage': 'denied'
+      window.gtag("consent", "update", {
+        analytics_storage: "denied",
       });
     }
   };
@@ -48,57 +42,96 @@ export function CookieBanner() {
     closeWithAnimation();
   };
 
+  const handleClose = () => {
+    closeWithAnimation();
+  };
+
   const closeWithAnimation = () => {
     setIsAnimatingOut(true);
     setTimeout(() => {
       setIsVisible(false);
       setIsAnimatingOut(false);
-    }, 300);
+    }, 400);
   };
 
   if (!isVisible) return null;
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-500 ease-out ${
-        isAnimatingOut ? "translate-y-full" : "translate-y-0"
+      className={`fixed bottom-0 left-0 right-0 z-50 ${
+        isAnimatingOut
+          ? "translate-y-full transition-transform duration-[400ms] ease-in"
+          : "translate-y-0 transition-transform duration-500 ease-out"
       }`}
+      style={{
+        /* start off-screen, CSS transition brings it in */
+      }}
     >
-      <div className="backdrop-blur-xl bg-primary border-t border-primary/20 shadow-[0_-4px_16px_0_rgba(0,0,0,0.1)] bg-[#131718]">
-        <div className="container mx-auto px-4 sm:px-6 py-3">
-          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-            {/* Text Content */}
-            <div className="flex-1 pr-0 sm:pr-4">
-              <p className="text-xs text-[#FEE6EA]/90">
-                This site uses Google Analytics and saves your calculator data locally. No personal information is collected.{' '}
-                <a 
-                  href="https://policies.google.com/technologies/cookies" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="underline hover:text-[#FEE6EA] transition-colors"
-                >
-                  Learn more
-                </a>
-              </p>
+      <div
+        className="bg-[#131718] border-t border-[#FEE6EA] backdrop-blur-xl"
+        style={{
+          boxShadow:
+            "0 -8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(254, 230, 234, 0.08)",
+        }}
+      >
+        <div
+          className="max-w-6xl mx-auto py-4 px-6"
+          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+        >
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-6">
+            {/* Text block + mobile X wrapper */}
+            <div className="flex items-start justify-between gap-3 md:contents">
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-[#FEE6EA] mb-1">
+                  We use cookies
+                </p>
+                <p className="text-xs leading-relaxed text-[#FEE6EA]/70">
+                  This site uses Google Analytics and saves your calculator data
+                  locally. No personal information is collected.{" "}
+                  <a
+                    href="https://policies.google.com/technologies/cookies"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-[#FEE6EA] transition-colors"
+                  >
+                    Learn more
+                  </a>
+                </p>
+              </div>
+
+              {/* Mobile X button */}
+              <button
+                onClick={handleClose}
+                className="p-1.5 rounded-full text-[#FEE6EA] hover:bg-white/10 transition-colors shrink-0 md:hidden"
+                aria-label="Close cookie banner"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-2 w-full sm:w-auto flex-shrink-0">
-              <Button
+            {/* Button group */}
+            <div className="flex items-center gap-3 shrink-0">
+              <button
                 onClick={handleDecline}
-                variant="ghost"
-                size="sm"
-                className="flex-1 sm:flex-initial text-[#FEE6EA] hover:bg-[#FEE6EA]/10 text-xs h-8"
+                className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded-lg border border-[#FEE6EA] bg-[#131718] text-[#FEE6EA] hover:bg-[#FEE6EA] hover:text-[#131718] transition-all whitespace-nowrap"
               >
                 Decline
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={handleAccept}
-                size="sm"
-                className="flex-1 sm:flex-initial bg-[#FEE6EA] text-[#131718] hover:bg-[#FEE6EA]/90 text-xs h-8"
+                className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded-lg border border-[#FEE6EA] bg-[#FEE6EA] text-[#131718] hover:bg-[#131718] hover:text-[#FEE6EA] transition-all whitespace-nowrap"
               >
                 Accept
-              </Button>
+              </button>
+
+              {/* Desktop X button */}
+              <button
+                onClick={handleClose}
+                className="hidden md:block p-2 rounded-full text-[#FEE6EA] hover:bg-white/10 transition-colors ml-2"
+                aria-label="Close cookie banner"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
