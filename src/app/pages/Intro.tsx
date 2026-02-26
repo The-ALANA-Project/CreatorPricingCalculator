@@ -185,7 +185,7 @@ export default function Intro() {
                 "0 0 30px rgba(254,230,234,0.3), 0 0 60px rgba(254,230,234,0.15)";
             }}
           >
-            Begin Your Journey
+            Start Pricing Now
           </button>
 
           <p
