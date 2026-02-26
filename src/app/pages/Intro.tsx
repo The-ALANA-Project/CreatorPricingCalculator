@@ -192,8 +192,8 @@ export default function Intro() {
             className="text-center mt-6 text-sm px-6"
             style={{ color: "rgba(254,230,234,0.6)", maxWidth: "400px" }}
           >
-            Optimized for desktop experience. Mobile works, but may feel less
-            convenient.
+            Optimized for desktop experience. 
+            Mobile works, but may feel less convenient.
           </p>
         </div>
       </div>
