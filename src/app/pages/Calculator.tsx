@@ -7,6 +7,7 @@ import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Link } from "react-router";
 import { FloatingToolbar } from "@/app/components/FloatingToolbar";
+import gsap from "gsap";
 
 interface CalculatorData {
   expenses: Expense[];
@@ -67,6 +68,21 @@ export default function Calculator() {
   const [markup, setMarkup] = useState<number>(0);
   const [customServices, setCustomServices] = useState<CustomService[]>([]);
   const servicePricingRef = useRef<ServicePricingRef>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  // Entrance animation when coming from intro
+  useEffect(() => {
+    if (sessionStorage.getItem("intro-transitioning") === "true") {
+      sessionStorage.removeItem("intro-transitioning");
+      if (pageRef.current) {
+        gsap.fromTo(
+          pageRef.current,
+          { opacity: 0, filter: "blur(30px)", scale: 1.04 },
+          { opacity: 1, filter: "blur(0px)", scale: 1, duration: 1, ease: "power2.out" }
+        );
+      }
+    }
+  }, []);
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -192,7 +208,7 @@ export default function Calculator() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div ref={pageRef} className="min-h-screen bg-background text-foreground">
       {/* Floating Toolbar */}
       <FloatingToolbar
         currentStep={currentStep}

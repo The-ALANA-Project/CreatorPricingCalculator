@@ -1,6 +1,6 @@
 # Creator Pricing Calculator
 
-![Creator Pricing Calculator – Social Preview](https://github.com/user-attachments/assets/59ec8fc5-0c9c-4b4e-9b65-28542399c7f9)
+![Creator Pricing Calculator – Social Preview](https://pink-quick-lizard-297.mypinata.cloud/ipfs/bafybeiasqu72yapwwk7qbjfia43rik2obqkawgugyzdteaaktve4nc6gpa/CPC-Social%20Crawler%20Image.png)
 
 A comprehensive free pricing calculator for creators and creative freelancers that helps you calculate sustainable rates based on your expenses, work capacity, and business goals. Whether you sell physical products or digital services, this tool guides you through a 4-step journey to find your floor price and recommended rates.
 
@@ -85,8 +85,8 @@ This app is configured for Netlify deployment.
 1. **Deploy from Figma Make first** (this creates placeholder files)
 2. **Go to your GitHub repo** → Navigate to the `/public` folder
 3. **Replace these two files:**
-   - `favicon.png` - Download from: https://github.com/user-attachments/assets/efeaa686-8807-48c4-a683-24c80ccf15fc
-   - `og-image.png` - Download from: https://github.com/user-attachments/assets/59ec8fc5-0c9c-4b4e-9b65-28542399c7f9
+   - `favicon.png` - Download from: https://pink-quick-lizard-297.mypinata.cloud/ipfs/bafybeiasqu72yapwwk7qbjfia43rik2obqkawgugyzdteaaktve4nc6gpa/CPC-Favicon.png
+   - `og-image.png` - Download from: https://pink-quick-lizard-297.mypinata.cloud/ipfs/bafybeiasqu72yapwwk7qbjfia43rik2obqkawgugyzdteaaktve4nc6gpa/CPC-Social%20Crawler%20Image.png
 4. **Upload them to GitHub** (delete the placeholder text files, upload the actual PNG images)
 5. **Netlify will auto-redeploy** and the images will work!
 
