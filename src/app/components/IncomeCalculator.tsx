@@ -2,6 +2,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/app/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export interface IncomeSettings {
   taxRate: number;
@@ -23,6 +24,7 @@ export function IncomeCalculator({
   settings,
   onSettingsChange,
 }: IncomeCalculatorProps) {
+  const { t } = useLanguage();
   const updateSetting = (field: keyof IncomeSettings, value: number) => {
     onSettingsChange({ ...settings, [field]: value });
   };
@@ -38,9 +40,9 @@ export function IncomeCalculator({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="mb-2">Your Foundation</h2>
+        <h2 className="mb-2">{t.income.title}</h2>
         <p className="text-muted-foreground text-[16px]">
-          Adjust these settings to match your work schedule and financial goals.
+          {t.income.subtitle}
         </p>
       </div>
 
@@ -48,7 +50,7 @@ export function IncomeCalculator({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="tax-rate" className="text-sm">
-              Tax Rate (%)
+              {t.income.taxRate}
             </Label>
             <Input
               id="tax-rate"
@@ -59,13 +61,13 @@ export function IncomeCalculator({
               className="bg-input-background border border-border"
             />
             <p className="text-xs text-muted-foreground">
-              US: 25-30% for self-employment
+              {t.income.taxHint}
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="emergency-buffer" className="text-sm">
-              Emergency Buffer (%)
+              {t.income.emergencyBuffer}
             </Label>
             <Input
               id="emergency-buffer"
@@ -75,13 +77,13 @@ export function IncomeCalculator({
               onChange={(e) => updateSetting("emergencyBuffer", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
             />
-            <p className="text-xs text-muted-foreground">Recommended: 20-30%</p>
+            <p className="text-xs text-muted-foreground">{t.income.emergencyHint}</p>
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-1.5">
               <Label htmlFor="reinvestment" className="text-sm">
-                Reinvestment (%)
+                {t.income.reinvestment}
               </Label>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -90,7 +92,7 @@ export function IncomeCalculator({
                   </button>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
-                  <p>Budget for business growth: tools, software, courses, learning materials, professional development, equipment upgrades, marketing, and investments (stocks, funds, etc). This is about reinvesting in yourself and your business future.</p>
+                  <p>{t.income.reinvestmentTooltip}</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -102,17 +104,17 @@ export function IncomeCalculator({
               onChange={(e) => updateSetting("reinvestment", parseFloat(e.target.value) || 0)}
               className="bg-input-background border border-border"
             />
-            <p className="text-xs text-muted-foreground">Recommended: 10-20%</p>
+            <p className="text-xs text-muted-foreground">{t.income.reinvestmentHint}</p>
           </div>
         </div>
       </div>
 
       <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] p-4 sm:p-6 space-y-4">
-        <h3 className="mb-4">Billable Time</h3>
+        <h3 className="mb-4">{t.income.billableTime}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="weeks-per-year" className="text-sm">
-              Weeks Per Year
+              {t.income.weeksPerYear}
             </Label>
             <Input
               id="weeks-per-year"
@@ -123,13 +125,13 @@ export function IncomeCalculator({
               className="bg-input-background border border-border"
             />
             <p className="text-xs text-muted-foreground">
-              48 assumes 4 weeks off
+              {t.income.weeksHint}
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="days-per-week" className="text-sm">
-              Days Per Week
+              {t.income.daysPerWeek}
             </Label>
             <Input
               id="days-per-week"
@@ -140,13 +142,13 @@ export function IncomeCalculator({
               className="bg-input-background border border-border"
             />
             <p className="text-xs text-muted-foreground">
-              3 is realistic for creators
+              {t.income.daysHint}
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="hours-per-day" className="text-sm">
-              Hours Per Day
+              {t.income.hoursPerDay}
             </Label>
             <Input
               id="hours-per-day"
@@ -157,7 +159,7 @@ export function IncomeCalculator({
               className="bg-input-background border border-border"
             />
             <p className="text-xs text-muted-foreground">
-              4 hours of deep work
+              {t.income.hoursHint}
             </p>
           </div>
         </div>
@@ -165,28 +167,28 @@ export function IncomeCalculator({
 
       <div className="backdrop-blur-2xl bg-primary text-primary-foreground rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] p-4 sm:p-6 space-y-3">
         <div className="flex justify-between items-center pb-3 border-b border-primary-foreground/20">
-          <span className="text-xs sm:text-sm opacity-90">Annual Expenses</span>
+          <span className="text-xs sm:text-sm opacity-90">{t.income.annualExpenses}</span>
           <span className="text-sm sm:text-base">{totalAnnualExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm opacity-90">+ Taxes ({settings.taxRate}%)</span>
+          <span className="text-xs sm:text-sm opacity-90">{t.income.taxes.replace('{rate}', String(settings.taxRate))}</span>
           <span className="text-sm sm:text-base">{taxAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm opacity-90">+ Emergency Buffer ({settings.emergencyBuffer}%)</span>
+          <span className="text-xs sm:text-sm opacity-90">{t.income.emergencyBufferLabel.replace('{rate}', String(settings.emergencyBuffer))}</span>
           <span className="text-sm sm:text-base">{bufferAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm opacity-90">+ Reinvestment ({settings.reinvestment}%)</span>
+          <span className="text-xs sm:text-sm opacity-90">{t.income.reinvestmentLabel.replace('{rate}', String(settings.reinvestment))}</span>
           <span className="text-sm sm:text-base">{reinvestmentAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center pt-3 border-t border-primary-foreground/20">
-          <span className="text-sm sm:text-base">Target Annual Income</span>
+          <span className="text-sm sm:text-base">{t.income.targetIncome}</span>
           <span className="text-lg sm:text-xl">{targetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center text-xs sm:text-sm opacity-90">
-          <span>Billable Hours Per Year</span>
-          <span>{billableHoursPerYear} hours</span>
+          <span>{t.income.billableHours}</span>
+          <span>{billableHoursPerYear} {t.income.hours}</span>
         </div>
       </div>
     </div>

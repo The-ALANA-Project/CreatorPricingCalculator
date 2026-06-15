@@ -7,6 +7,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { CreatorTypeData } from "./CreatorType";
 import { createPortal } from "react-dom";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 interface ServicePricingProps {
   targetIncome: number;
@@ -40,6 +41,8 @@ export interface ServicePricingRef {
 
 export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>(
   ({ targetIncome, billableHours, creatorData, markup, onMarkupChange, customServices, onCustomServicesChange, selectedRateTier }, ref) => {
+    const { t } = useLanguage();
+    const tp = t.pricing;
     // Calculate the raw base hourly rate (true break-even without any markup)
     const rawBaseHourlyRate = billableHours > 0 ? targetIncome / billableHours : 0;
     
@@ -236,12 +239,12 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
     };
     
     const services: ServiceOption[] = [
-      { id: "hourly", name: "Hourly Rate", hoursOrScope: 1, description: "Per hour of work" },
-      { id: "day", name: "Day Rate", hoursOrScope: 8, description: "Full day (8 hours)" },
-      { id: "small", name: "Small Project", hoursOrScope: 15, description: "15 hours" },
-      { id: "medium", name: "Medium Project", hoursOrScope: 30, description: "30 hours • 5% volume discount" },
-      { id: "large", name: "Large Project", hoursOrScope: 60, description: "60 hours • 10% volume discount" },
-      { id: "retainer", name: "Monthly Retainer", hoursOrScope: 40, description: "40 hours/month • 15% recurring discount" },
+      { id: "hourly", name: tp.services.hourly.name, hoursOrScope: 1, description: tp.services.hourly.description },
+      { id: "day", name: tp.services.day.name, hoursOrScope: 8, description: tp.services.day.description },
+      { id: "small", name: tp.services.small.name, hoursOrScope: 15, description: tp.services.small.description },
+      { id: "medium", name: tp.services.medium.name, hoursOrScope: 30, description: tp.services.medium.description },
+      { id: "large", name: tp.services.large.name, hoursOrScope: 60, description: tp.services.large.description },
+      { id: "retainer", name: tp.services.retainer.name, hoursOrScope: 40, description: tp.services.retainer.description },
     ];
 
     // For content creators, only show hourly rate - they use custom services for everything else
@@ -374,9 +377,9 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="mb-2">My Creator Pricing</h2>
+          <h2 className="mb-2">{tp.title}</h2>
           <p className="text-muted-foreground text-[16px]">
-            Your minimum rates to cover all costs, and recommended rates with profit margin and safety buffer. <strong>All amounts in your currency.</strong>
+            {tp.subtitle} <strong>{tp.currencyNote}</strong>
           </p>
         </div>
 
@@ -385,10 +388,10 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
           <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-4 sm:p-6 space-y-4">
             <div className="space-y-2">
               <div className="flex items-baseline gap-2">
-                <Label className="text-base font-semibold">Additional Profit Margin</Label>
+                <Label className="text-base font-semibold">{tp.additionalMargin}</Label>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                Layer on extra profit beyond your selected rate tier. Set to 0% if your chosen rate already meets your goals.
+                {tp.marginDesc}
               </p>
             </div>
 
@@ -423,13 +426,13 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
 
               {/* Recommendations */}
               <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                <span><strong className="text-foreground">15-25%</strong> Competitive</span>
+                <span><strong className="text-foreground">15-25%</strong> {tp.competitive}</span>
                 <span>•</span>
-                <span><strong className="text-foreground">25-35%</strong> Standard</span>
+                <span><strong className="text-foreground">25-35%</strong> {tp.standard}</span>
                 <span>•</span>
-                <span><strong className="text-foreground">35-50%</strong> Premium</span>
+                <span><strong className="text-foreground">35-50%</strong> {tp.premium}</span>
                 <span>•</span>
-                <span><strong className="text-foreground">50%+</strong> Specialized</span>
+                <span><strong className="text-foreground">50%+</strong> {tp.specialized}</span>
               </div>
             </div>
           </div>
@@ -440,9 +443,9 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-[18px]">Custom Services</h3>
+                <h3 className="font-semibold text-[18px]">{tp.customServices}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Workshops, consulting, audits, or any hourly project • Calculated at <span className="font-semibold text-foreground">{selectedHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/hr</span>
+                  {tp.customServicesDesc.replace('{rate}', selectedHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }))}
                 </p>
               </div>
               <Button
@@ -451,7 +454,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 className="flex-shrink-0"
               >
                 <Plus className="h-4 w-4 mr-1" />
-                Add
+                {tp.add}
               </Button>
             </div>
 
@@ -459,7 +462,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
             {customServices.length === 0 ? (
               <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-8 text-center">
                 <p className="text-muted-foreground text-sm">
-                  No custom services yet. Click "Add" to create your first one.
+                  {tp.noCustomServices}
                 </p>
               </div>
             ) : (
@@ -476,10 +479,10 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                       {/* Input Fields */}
                       <div className="space-y-3">
                         <div>
-                          <Label className="text-xs mb-1.5 block">Project Name</Label>
+                          <Label className="text-xs mb-1.5 block">{tp.projectName}</Label>
                           <Input
                             type="text"
-                            placeholder="e.g., Vibe Coding Workshop"
+                            placeholder={tp.projectNamePlaceholder}
                             value={service.name}
                             onChange={(e) => updateCustomService(service.id, 'name', e.target.value)}
                             className="text-sm border border-border"
@@ -487,7 +490,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                         </div>
                         <div className="flex gap-3 items-end">
                           <div className="flex-1">
-                            <Label className="text-xs mb-1.5 block">Delivery Hours</Label>
+                            <Label className="text-xs mb-1.5 block">{tp.deliveryHours}</Label>
                             <Input
                               type="number"
                               placeholder="8"
@@ -499,7 +502,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                             />
                           </div>
                           <div className="flex-1">
-                            <Label className="text-xs mb-1.5 block">Prep Hours</Label>
+                            <Label className="text-xs mb-1.5 block">{tp.prepHours}</Label>
                             <Input
                               type="number"
                               placeholder="5"
@@ -525,11 +528,11 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                       {totalHours > 0 && (
                         <div className="rounded-lg p-3 text-xs text-muted-foreground bg-[#fee6ea]">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span>{service.deliveryHours}h delivery</span>
+                            <span>{service.deliveryHours}h {tp.delivery}</span>
                             <span>+</span>
-                            <span>{service.prepHours}h prep</span>
+                            <span>{service.prepHours}h {tp.prep}</span>
                             <span>=</span>
-                            <span className="font-semibold text-foreground">{totalHours}h total</span>
+                            <span className="font-semibold text-foreground">{totalHours}h {tp.total}</span>
                             <span>×</span>
                             <span className="font-semibold text-foreground">{selectedHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/hr</span>
                           </div>
@@ -539,14 +542,14 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                       {/* Pricing Display */}
                       <div className="flex gap-4 sm:gap-8">
                         <div className="text-left flex-1 backdrop-blur-xl bg-primary/5 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs text-muted-foreground mb-1">Base Rate</div>
+                          <div className="text-xs text-muted-foreground mb-1">{tp.baseRate}</div>
                           <div className="text-base sm:text-lg">
                             {prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </div>
-                          <div className="text-xs text-muted-foreground">break-even</div>
+                          <div className="text-xs text-muted-foreground">{tp.breakEven}</div>
                         </div>
                         <div className="text-left flex-1 backdrop-blur-xl bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg p-3 sm:p-4">
-                          <div className="text-xs text-[#131718]/70 mb-1">Recommended</div>
+                          <div className="text-xs text-[#131718]/70 mb-1">{tp.recommended}</div>
                           <div className="text-base sm:text-lg text-[#131718] font-semibold">
                             {prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </div>
@@ -564,9 +567,9 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
         {/* Standard Services Header - Only show for digital creators */}
         {!isPhysicalCreator && (
           <div>
-            <h3 className="text-lg font-semibold mb-1">Standard Services</h3>
+            <h3 className="text-lg font-semibold mb-1">{tp.standardServices}</h3>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Pre-defined project packages and rates
+              {tp.standardServicesDesc}
             </p>
           </div>
         )}
@@ -578,18 +581,18 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
             <div className="space-y-6">
               {/* Cost Breakdown */}
               <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-4 sm:p-5">
-                <h3 className="mb-4 text-[18px]">Cost Breakdown Per Unit</h3>
+                <h3 className="mb-4 text-[18px]">{tp.costBreakdown}</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">Labor ({hoursPerUnit}h × base hourly rate)</span>
+                    <span className="text-muted-foreground">{tp.labor.replace('{hours}', String(hoursPerUnit))}</span>
                     <span className="font-medium">{laborCostPerUnit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">Materials</span>
+                    <span className="text-muted-foreground">{tp.materials}</span>
                     <span className="font-medium">{materialCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm pt-3 border-t border-border">
-                    <span className="font-semibold">Total Cost to Make</span>
+                    <span className="font-semibold">{tp.totalCost}</span>
                     <span className="font-semibold">{totalCostPerUnit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
@@ -598,23 +601,23 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               {/* Wholesale Pricing */}
               <div className={`backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-4 sm:p-5 ${salesChannel === 'wholesale' ? 'ring-2 ring-primary' : ''}`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="mb-0 text-[18px]">Wholesale Price</h3>
+                  <h3 className="mb-0 text-[18px]">{tp.wholesalePrice}</h3>
                   {salesChannel === 'wholesale' && (
-                    <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">Selected</span>
+                    <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">{tp.selected}</span>
                   )}
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-baseline">
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">Without Shipping</div>
+                      <div className="text-xs text-muted-foreground mb-1">{tp.withoutShipping}</div>
                       <div className="text-2xl font-semibold">
                         {wholesalePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </div>
-                      <div className="text-xs text-muted-foreground">2x your cost</div>
+                      <div className="text-xs text-muted-foreground">{tp.wholesaleDesc}</div>
                     </div>
                     {shippingCost > 0 && (
                       <div className="text-right">
-                        <div className="text-xs text-muted-foreground mb-1">With Shipping</div>
+                        <div className="text-xs text-muted-foreground mb-1">{tp.withShipping}</div>
                         <div className="text-xl font-semibold text-primary">
                           {wholesalePriceWithShipping.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
@@ -623,7 +626,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground pt-2 border-t border-border">
-                    Selling to stores/retailers who will mark up again before selling to customers
+                    {tp.wholesaleNote}
                   </p>
                 </div>
               </div>
@@ -631,23 +634,23 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               {/* Retail/Direct Pricing */}
               <div className={`backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] p-4 sm:p-5 ${salesChannel === 'retail' ? 'ring-1 ring-[#131718]' : ''}`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="mb-0 text-[18px]">Direct/Retail Price</h3>
+                  <h3 className="mb-0 text-[18px]">{tp.directRetailPrice}</h3>
                   {salesChannel === 'retail' && (
-                    <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">Selected</span>
+                    <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">{tp.selected}</span>
                   )}
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-baseline">
                     <div>
-                      <div className="text-xs text-muted-foreground mb-1">Without Shipping</div>
+                      <div className="text-xs text-muted-foreground mb-1">{tp.withoutShipping}</div>
                       <div className="text-2xl font-semibold">
                         {retailPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </div>
-                      <div className="text-xs text-muted-foreground">3x your cost</div>
+                      <div className="text-xs text-muted-foreground">{tp.directRetailDesc}</div>
                     </div>
                     {shippingCost > 0 && (
                       <div className="text-right">
-                        <div className="text-xs text-muted-foreground mb-1">With Shipping</div>
+                        <div className="text-xs text-muted-foreground mb-1">{tp.withShipping}</div>
                         <div className="text-xl font-semibold text-primary">
                           {retailPriceWithShipping.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
@@ -656,7 +659,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground pt-2 border-t border-border">
-                    Selling directly to customers (online shop, craft fairs, your own store)
+                    {tp.directRetailNote}
                   </p>
                 </div>
               </div>
@@ -665,7 +668,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               <div className="bg-[#FEE6EA] rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-muted-foreground mb-1 text-[#131718] text-[18px]">Your Selected Hourly Rate</div>
+                    <div className="text-muted-foreground mb-1 text-[#131718] text-[18px]">{tp.selectedHourlyRate}</div>
                     <div className="text-lg font-semibold">
                       {trueBaseHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/hr
                     </div>
@@ -693,14 +696,14 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                       </div>
                       <div className="flex gap-4 sm:gap-8">
                         <div className="text-left flex-1 backdrop-blur-xl bg-primary/5 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs text-muted-foreground mb-1">Base Rate</div>
+                          <div className="text-xs text-muted-foreground mb-1">{tp.baseRate}</div>
                           <div className="text-base sm:text-lg">
                             {prices.base.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </div>
-                          <div className="text-xs text-muted-foreground">break-even</div>
+                          <div className="text-xs text-muted-foreground">{tp.breakEven}</div>
                         </div>
                         <div className="text-left flex-1 backdrop-blur-xl bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg p-3 sm:p-4">
-                          <div className="text-xs text-[#131718]/70 mb-1">Recommended</div>
+                          <div className="text-xs text-[#131718]/70 mb-1">{tp.recommended}</div>
                           <div className="text-base sm:text-lg text-[#131718] font-semibold">
                             {prices.recommended.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </div>
@@ -717,13 +720,11 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
 
         {/* Key Principles - Visible on Website */}
         <div className="backdrop-blur-xl bg-primary border border-primary/20 rounded-lg shadow-sm p-4 sm:p-6 space-y-4">
-          <h3 className="text-primary-foreground text-[18px]">3 Key Principles To Remember</h3>
+          <h3 className="text-primary-foreground text-[18px]">{tp.principles}</h3>
           <ul className="space-y-2 text-xs sm:text-sm text-primary-foreground/70">
-            <li>• <strong className="text-primary-foreground">Never price below Base Rate</strong> — that's working for free</li>
-            
-            <li>• <strong className="text-primary-foreground">Use higher markup for rush jobs</strong> — 50%+ for tight deadlines or high-visibility work</li>
-            
-            <li>• <strong className="text-primary-foreground">Review quarterly</strong> — update as your expenses and skills grow</li>
+            <li dangerouslySetInnerHTML={{ __html: `• ${tp.principle1}` }} />
+            <li dangerouslySetInnerHTML={{ __html: `• ${tp.principle2}` }} />
+            <li dangerouslySetInnerHTML={{ __html: `• ${tp.principle3}` }} />
           </ul>
         </div>
 
@@ -758,15 +759,15 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                   letterSpacing: '-0.02em',
                   textAlign: 'left'
                 }}>
-                  My Creator Pricing
+                  {tp.download.creatorPricing}
                 </h1>
-                <p style={{ 
-                  fontSize: '14px', 
+                <p style={{
+                  fontSize: '14px',
                   color: 'rgba(19, 23, 24, 0.6)',
                   marginBottom: '24px',
                   textAlign: 'left'
                 }}>
-                  Generated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  {tp.download.generatedOn.replace('{date}', new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))}
                 </p>
               </div>
 
@@ -794,13 +795,13 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                       }}>
                         {service.name}
                       </h3>
-                      <p style={{ 
-                        fontSize: '14px', 
+                      <p style={{
+                        fontSize: '14px',
                         color: 'rgba(19, 23, 24, 0.6)',
                         margin: 0,
                         textAlign: 'left'
                       }}>
-                        Custom service
+                        {tp.download.customService}
                       </p>
                     </div>
                     <div style={{ display: 'flex', gap: '24px' }}>
@@ -969,23 +970,23 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 textAlign: 'left',
                 marginBottom: 0
               }}>
-                <p style={{ 
-                  fontSize: '14px', 
+                <p style={{
+                  fontSize: '14px',
                   color: 'rgba(19, 23, 24, 0.7)',
                   margin: '0 0 8px 0',
                   textAlign: 'left',
                   lineHeight: '1.4'
                 }}>
-                  Share this calculator, use it, and adjust as your career grows.
+                  {tp.download.shareText}
                 </p>
-                <p style={{ 
-                  fontSize: '14px', 
+                <p style={{
+                  fontSize: '14px',
                   color: 'rgba(19, 23, 24, 0.6)',
                   margin: 0,
                   textAlign: 'left',
                   lineHeight: '1.4'
                 }}>
-                  Made with 💜 by @stellaachenbach
+                  {tp.download.madeWith}
                 </p>
               </div>
             </div>
@@ -1023,15 +1024,15 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                   letterSpacing: '-0.02em',
                   textAlign: 'left'
                 }}>
-                  My Product Pricing
+                  {tp.download.productPricing}
                 </h1>
-                <p style={{ 
-                  fontSize: '14px', 
+                <p style={{
+                  fontSize: '14px',
                   color: 'rgba(19, 23, 24, 0.6)',
                   marginBottom: '24px',
                   textAlign: 'left'
                 }}>
-                  Generated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  {tp.download.generatedOn.replace('{date}', new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))}
                 </p>
               </div>
 
@@ -1043,32 +1044,32 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 padding: '20px',
                 marginBottom: '12px'
               }}>
-                <h3 style={{ 
-                  fontSize: '18px', 
-                  fontWeight: '600', 
+                <h3 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
                   color: '#131718',
                   marginBottom: '16px',
                   textAlign: 'left'
                 }}>
-                  Cost Breakdown Per Unit
+                  {tp.costBreakdown}
                 </h3>
                 <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '14px', color: 'rgba(19, 23, 24, 0.6)' }}>
-                    Labor ({hoursPerUnit}h × base hourly rate)
+                    {tp.labor.replace('{hours}', String(hoursPerUnit))}
                   </span>
                   <span style={{ fontSize: '14px', fontWeight: '500', color: '#131718' }}>
                     {laborCostPerUnit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
                 <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '14px', color: 'rgba(19, 23, 24, 0.6)' }}>Materials</span>
+                  <span style={{ fontSize: '14px', color: 'rgba(19, 23, 24, 0.6)' }}>{tp.materials}</span>
                   <span style={{ fontSize: '14px', fontWeight: '500', color: '#131718' }}>
                     {materialCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
                 <div style={{ borderTop: '1px solid #131718', paddingTop: '8px', marginTop: '8px', display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '14px', fontWeight: '600', color: '#131718' }}>
-                    Total Cost to Make
+                    {tp.totalCost}
                   </span>
                   <span style={{ fontSize: '14px', fontWeight: '600', color: '#131718' }}>
                     {totalCostPerUnit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -1084,29 +1085,29 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 padding: '20px',
                 marginBottom: '12px'
               }}>
-                <h3 style={{ 
-                  fontSize: '18px', 
-                  fontWeight: '600', 
+                <h3 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
                   color: '#131718',
                   marginBottom: '16px',
                   textAlign: 'left'
                 }}>
-                  Wholesale Price
+                  {tp.wholesalePrice}
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <div>
                     <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)', marginBottom: '4px' }}>
-                      Without Shipping
+                      {tp.withoutShipping}
                     </div>
                     <div style={{ fontSize: '24px', fontWeight: '700', color: '#131718' }}>
                       {wholesalePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)' }}>2x your cost</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)' }}>{tp.wholesaleDesc}</div>
                   </div>
                   {shippingCost > 0 && (
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)', marginBottom: '4px' }}>
-                        With Shipping
+                        {tp.withShipping}
                       </div>
                       <div style={{ fontSize: '20px', fontWeight: '700', color: '#131718' }}>
                         {wholesalePriceWithShipping.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -1116,7 +1117,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                   )}
                 </div>
                 <p style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)', borderTop: '1px solid #131718', paddingTop: '8px', margin: 0 }}>
-                  Selling to stores/retailers who will mark up again before selling to customers
+                  {tp.wholesaleNote}
                 </p>
               </div>
 
@@ -1128,29 +1129,29 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 padding: '20px',
                 marginBottom: '32px'
               }}>
-                <h3 style={{ 
-                  fontSize: '18px', 
-                  fontWeight: '600', 
+                <h3 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
                   color: '#131718',
                   marginBottom: '16px',
                   textAlign: 'left'
                 }}>
-                  Direct/Retail Price
+                  {tp.directRetailPrice}
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <div>
                     <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)', marginBottom: '4px' }}>
-                      Without Shipping
+                      {tp.withoutShipping}
                     </div>
                     <div style={{ fontSize: '24px', fontWeight: '700', color: '#131718' }}>
                       {retailPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)' }}>3x your cost</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)' }}>{tp.directRetailDesc}</div>
                   </div>
                   {shippingCost > 0 && (
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)', marginBottom: '4px' }}>
-                        With Shipping
+                        {tp.withShipping}
                       </div>
                       <div style={{ fontSize: '20px', fontWeight: '700', color: '#131718' }}>
                         {retailPriceWithShipping.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -1160,7 +1161,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                   )}
                 </div>
                 <p style={{ fontSize: '12px', color: 'rgba(19, 23, 24, 0.6)', borderTop: '1px solid #131718', paddingTop: '8px', margin: 0 }}>
-                  Selling directly to customers (online shop, craft fairs, your own store)
+                  {tp.directRetailNote}
                 </p>
               </div>
 
@@ -1173,7 +1174,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               }}>
                 <div style={{ marginBottom: '8px' }}>
                   <div style={{ fontSize: '18px', fontWeight: '600', color: '#131718', marginBottom: '4px', textAlign: 'left' }}>
-                    Your Selected Hourly Rate
+                    {tp.selectedHourlyRate}
                   </div>
                   <div style={{ fontSize: '20px', fontWeight: '700', color: '#131718', textAlign: 'left' }}>
                     {physicalCreatorHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/hr
@@ -1188,23 +1189,23 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 textAlign: 'left',
                 marginBottom: 0
               }}>
-                <p style={{ 
-                  fontSize: '14px', 
+                <p style={{
+                  fontSize: '14px',
                   color: 'rgba(19, 23, 24, 0.7)',
                   margin: '0 0 8px 0',
                   textAlign: 'left',
                   lineHeight: '1.4'
                 }}>
-                  Share this calculator, use it, and adjust as your business grows.
+                  {tp.download.productShareText}
                 </p>
-                <p style={{ 
-                  fontSize: '14px', 
+                <p style={{
+                  fontSize: '14px',
                   color: 'rgba(19, 23, 24, 0.6)',
                   margin: 0,
                   textAlign: 'left',
                   lineHeight: '1.4'
                 }}>
-                  Made with 💜 by @stellaachenbach
+                  {tp.download.madeWith}
                 </p>
               </div>
             </div>

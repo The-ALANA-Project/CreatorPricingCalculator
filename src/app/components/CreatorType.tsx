@@ -3,6 +3,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Palette, Package, Video, Lightbulb } from "lucide-react";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export type CreatorTypeValue = "digital" | "physical" | "content";
 
@@ -54,6 +55,8 @@ interface CreatorTypeProps {
 }
 
 export function CreatorType({ data, onDataChange, targetIncome, billableHours, selectedRateTier, onSelectedRateTierChange }: CreatorTypeProps) {
+  const { t } = useLanguage();
+  const tc = t.creator;
   const updateData = (updates: Partial<CreatorTypeData>) => {
     onDataChange({ ...data, ...updates });
   };
@@ -83,29 +86,29 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
     {
       value: "digital" as CreatorTypeValue,
       icon: Palette,
-      title: "Digital Creator",
-      description: "Graphic design, UI/UX, web design, illustration, etc.",
+      title: tc.types.digital.title,
+      description: tc.types.digital.desc,
     },
     {
       value: "physical" as CreatorTypeValue,
       icon: Package,
-      title: "Physical Creator",
-      description: "Fashion design, jewelry, crafts, physical products, etc.",
+      title: tc.types.physical.title,
+      description: tc.types.physical.desc,
     },
     {
       value: "content" as CreatorTypeValue,
       icon: Video,
-      title: "Content Creator",
-      description: "YouTube, TikTok, Instagram, social media content, etc.",
+      title: tc.types.content.title,
+      description: tc.types.content.desc,
     },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="mb-2">What Type of Creator Are You?</h2>
+        <h2 className="mb-2">{tc.title}</h2>
         <p className="text-muted-foreground text-[16px]">
-          Different creator types have different pricing considerations. Select yours to get customized rate calculations.
+          {tc.subtitle}
         </p>
       </div>
 
@@ -113,9 +116,9 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
       <div className="backdrop-blur-2xl bg-card/60 border border-white/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-foreground font-semibold mb-1">Your Base Rates</h3>
+            <h3 className="text-foreground font-semibold mb-1">{tc.baseRates}</h3>
             <p className="text-muted-foreground text-xs sm:text-sm">
-              Choose which rate to use for your pricing calculations below
+              {tc.baseRatesSubtitle}
             </p>
           </div>
         </div>
@@ -129,7 +132,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
             }`}
           >
             <div className="flex items-center justify-between mb-1">
-              <div className="text-muted-foreground text-xs">Base Hourly Rate</div>
+              <div className="text-muted-foreground text-xs">{tc.baseHourlyRate}</div>
               <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                 selectedRateTier === 'base' ? 'border-primary bg-primary' : 'border-border'
               }`}>
@@ -142,7 +145,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
               {baseHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               <span className="text-base font-normal">/hr</span>
             </div>
-            <div className="text-muted-foreground text-xs mt-1">Your break-even rate</div>
+            <div className="text-muted-foreground text-xs mt-1">{tc.baseRateHint}</div>
           </button>
           <button
             onClick={() => onSelectedRateTierChange('recommended')}
@@ -153,7 +156,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
             }`}
           >
             <div className="flex items-center justify-between mb-1">
-              <div className="text-[#131718]/70 text-xs">Recommended Hourly Rate</div>
+              <div className="text-[#131718]/70 text-xs">{tc.recommendedRate}</div>
               <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                 selectedRateTier === 'recommended' ? 'border-[#131718] bg-[#131718]' : 'border-[#131718]/30'
               }`}>
@@ -166,7 +169,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
               {recommendedHourlyRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               <span className="text-base font-normal">/hr</span>
             </div>
-            <div className="text-[#131718]/60 text-xs mt-1">With 25% profit margin ✨</div>
+            <div className="text-[#131718]/60 text-xs mt-1">{tc.recommendedRateHint}</div>
           </button>
         </div>
         
@@ -228,12 +231,12 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
               {isSelected && type.value === "digital" && (
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 space-y-6">
                   <div className="border-t border-border/50 pt-4 space-y-4">
-                    <h3 className="font-semibold text-[16px]">Experience Level</h3>
+                    <h3 className="font-semibold text-[16px]">{tc.experienceLevel}</h3>
                     <div className="grid grid-cols-3 gap-3">
                       {[
-                        { level: "junior", label: "Junior", years: "0-2 years", adjustment: "-10% to -15%" },
-                        { level: "mid", label: "Mid", years: "3-5 years", adjustment: "No adjustment" },
-                        { level: "senior", label: "Senior", years: "6+ years", adjustment: "+15% to +25%" }
+                        { level: "junior", ...tc.experience.junior },
+                        { level: "mid", ...tc.experience.mid },
+                        { level: "senior", ...tc.experience.senior },
                       ].map((item) => (
                         <div key={item.level} className="flex flex-col gap-2">
                           <button
@@ -258,13 +261,13 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
 
                   {/* Project Terms */}
                   <div className="border-t border-border/50 pt-4 space-y-4">
-                    <h3 className="font-semibold text-[16px]">Project Terms</h3>
+                    <h3 className="font-semibold text-[16px]">{tc.projectTerms}</h3>
                     <div className="grid grid-cols-2 gap-3">
                       {[
-                        { term: "standard", label: "Standard", desc: "2 revisions, normal timeline", adjustment: "No adjustment" },
-                        { term: "extra_revisions", label: "Extra Revisions", desc: "3-5 revisions", adjustment: "+15%" },
-                        { term: "rush", label: "Rush", desc: "Tight deadline", adjustment: "+25%" },
-                        { term: "rush_revisions", label: "Rush + Revisions", desc: "Both combined", adjustment: "+40%" }
+                        { term: "standard", ...tc.terms.standard },
+                        { term: "extra_revisions", ...tc.terms.extra_revisions },
+                        { term: "rush", ...tc.terms.rush },
+                        { term: "rush_revisions", ...tc.terms.rush_revisions },
                       ].map((item) => (
                         <div key={item.term} className="flex flex-col gap-2">
                           <button
@@ -290,7 +293,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   {/* Your Adjusted Rates Preview - Digital Creator */}
                   {data.experienceLevel && (
                     <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg shadow-md p-4">
-                      <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">Your Adjusted Rates</h3>
+                      <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">{tc.adjustedRates}</h3>
                       <div className="space-y-3">
                         {(() => {
                           // Experience level multipliers
@@ -307,23 +310,23 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           return (
                             <>
                               <div className="flex items-center justify-between text-xs">
-                                <span className="text-[#131718]/70">Starting Rate ({selectedRateTier === 'recommended' ? 'Recommended' : 'Base'})</span>
+                                <span className="text-[#131718]/70">{tc.startingRate} ({selectedRateTier === 'recommended' ? tc.recommendedRate.split(' ')[0] : tc.baseHourlyRate.split(' ')[0]})</span>
                                 <span className="font-medium text-[#131718]">{selectedHourlyRate.toFixed(2)}/hr</span>
                               </div>
                               {expMultiplier !== 1.0 && (
                                 <div className="flex items-center justify-between text-xs">
-                                  <span className="text-[#131718]/70">Experience ({data.experienceLevel})</span>
+                                  <span className="text-[#131718]/70">{tc.experienceLabel} ({data.experienceLevel})</span>
                                   <span className="font-medium text-[#131718]">{expMultiplier < 1 ? '' : '+'}{((expMultiplier - 1) * 100).toFixed(0)}%</span>
                                 </div>
                               )}
                               {data.projectTerms && termsMultiplier !== 1.0 && (
                                 <div className="flex items-center justify-between text-xs">
-                                  <span className="text-[#131718]/70">{data.projectTerms === 'extra_revisions' ? 'Extra Revisions' : data.projectTerms === 'rush' ? 'Rush Delivery' : 'Rush + Revisions'}</span>
+                                  <span className="text-[#131718]/70">{data.projectTerms === 'extra_revisions' ? tc.extraRevisions : data.projectTerms === 'rush' ? tc.rushDelivery : tc.rushRevisions}</span>
                                   <span className="font-medium text-[#131718]">+{((termsMultiplier - 1) * 100).toFixed(0)}%</span>
                                 </div>
                               )}
                               <div className="pt-2 mt-2 border-t border-[#131718] flex items-center justify-between">
-                                <span className="font-semibold text-[#131718] text-[16px]">Your Project Rate</span>
+                                <span className="font-semibold text-[#131718] text-[16px]">{tc.projectRate}</span>
                                 <span className="text-base font-bold text-[#131718]">{adjustedRate.toFixed(2)}/hr</span>
                               </div>
                             </>
@@ -336,16 +339,11 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   {/* Why This Matters for Digital Creators */}
                   <div className="backdrop-blur-xl bg-primary/5 rounded-lg shadow-sm p-4 mt-4">
                     <div className="flex items-start gap-3 mb-3">
-                      <h3 className="font-semibold text-[16px]">Why This Matters</h3>
+                      <h3 className="font-semibold text-[16px]">{tc.whyMatters}</h3>
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground space-y-2">
-                      <p>
-                        <strong>Digital creators</strong> should choose between base (break-even) or recommended rates (with profit margin). 
-                        Your base rate covers just expenses and living costs, while the recommended rate includes a 25% profit margin.
-                      </p>
-                      <p className="mt-2">
-                        Then layer on experience level and project terms—you can charge 40%+ more for rush work with extra revisions, or adjust down if you're building your portfolio.
-                      </p>
+                      <p dangerouslySetInnerHTML={{ __html: tc.digitalWhy1 }} />
+                      <p className="mt-2">{tc.digitalWhy2}</p>
                     </div>
                   </div>
                 </div>
@@ -355,47 +353,47 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
               {isSelected && type.value === "physical" && (
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 space-y-6">
                   <div className="border-t border-border/50 pt-4 space-y-4">
-                    <h3 className="font-semibold text-[16px]">Physical Product Costs</h3>
-                    
+                    <h3 className="font-semibold text-[16px]">{tc.physicalProductCosts}</h3>
+
                     <div className="space-y-3">
                       <Label htmlFor="materialCost" className="text-sm">
-                        Material Cost Per Unit
+                        {tc.materialCostPerUnit}
                       </Label>
                       <Input
                         id="materialCost"
                         type="number"
                         inputMode="decimal"
-                        placeholder="e.g., 25"
+                        placeholder={tc.materialPlaceholder}
                         value={data.avgMaterialCost || ""}
                         onChange={(e) => updateData({ avgMaterialCost: parseFloat(e.target.value) || 0 })}
                         className="bg-input-background border border-border"
                       />
                       <p className="text-xs text-muted-foreground -mt-2.5">
-                        Total cost of materials to make one piece (fabric, metal, supplies, etc.)
+                        {tc.materialHint}
                       </p>
                     </div>
 
                     <div className="space-y-3">
                       <Label htmlFor="hoursPerUnit" className="text-sm">
-                        Hours Per Unit
+                        {tc.hoursPerUnit}
                       </Label>
                       <Input
                         id="hoursPerUnit"
                         type="number"
                         inputMode="decimal"
                         step="0.5"
-                        placeholder="e.g., 2.5"
+                        placeholder={tc.hoursPerUnitPlaceholder}
                         value={data.hoursPerUnit || ""}
                         onChange={(e) => updateData({ hoursPerUnit: parseFloat(e.target.value) || 0 })}
                         className="bg-input-background border border-border"
                       />
                       <p className="text-xs text-muted-foreground -mt-2.5">
-                        How many hours it takes you to make one unit from start to finish
+                        {tc.hoursPerUnitHint}
                       </p>
                     </div>
 
                     <div className="space-y-3">
-                      <Label className="text-[16px]">Sales Channel</Label>
+                      <Label className="text-[16px]">{tc.salesChannel}</Label>
                       <div className="grid grid-cols-2 gap-2">
                         <button
                           onClick={() => updateData({ salesChannel: "wholesale" })}
@@ -407,8 +405,8 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                             }
                           `}
                         >
-                          <div className="font-semibold">Wholesale</div>
-                          <div className="text-xs opacity-80">2x your cost</div>
+                          <div className="font-semibold">{tc.wholesale}</div>
+                          <div className="text-xs opacity-80">{tc.wholesaleDesc}</div>
                         </button>
                         <button
                           onClick={() => updateData({ salesChannel: "retail" })}
@@ -420,30 +418,30 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                             }
                           `}
                         >
-                          <div className="font-semibold">Direct/Retail</div>
-                          <div className="text-xs opacity-80">3x your cost</div>
+                          <div className="font-semibold">{tc.directRetail}</div>
+                          <div className="text-xs opacity-80">{tc.directRetailDesc}</div>
                         </button>
                       </div>
                       <p className="text-xs text-muted-foreground -mt-2.5">
-                        Wholesale = selling to stores. Direct/Retail = selling directly to customers.
+                        {tc.salesChannelHint}
                       </p>
                     </div>
 
                     <div className="space-y-3">
                       <Label htmlFor="shippingCost" className="text-[16px]">
-                        Shipping/Handling Cost (Optional)
+                        {tc.shippingCost}
                       </Label>
                       <Input
                         id="shippingCost"
                         type="number"
                         inputMode="decimal"
-                        placeholder="e.g., 12"
+                        placeholder={tc.shippingPlaceholder}
                         value={data.shippingCost || ""}
                         onChange={(e) => updateData({ shippingCost: parseFloat(e.target.value) || 0 })}
                         className="bg-input-background border border-border"
                       />
                       <p className="text-xs text-muted-foreground -mt-2.5">
-                        Average cost for packaging, labels, and shipping per unit
+                        {tc.shippingHint}
                       </p>
                     </div>
                   </div>
@@ -451,7 +449,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   {/* Your Product Pricing Preview - Physical Creator */}
                   {data.avgMaterialCost && data.hoursPerUnit && data.salesChannel && (
                     <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg shadow-md p-4">
-                      <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">Your Product Pricing</h3>
+                      <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">{tc.productPricing}</h3>
                       <div className="space-y-3">
                         {(() => {
                           const laborCost = selectedHourlyRate * (data.hoursPerUnit || 0);
@@ -463,15 +461,15 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           return (
                             <>
                               <div className="flex items-center justify-between text-xs">
-                                <span className="text-[#131718]/70">Materials</span>
+                                <span className="text-[#131718]/70">{tc.materials}</span>
                                 <span className="font-medium text-[#131718]">{(data.avgMaterialCost || 0).toFixed(2)}</span>
                               </div>
                               <div className="flex items-center justify-between text-xs">
-                                <span className="text-[#131718]/70">Labor ({data.hoursPerUnit}hrs × {selectedHourlyRate.toFixed(2)}/hr)</span>
+                                <span className="text-[#131718]/70">{tc.labor} ({data.hoursPerUnit}hrs × {selectedHourlyRate.toFixed(2)}/hr)</span>
                                 <span className="font-medium text-[#131718]">{laborCost.toFixed(2)}</span>
                               </div>
                               <div className="flex items-center justify-between text-xs">
-                                <span className="text-[#131718]/70">{data.salesChannel === 'wholesale' ? 'Wholesale' : 'Retail'} Price (×{channelMultiplier})</span>
+                                <span className="text-[#131718]/70">{data.salesChannel === 'wholesale' ? tc.wholesalePrice : tc.retailPrice} (×{channelMultiplier})</span>
                                 <span className="font-medium text-[#131718]">{basePrice.toFixed(2)}</span>
                               </div>
                               {data.shippingCost && data.shippingCost > 0 && (
@@ -481,7 +479,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                                 </div>
                               )}
                               <div className="pt-2 mt-2 border-t border-[#131718] flex items-center justify-between">
-                                <span className="font-semibold text-[#131718] text-[16px]">Final Price Per Unit</span>
+                                <span className="font-semibold text-[#131718] text-[16px]">{tc.finalPricePerUnit}</span>
                                 <span className="text-base font-bold text-[#131718]">{finalPrice.toFixed(2)}</span>
                               </div>
                             </>
@@ -494,16 +492,11 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   {/* Why This Matters for Physical Creators */}
                   <div className="backdrop-blur-xl bg-primary/5 rounded-lg shadow-sm p-4 mt-4">
                     <div className="flex items-start gap-3 mb-3">
-                      <h3 className="font-semibold text-[16px]">Why This Matters</h3>
+                      <h3 className="font-semibold text-[16px]">{tc.whyMatters}</h3>
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground space-y-2">
-                      <p>
-                        <strong>Physical creators</strong> must account for material costs, production time, and retail margins. 
-                        Your time + materials is just the start—retail typically marks up 200-300% (2x-3x) to cover overhead and profit.
-                      </p>
-                      <p className="mt-2">
-                        Don't forget shipping! Always include packaging and handling costs in your final price.
-                      </p>
+                      <p dangerouslySetInnerHTML={{ __html: tc.physicalWhy1 }} />
+                      <p className="mt-2">{tc.physicalWhy2}</p>
                     </div>
                   </div>
                 </div>
@@ -514,7 +507,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 space-y-6">
                   <div className="border-t border-border/50 pt-4 space-y-4">
                     <div className="space-y-3">
-                      <Label className="text-[16px]">Primary Platform</Label>
+                      <Label className="text-[16px]">{tc.primaryPlatform}</Label>
                       <div className="grid grid-cols-2 gap-2">
                         {["YouTube", "TikTok", "Instagram", "Twitter/X", "LinkedIn", "Blog/Newsletter"].map((platform) => {
                           const isPlatformSelected = data.primaryPlatform === platform;
@@ -540,20 +533,20 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                     {/* Hours Per Content Input */}
                     <div className="space-y-3">
                       <Label htmlFor="hoursPerContent" className="text-[16px]">
-                        Estimated Hours Per Post/Video
+                        {tc.hoursPerContent}
                       </Label>
                       <Input
                         id="hoursPerContent"
                         type="number"
                         inputMode="decimal"
                         step="0.5"
-                        placeholder="e.g., 4"
+                        placeholder={tc.hoursPerContentPlaceholder}
                         value={data.hoursPerContent || ""}
                         onChange={(e) => updateData({ hoursPerContent: parseFloat(e.target.value) || 0 })}
                         className="bg-input-background border border-border"
                       />
                       <p className="text-xs text-muted-foreground -mt-2.5">
-                        Total time for planning, shooting, editing, posting, and engagement (in hours)
+                        {tc.hoursPerContentHint}
                       </p>
                     </div>
 
@@ -562,7 +555,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       <div className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor="subscribers" className="text-[16px]">
-                            Subscribers
+                            {tc.subscribers}
                           </Label>
                           <Input
                             id="subscribers"
@@ -576,10 +569,10 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Video Performance</Label>
+                          <Label className="text-[16px]">{tc.videoPerformance}</Label>
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Views</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgViews}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -598,7 +591,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                               />
                             </div>
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Watch Time %</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgWatchTime}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -612,12 +605,12 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
-                          <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">View-to-Subscriber Rate:</span>
+                          <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">{tc.viewToSubscriber}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">Good: 10-20% | Viral: 50%+</p>
+                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">{tc.youtubeBenchmark}</p>
                       </div>
                     )}
 
@@ -626,7 +619,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       <div className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor="instagramFollowers" className="text-[16px]">
-                            Followers
+                            {tc.followers}
                           </Label>
                           <Input
                             id="instagramFollowers"
@@ -640,10 +633,10 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Post Engagement</Label>
+                          <Label className="text-[16px]">{tc.postEngagement}</Label>
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Likes</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgLikes}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -655,7 +648,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                                   const followers = data.instagramFollowers || 0;
                                   const totalEngagement = likes + comments;
                                   const rate = followers ? (totalEngagement / followers) * 100 : 0;
-                                  updateData({ 
+                                  updateData({
                                     instagramAvgLikes: likes,
                                     engagementRate: parseFloat(rate.toFixed(2))
                                   });
@@ -664,7 +657,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                               />
                             </div>
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Comments</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgComments}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -688,12 +681,12 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
-                          <span className="text-muted-foreground text-[#131718] text-[16px] font-bold">Engagement Rate:</span>
+                          <span className="text-muted-foreground text-[#131718] text-[16px] font-bold">{tc.engagementRate}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">Good: 3-5% | Great: 7-10% | Exceptional: 10%+</p>
+                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">{tc.instagramBenchmark}</p>
                       </div>
                     )}
 
@@ -702,7 +695,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       <div className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor="tiktokFollowers" className="text-[16px]">
-                            Followers
+                            {tc.followers}
                           </Label>
                           <Input
                             id="tiktokFollowers"
@@ -716,10 +709,10 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Video Performance</Label>
+                          <Label className="text-[16px]">{tc.videoPerformance}</Label>
                           <div className="space-y-3">
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Views per Video</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgViews}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -739,7 +732,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="text-xs text-muted-foreground mb-1 block">Avg. Likes</label>
+                                <label className="text-xs text-muted-foreground mb-1 block">{tc.avgLikes}</label>
                                 <Input
                                   type="number"
                                   inputMode="numeric"
@@ -750,7 +743,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                                 />
                               </div>
                               <div>
-                                <label className="text-xs text-muted-foreground mb-1 block">Avg. Comments</label>
+                                <label className="text-xs text-muted-foreground mb-1 block">{tc.avgComments}</label>
                                 <Input
                                   type="number"
                                   inputMode="numeric"
@@ -765,12 +758,12 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
-                          <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">View-to-Follower Rate:</span>
+                          <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">{tc.viewToFollower}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">Good: 50-100% | Viral: 200%+ (views can exceed followers)</p>
+                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">{tc.tiktokBenchmark}</p>
                       </div>
                     )}
 
@@ -779,7 +772,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       <div className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor="twitterFollowers" className="text-[16px]">
-                            Followers
+                            {tc.followers}
                           </Label>
                           <Input
                             id="twitterFollowers"
@@ -793,10 +786,10 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Post Performance</Label>
+                          <Label className="text-[16px]">{tc.postPerformance}</Label>
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Impressions</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgImpressions}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -807,7 +800,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                               />
                             </div>
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Engagements</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgEngagements}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -817,7 +810,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                                   const engagements = parseInt(e.target.value) || 0;
                                   const impressions = data.twitterAvgImpressions || 0;
                                   const rate = impressions ? (engagements / impressions) * 100 : 0;
-                                  updateData({ 
+                                  updateData({
                                     twitterAvgEngagements: engagements,
                                     engagementRate: parseFloat(rate.toFixed(2))
                                   });
@@ -829,12 +822,12 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
-                          <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">Engagement Rate:</span>
+                          <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">{tc.engagementRate}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">Good: 1-3% | Great: 5%+</p>
+                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">{tc.twitterBenchmark}</p>
                       </div>
                     )}
 
@@ -843,7 +836,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       <div className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor="linkedinFollowers" className="text-[16px]">
-                            Followers
+                            {tc.followers}
                           </Label>
                           <Input
                             id="linkedinFollowers"
@@ -857,10 +850,10 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Post Performance</Label>
+                          <Label className="text-[16px]">{tc.postPerformance}</Label>
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Impressions</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgImpressions}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -871,7 +864,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                               />
                             </div>
                             <div>
-                              <label className="text-xs text-muted-foreground mb-1 block">Avg. Engagements</label>
+                              <label className="text-xs text-muted-foreground mb-1 block">{tc.avgEngagements}</label>
                               <Input
                                 type="number"
                                 inputMode="numeric"
@@ -881,7 +874,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                                   const engagements = parseInt(e.target.value) || 0;
                                   const impressions = data.linkedinAvgImpressions || 0;
                                   const rate = impressions ? (engagements / impressions) * 100 : 0;
-                                  updateData({ 
+                                  updateData({
                                     linkedinAvgEngagements: engagements,
                                     engagementRate: parseFloat(rate.toFixed(2))
                                   });
@@ -893,12 +886,12 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
-                          <span className="text-muted-foreground text-[16px] font-bold text-[#131718]">Engagement Rate:</span>
+                          <span className="text-muted-foreground text-[16px] font-bold text-[#131718]">{tc.engagementRate}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">Good: 1-3% | Great: 5%+</p>
+                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">{tc.linkedinBenchmark}</p>
                       </div>
                     )}
 
@@ -907,7 +900,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       <div className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor="blogNewsletterSubscribers" className="text-[16px]">
-                            Subscribers
+                            {tc.subscribers}
                           </Label>
                           <Input
                             id="blogNewsletterSubscribers"
@@ -921,7 +914,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Open Rate</Label>
+                          <Label className="text-[16px]">{tc.openRate}</Label>
                           <Input
                             type="number"
                             inputMode="numeric"
@@ -939,11 +932,11 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                             }}
                             className="bg-input-background border border-border"
                           />
-                          <p className="text-xs text-muted-foreground -mt-2.5">Percentage of emails opened by subscribers</p>
+                          <p className="text-xs text-muted-foreground -mt-2.5">{tc.openRateHint}</p>
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-[16px]">Click-Through Rate (CTR)</Label>
+                          <Label className="text-[16px]">{tc.ctr}</Label>
                           <Input
                             type="number"
                             inputMode="numeric"
@@ -961,22 +954,22 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                             }}
                             className="bg-input-background border border-border"
                           />
-                          <p className="text-xs text-muted-foreground -mt-2.5">Percentage of opened emails that clicked a link</p>
+                          <p className="text-xs text-muted-foreground -mt-2.5">{tc.ctrHint}</p>
                         </div>
 
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
-                          <span className="text-muted-foreground text-[16px] font-bold text-[#131718]">Overall Engagement:</span>
+                          <span className="text-muted-foreground text-[16px] font-bold text-[#131718]">{tc.overallEngagement}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">Overall Engagement: Good 1-2% | Great 3-4%+</p>
+                        <p className="text-xs text-muted-foreground -mt-[15px] p-0">{tc.blogBenchmark}</p>
                       </div>
                     )}
 
                     <div className="space-y-3">
                       <Label htmlFor="contentType" className="text-[16px]">
-                        Content Type
+                        {tc.contentType}
                       </Label>
                       <select
                         id="contentType"
@@ -984,34 +977,34 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         onChange={(e) => updateData({ contentType: e.target.value })}
                         className="w-full px-3 py-2 rounded-lg bg-input-background border border-border text-sm focus:outline-none focus:ring-1 focus:ring-border"
                       >
-                        <option value="">Select type...</option>
+                        <option value="">{tc.selectType}</option>
                         {data.primaryPlatform === "Blog/Newsletter" ? (
                           <>
-                            <option value="blog_post">Blog Post</option>
-                            <option value="newsletter_issue">Newsletter Issue</option>
-                            <option value="article_series">Article Series</option>
-                            <option value="sponsored_article">Sponsored Article</option>
-                            <option value="guest_post">Guest Post</option>
+                            <option value="blog_post">{tc.contentTypes.blog_post}</option>
+                            <option value="newsletter_issue">{tc.contentTypes.newsletter_issue}</option>
+                            <option value="article_series">{tc.contentTypes.article_series}</option>
+                            <option value="sponsored_article">{tc.contentTypes.sponsored_article}</option>
+                            <option value="guest_post">{tc.contentTypes.guest_post}</option>
                           </>
                         ) : (
                           <>
-                            <option value="sponsored_post">Sponsored Post</option>
-                            <option value="video">Video (60s+)</option>
-                            <option value="short">Short/Reel (under 60s)</option>
-                            <option value="story">Story/Temporary</option>
-                            <option value="series">Content Series</option>
+                            <option value="sponsored_post">{tc.contentTypes.sponsored_post}</option>
+                            <option value="video">{tc.contentTypes.video}</option>
+                            <option value="short">{tc.contentTypes.short}</option>
+                            <option value="story">{tc.contentTypes.story}</option>
+                            <option value="series">{tc.contentTypes.series}</option>
                           </>
                         )}
                       </select>
                     </div>
 
                     <div className="space-y-3">
-                      <Label className="text-[16px]">Usage Rights</Label>
+                      <Label className="text-[16px]">{tc.usageRights}</Label>
                       <div className="grid grid-cols-1 gap-2">
                         {[
-                          { value: "organic", label: "Organic Only", desc: "The creator posts to their own feed/channel, content appears organically to their followers" },
-                          { value: "paid_ad", label: "Paid Ad Usage", desc: "The brand can take the content and use it in their paid advertising campaigns" },
-                          { value: "exclusive", label: "Exclusive Rights", desc: "Full ownership where the brand can use it anywhere, and often includes exclusivity clauses" },
+                          { value: "organic", label: tc.rights.organic.label, desc: tc.rights.organic.desc },
+                          { value: "paid_ad", label: tc.rights.paid_ad.label, desc: tc.rights.paid_ad.desc },
+                          { value: "exclusive", label: tc.rights.exclusive.label, desc: tc.rights.exclusive.desc },
                         ].map((right) => (
                           <button
                             key={right.value}
@@ -1050,28 +1043,28 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
 
                     // Calculate audience size multiplier
                     let audienceMultiplier = 1.0;
-                    let audienceLabel = "Under 1K";
+                    let audienceLabel = tc.audienceLabels.under1k;
                     if (audienceSize >= 1000000) {
                       audienceMultiplier = 1.5;
-                      audienceLabel = "1M+ (Mega)";
+                      audienceLabel = tc.audienceLabels.mega;
                     } else if (audienceSize >= 500000) {
                       audienceMultiplier = 1.4;
-                      audienceLabel = "500K+ (Large)";
+                      audienceLabel = tc.audienceLabels.large;
                     } else if (audienceSize >= 100000) {
                       audienceMultiplier = 1.3;
-                      audienceLabel = "100K+ (Mid)";
+                      audienceLabel = tc.audienceLabels.mid;
                     } else if (audienceSize >= 50000) {
                       audienceMultiplier = 1.2;
-                      audienceLabel = "50K+ (Growing)";
+                      audienceLabel = tc.audienceLabels.growing;
                     } else if (audienceSize >= 10000) {
                       audienceMultiplier = 1.1;
-                      audienceLabel = "10K+ (Micro)";
+                      audienceLabel = tc.audienceLabels.micro;
                     } else if (audienceSize >= 5000) {
                       audienceMultiplier = 1.05;
-                      audienceLabel = "5K+ (Emerging)";
+                      audienceLabel = tc.audienceLabels.emerging;
                     } else if (audienceSize >= 1000) {
                       audienceMultiplier = 1.02;
-                      audienceLabel = "1K+ (Starting)";
+                      audienceLabel = tc.audienceLabels.starting;
                     }
 
                     // Calculate engagement multiplier
@@ -1085,64 +1078,54 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                       // YouTube: Good 10-20% | Viral 50%+
                       if (data.primaryPlatform === 'YouTube' && engagementRate >= 50) {
                         engagementMultiplier = 1.2;
-                        engagementLabel = "Viral Engagement";
+                        engagementLabel = tc.engagementLabels.viralEngagement;
                       } else if (data.primaryPlatform === 'YouTube' && engagementRate >= 20) {
                         engagementMultiplier = 1.15;
-                        engagementLabel = "High Engagement";
+                        engagementLabel = tc.engagementLabels.highEngagement;
                       } else if (data.primaryPlatform === 'YouTube' && engagementRate >= 10) {
                         engagementMultiplier = 1.08;
-                        engagementLabel = "Good Engagement";
+                        engagementLabel = tc.engagementLabels.goodEngagement;
                       }
-                      
-                      // Instagram: Good 3-5% | Great 7-10% | Exceptional 10%+
                       else if (data.primaryPlatform === 'Instagram' && engagementRate >= 10) {
                         engagementMultiplier = 1.18;
-                        engagementLabel = "Exceptional Engagement";
+                        engagementLabel = tc.engagementLabels.exceptionalEngagement;
                       } else if (data.primaryPlatform === 'Instagram' && engagementRate >= 7) {
                         engagementMultiplier = 1.15;
-                        engagementLabel = "Great Engagement";
+                        engagementLabel = tc.engagementLabels.greatEngagement;
                       } else if (data.primaryPlatform === 'Instagram' && engagementRate >= 3) {
                         engagementMultiplier = 1.08;
-                        engagementLabel = "Good Engagement";
+                        engagementLabel = tc.engagementLabels.goodEngagement;
                       }
-                      
-                      // TikTok: Good 50-100% | Viral 200%+
                       else if (data.primaryPlatform === 'TikTok' && engagementRate >= 200) {
                         engagementMultiplier = 1.25;
-                        engagementLabel = "Viral Engagement";
+                        engagementLabel = tc.engagementLabels.viralEngagement;
                       } else if (data.primaryPlatform === 'TikTok' && engagementRate >= 100) {
                         engagementMultiplier = 1.15;
-                        engagementLabel = "High Engagement";
+                        engagementLabel = tc.engagementLabels.highEngagement;
                       } else if (data.primaryPlatform === 'TikTok' && engagementRate >= 50) {
                         engagementMultiplier = 1.08;
-                        engagementLabel = "Good Engagement";
+                        engagementLabel = tc.engagementLabels.goodEngagement;
                       }
-                      
-                      // Twitter/X: Good 1-3% | Great 5%+
                       else if (data.primaryPlatform === 'Twitter/X' && engagementRate >= 5) {
                         engagementMultiplier = 1.15;
-                        engagementLabel = "Great Engagement";
+                        engagementLabel = tc.engagementLabels.greatEngagement;
                       } else if (data.primaryPlatform === 'Twitter/X' && engagementRate >= 1) {
                         engagementMultiplier = 1.08;
-                        engagementLabel = "Good Engagement";
+                        engagementLabel = tc.engagementLabels.goodEngagement;
                       }
-                      
-                      // LinkedIn: Good 1-3% | Great 5%+
                       else if (data.primaryPlatform === 'LinkedIn' && engagementRate >= 5) {
                         engagementMultiplier = 1.15;
-                        engagementLabel = "Great Engagement";
+                        engagementLabel = tc.engagementLabels.greatEngagement;
                       } else if (data.primaryPlatform === 'LinkedIn' && engagementRate >= 1) {
                         engagementMultiplier = 1.08;
-                        engagementLabel = "Good Engagement";
+                        engagementLabel = tc.engagementLabels.goodEngagement;
                       }
-                      
-                      // Blog/Newsletter: Good 1-2% | Great 3-4%+
                       else if (data.primaryPlatform === 'Blog/Newsletter' && engagementRate >= 3) {
                         engagementMultiplier = 1.15;
-                        engagementLabel = "Great Engagement";
+                        engagementLabel = tc.engagementLabels.greatEngagement;
                       } else if (data.primaryPlatform === 'Blog/Newsletter' && engagementRate >= 1) {
                         engagementMultiplier = 1.08;
-                        engagementLabel = "Good Engagement";
+                        engagementLabel = tc.engagementLabels.goodEngagement;
                       }
                     }
 
@@ -1157,17 +1140,17 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
 
                     return (
                       <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg shadow-md p-4">
-                        <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">Your Content Pricing</h3>
+                        <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">{tc.contentPricing}</h3>
                         <div className="space-y-3">
                           {/* Hourly Rate Breakdown */}
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="text-[#131718]/70">Starting Rate ({selectedRateTier === 'recommended' ? 'Recommended' : 'Base'})</span>
+                              <span className="text-[#131718]/70">{tc.startingRate} ({selectedRateTier === 'recommended' ? tc.recommendedRate.split(' ')[0] : tc.baseHourlyRate.split(' ')[0]})</span>
                               <span className="font-medium text-[#131718]">{selectedHourlyRate.toFixed(2)}/hr</span>
                             </div>
                             {audienceMultiplier > 1.0 && (
                               <div className="flex items-center justify-between text-xs">
-                                <span className="text-[#131718]/70">Audience Size ({audienceLabel})</span>
+                                <span className="text-[#131718]/70">{tc.audienceSize} ({audienceLabel})</span>
                                 <span className="font-medium text-[#131718]">+{((audienceMultiplier - 1) * 100).toFixed(0)}%</span>
                               </div>
                             )}
@@ -1178,7 +1161,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                               </div>
                             )}
                             <div className="flex items-center justify-between text-xs pt-1">
-                              <span className="text-[#131718]/70 font-medium">Adjusted Rate</span>
+                              <span className="text-[#131718]/70 font-medium">{tc.adjustedRate}</span>
                               <span className="font-semibold text-[#131718]">{adjustedHourlyRate.toFixed(2)}/hr</span>
                             </div>
                           </div>
@@ -1189,14 +1172,14 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           {/* Content Pricing Breakdown */}
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="text-[#131718]/70">Time Cost ({data.hoursPerContent}hrs)</span>
+                              <span className="text-[#131718]/70">{tc.timeCost} ({data.hoursPerContent}hrs)</span>
                               <span className="font-medium text-[#131718]">{baseContentCost.toFixed(2)}</span>
                             </div>
                             <div className="flex items-center justify-between text-xs">
                               <span className="text-[#131718]/70">
-                                {data.usageRights === 'organic' ? 'Organic Only (1x)' : 
-                                 data.usageRights === 'paid_ad' ? 'Paid Ad Rights (2.5x)' : 
-                                 'Exclusive Rights (5x)'}
+                                {data.usageRights === 'organic' ? tc.organicOnly :
+                                 data.usageRights === 'paid_ad' ? tc.paidAdRights :
+                                 tc.exclusiveRights}
                               </span>
                               <span className="font-medium text-[#131718]">×{rightsMultiplier}</span>
                             </div>
@@ -1204,7 +1187,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
 
                           {/* Final Price */}
                           <div className="pt-2 mt-2 border-t border-[#131718] flex items-center justify-between">
-                            <span className="font-semibold text-[#131718] text-[16px]">Your Floor Price</span>
+                            <span className="font-semibold text-[#131718] text-[16px]">{tc.floorPrice}</span>
                             <span className="text-base font-bold text-[#131718]">{finalPrice.toFixed(2)}</span>
                           </div>
                         </div>
@@ -1215,16 +1198,11 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   {/* Why This Matters for Content Creators */}
                   <div className="backdrop-blur-xl bg-primary/5 rounded-lg shadow-sm p-4 mt-4">
                     <div className="flex items-start gap-3 mb-3">
-                      <h3 className="font-semibold text-[16px]">Why This Matters</h3>
+                      <h3 className="font-semibold text-[16px]">{tc.whyMatters}</h3>
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground space-y-2">
-                      <p>
-                        <strong>Content creators</strong> price based on audience size, engagement, and usage rights—not just time. 
-                        A 10K follower account with 5% engagement is more valuable than 100K with 0.5% engagement.
-                      </p>
-                      <p className="mt-2">
-                        Usage rights matter: organic posts are base price, paid ad usage is 2-3x more, and exclusive rights can be 5x+.
-                      </p>
+                      <p dangerouslySetInnerHTML={{ __html: tc.contentWhy1 }} />
+                      <p className="mt-2">{tc.contentWhy2}</p>
                     </div>
                   </div>
                 </div>

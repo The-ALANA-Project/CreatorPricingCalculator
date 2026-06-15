@@ -7,6 +7,7 @@ import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Link } from "react-router";
 import { FloatingToolbar } from "@/app/components/FloatingToolbar";
+import { useLanguage, LanguageToggle } from "@/app/i18n/LanguageContext";
 import gsap from "gsap";
 
 interface CalculatorData {
@@ -27,20 +28,13 @@ interface CustomService {
   prepHours: number;
 }
 
-const DEFAULT_EXPENSES: Expense[] = [
-  { id: crypto.randomUUID(), category: "Housing", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Food", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Transport", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Health", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Internet", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Software", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "AI Tooling", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Equipment", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Subscriptions", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Professional", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Leisure", monthlyCost: 0 },
-  { id: crypto.randomUUID(), category: "Misc", monthlyCost: 0 },
-];
+function makeDefaultExpenses(labels: string[]): Expense[] {
+  return labels.map((category) => ({
+    id: crypto.randomUUID(),
+    category,
+    monthlyCost: 0,
+  }));
+}
 
 const DEFAULT_INCOME_SETTINGS: IncomeSettings = {
   taxRate: 30,
@@ -60,8 +54,9 @@ const DEFAULT_CREATOR_DATA: CreatorTypeData = {
 const STORAGE_KEY = 'creatorPricingData';
 
 export default function Calculator() {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [expenses, setExpenses] = useState<Expense[]>(DEFAULT_EXPENSES);
+  const [expenses, setExpenses] = useState<Expense[]>(() => makeDefaultExpenses(t.expenses.defaults));
   const [incomeSettings, setIncomeSettings] = useState<IncomeSettings>(DEFAULT_INCOME_SETTINGS);
   const [creatorData, setCreatorData] = useState<CreatorTypeData>(DEFAULT_CREATOR_DATA);
   const [selectedRateTier, setSelectedRateTier] = useState<'base' | 'recommended'>('recommended');
@@ -158,7 +153,7 @@ export default function Calculator() {
         const data: CalculatorData = JSON.parse(content);
         
         if (!data.expenses || !data.incomeSettings || !data.creatorData) {
-          alert('Invalid file format. Please upload a valid Creator Pricing data file.');
+          alert(t.calculator.invalidFile);
           return;
         }
         
@@ -168,10 +163,10 @@ export default function Calculator() {
         if (data.customServices) setCustomServices(data.customServices);
         if (data.markup !== undefined) setMarkup(data.markup);
         if (data.selectedRateTier) setSelectedRateTier(data.selectedRateTier);
-        alert('Data imported successfully! 🎉');
+        alert(t.calculator.importSuccess);
       } catch (error) {
         console.error('Error importing data:', error);
-        alert('Error reading file. Please ensure it\'s a valid JSON file.');
+        alert(t.calculator.importError);
       }
     };
     reader.readAsText(file);
@@ -181,7 +176,7 @@ export default function Calculator() {
     if (file.type === 'application/json' || file.name.endsWith('.json')) {
       importData(file);
     } else {
-      alert('Please upload a JSON file.');
+      alert(t.calculator.uploadWrongType);
     }
   };
 
@@ -224,15 +219,15 @@ export default function Calculator() {
       {/* Static Header */}
       <header className="sticky top-0 z-50 bg-primary border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] py-6 sm:py-6">
         <div className="pl-4 pr-4 sm:pl-6 sm:pr-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-start sm:items-end justify-between">
             <div>
-              <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-primary-foreground">Creator Pricing Calculator</h1>
+              <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-primary-foreground">{t.calculator.title}</h1>
               <p className="text-sm sm:text-sm text-[#fee6ea] mt-1">
-                Calculate your sustainable rates based on real expenses, taxes, and business needs.
+                {t.calculator.subtitle}
               </p>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Action area — reserved for future use */}
+            <div className="flex-shrink-0">
+              <LanguageToggle />
             </div>
           </div>
         </div>
@@ -247,7 +242,7 @@ export default function Calculator() {
             <CardContent className="p-4 sm:p-6 md:p-8">
               <ExpenseInput expenses={expenses} onExpensesChange={setExpenses} />
               <div className="mt-6 sm:mt-8 flex justify-end">
-                <Button onClick={() => handleStepChange(2)}>Next Step</Button>
+                <Button onClick={() => handleStepChange(2)}>{t.calculator.nextStep}</Button>
               </div>
             </CardContent>
           </Card>
@@ -263,8 +258,8 @@ export default function Calculator() {
                 onSettingsChange={setIncomeSettings}
               />
               <div className="mt-6 sm:mt-8 flex justify-between">
-                <Button onClick={() => handleStepChange(1)}>Previous Step</Button>
-                <Button onClick={() => handleStepChange(3)}>Next Step</Button>
+                <Button onClick={() => handleStepChange(1)}>{t.calculator.prevStep}</Button>
+                <Button onClick={() => handleStepChange(3)}>{t.calculator.nextStep}</Button>
               </div>
             </CardContent>
           </Card>
@@ -286,8 +281,8 @@ export default function Calculator() {
                 <Button onClick={() => {
                   handleStepChange(2);
                   window.scrollTo({ top: 0, behavior: 'instant' });
-                }}>Previous Step</Button>
-                <Button onClick={() => handleStepChange(4)}>Next Step</Button>
+                }}>{t.calculator.prevStep}</Button>
+                <Button onClick={() => handleStepChange(4)}>{t.calculator.nextStep}</Button>
               </div>
             </CardContent>
           </Card>
@@ -309,8 +304,8 @@ export default function Calculator() {
                 ref={servicePricingRef}
               />
               <div className="mt-6 sm:mt-8 flex justify-between">
-                <Button onClick={() => handleStepChange(3)}>Previous Step</Button>
-                <Button onClick={() => handleStepChange(1)}>Start Over</Button>
+                <Button onClick={() => handleStepChange(3)}>{t.calculator.prevStep}</Button>
+                <Button onClick={() => handleStepChange(1)}>{t.calculator.startOver}</Button>
               </div>
             </CardContent>
           </Card>
@@ -323,9 +318,9 @@ export default function Calculator() {
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                   <div className="flex-1">
-                    <h3 className="mb-1 text-[20px]">Don't forget to save your calculations!</h3>
+                    <h3 className="mb-1 text-[20px]">{t.calculator.save.title}</h3>
                     <p className="text-muted-foreground text-[16px]">
-                      Save your data as JSON to quickly re-import and update your rates next time. Or download as PNG/PDF to share with clients.
+                      {t.calculator.save.desc}
                     </p>
                   </div>
                 </div>
@@ -335,21 +330,21 @@ export default function Calculator() {
                     variant="default"
                     className="w-full sm:flex-1"
                   >
-                    Save Data (JSON)
+                    {t.calculator.save.saveJson}
                   </Button>
                   <Button
                     onClick={() => servicePricingRef.current?.downloadAsImage()}
                     variant="outline"
                     className="border-border w-full sm:flex-1"
                   >
-                    Download as PNG
+                    {t.calculator.save.downloadPng}
                   </Button>
                   <Button
                     onClick={() => servicePricingRef.current?.downloadAsPDF()}
                     variant="outline"
                     className="border-border w-full sm:flex-1"
                   >
-                    Download as PDF
+                    {t.calculator.save.downloadPdf}
                   </Button>
                 </div>
               </div>
@@ -375,22 +370,22 @@ export default function Calculator() {
       {/* Footer */}
       <footer className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-muted-foreground px-[16px] pt-[0px] pb-24 lg:pb-[16px]">
         <p>
-          Share this calculator, use it, and consider{' '}
-          <a 
-            href="https://ko-fi.com/stellaachenbach" 
-            target="_blank" 
+          {t.calculator.footer.share}{' '}
+          <a
+            href="https://ko-fi.com/stellaachenbach"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline font-bold"
           >
-            donating
+            {t.calculator.footer.donating}
           </a>
-          {' '}if you found it helpful.
+          {' '}{t.calculator.footer.helpful}
         </p>
         <p className="mt-2">
-          Made with 💜 by{' '}
-          <a 
-            href="https://www.linkedin.com/in/stella-achenbach/" 
-            target="_blank" 
+          {t.calculator.footer.madeWith}{' '}
+          <a
+            href="https://www.linkedin.com/in/stella-achenbach/"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >

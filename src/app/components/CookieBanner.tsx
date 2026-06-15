@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export function CookieBanner() {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
@@ -83,18 +85,17 @@ export function CookieBanner() {
             <div className="flex items-start justify-between gap-3 md:contents">
               <div className="flex-1">
                 <p className="text-sm font-semibold text-[#FEE6EA] mb-1">
-                  We use cookies
+                  {t.cookie.title}
                 </p>
                 <p className="text-xs leading-relaxed text-[#FEE6EA]/70">
-                  This site uses Google Analytics and saves your calculator data
-                  locally. No personal information is collected.{" "}
+                  {t.cookie.desc}{" "}
                   <a
                     href="https://policies.google.com/technologies/cookies"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline hover:text-[#FEE6EA] transition-colors"
                   >
-                    Learn more
+                    {t.cookie.learnMore}
                   </a>
                 </p>
               </div>
@@ -115,13 +116,13 @@ export function CookieBanner() {
                 onClick={handleDecline}
                 className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded-lg border border-[#FEE6EA] bg-[#131718] text-[#FEE6EA] hover:bg-[#FEE6EA] hover:text-[#131718] transition-all whitespace-nowrap"
               >
-                Decline
+                {t.cookie.decline}
               </button>
               <button
                 onClick={handleAccept}
                 className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded-lg border border-[#FEE6EA] bg-[#FEE6EA] text-[#131718] hover:bg-[#131718] hover:text-[#FEE6EA] transition-all whitespace-nowrap"
               >
-                Accept
+                {t.cookie.accept}
               </button>
 
               {/* Desktop X button */}

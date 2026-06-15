@@ -2,6 +2,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Button } from "@/app/components/ui/button";
 import { Trash2, Plus } from "lucide-react";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export interface Expense {
   id: string;
@@ -15,6 +16,7 @@ interface ExpenseInputProps {
 }
 
 export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) {
+  const { t } = useLanguage();
   const addExpense = () => {
     const newExpense: Expense = {
       id: crypto.randomUUID(),
@@ -42,9 +44,9 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="mb-2">Monthly Expenses</h2>
+        <h2 className="mb-2">{t.expenses.title}</h2>
         <p className="text-muted-foreground text-[16px]">
-          Add all your monthly costs: housing, food, health, software, tools, equipment, etc. <strong>When filling these bare number fields think in your own native currency.</strong> (USD, EUR, GBP, etc.).
+          {t.expenses.desc} <strong>{t.expenses.currencyNote}</strong> {t.expenses.currencyHint}
         </p>
       </div>
 
@@ -54,11 +56,11 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
             {/* Category */}
             <div className="flex-1 min-w-0 space-y-1.5">
               <Label htmlFor={`category-${expense.id}`} className="text-xs sm:text-sm">
-                Category
+                {t.expenses.category}
               </Label>
               <Input
                 id={`category-${expense.id}`}
-                placeholder="Category"
+                placeholder={t.expenses.category}
                 value={expense.category}
                 onChange={(e) => updateExpense(expense.id, "category", e.target.value)}
                 className="bg-input-background border border-border h-9 text-sm"
@@ -68,7 +70,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
             {/* Monthly Cost */}
             <div className="w-24 sm:w-32 space-y-1.5">
               <Label htmlFor={`cost-${expense.id}`} className="text-xs sm:text-sm">
-                Cost
+                {t.expenses.cost}
               </Label>
               <Input
                 id={`cost-${expense.id}`}
@@ -104,16 +106,16 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
         className="w-full border-border"
       >
         <Plus className="h-4 w-4 mr-2" />
-        Add Expense
+        {t.expenses.addExpense}
       </Button>
 
       <div className="backdrop-blur-2xl bg-primary border border-primary/20 rounded-lg shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] p-4 sm:p-6 space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm text-[#FEE6EA]">Total Monthly Expenses</span>
+          <span className="text-xs sm:text-sm text-[#FEE6EA]">{t.expenses.totalMonthly}</span>
           <span className="font-medium text-sm sm:text-base text-primary-foreground">{totalMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs sm:text-sm text-[#FEE6EA]">Total Annual Expenses</span>
+          <span className="text-xs sm:text-sm text-[#FEE6EA]">{t.expenses.totalAnnual}</span>
           <span className="font-medium text-sm sm:text-base text-primary-foreground">{totalAnnual.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         </div>
       </div>

@@ -3,16 +3,19 @@ import { Button } from "@/app/components/ui/button";
 import { ExternalLink, Shield, Zap, FileText } from "lucide-react";
 import { Link } from "react-router";
 import { FloatingToolbar } from "@/app/components/FloatingToolbar";
+import { useLanguage, LanguageToggle } from "@/app/i18n/LanguageContext";
 
 export default function Resources() {
+  const { t } = useLanguage();
+
   const resources = [
     {
-      category: "Help",
+      category: "Help" as const,
       icon: Shield,
       items: [
         {
           title: "HateAid",
-          description: "HateAid is a Berlin-based non-profit organization that supports victims of digital violence, such as hate speech, stalking, and defamation. They provide free emotional counseling and legal aid, including financing lawsuits against perpetrators and platforms. HateAid offers resources for documenting hate speech, takes on landmark cases against social media platforms, and advocates for better protection for victims.",
+          description: t.resources.items.hateaid,
           url: "https://hateaid.org/en/",
           author: "",
           authorUrl: "",
@@ -20,19 +23,12 @@ export default function Resources() {
       ],
     },
     {
-      category: "Platforms",
+      category: "Platforms" as const,
       icon: Zap,
       items: [
         {
-          title: "Meet With",
-          description: "A scheduling platform that helps creators monetize their time through paid 1-on-1 calls, consultations, and meetings. Offer your expertise directly to your audience, set your own rates, and manage bookings seamlessly.",
-          url: "https://meetwith.xyz/",
-          author: "",
-          authorUrl: "",
-        },
-        {
           title: "Paragraph",
-          description: "A newsletter and publishing platform for creators to build and monetize their audience. Write, publish, and grow your subscriber base with built-in monetization tools including subscriptions and web3 features.",
+          description: t.resources.items.paragraph,
           url: "https://paragraph.com/",
           author: "",
           authorUrl: "",
@@ -40,20 +36,27 @@ export default function Resources() {
       ],
     },
     {
-      category: "Tools",
+      category: "Tools" as const,
       icon: FileText,
       items: [
         {
           title: "Freelance Rate Guide",
-          description: "Auto-generate polite forms of saying no to unpaid jobs. Often freelancers struggle to say no because they fear missing out on opportunities and lack more refined wording. Shivani's Freelance Rate Guide helps you to find the right wording in seconds to reply confidently to DM's, Emails and more.",
+          description: t.resources.items.freelancerate,
           url: "https://www.freelancerateguide.com/",
           author: "Shivani Shah",
           authorUrl: "https://www.linkedin.com/in/wordsbyshivani/",
         },
         {
           title: "Creator Branding Studio",
-          description: "An interactive personal branding journey studio that transforms your goals and aesthetics into a tailored personal brand concept in less than 30 minutes. Build your brand visually on a freeform canvas through a 10-step guided journey, then export a complete brief for a brand designer you hire or yourself to continue the work.",
+          description: t.resources.items.brandingstudio,
           url: "https://creator-branding.com/",
+          author: "Stella Achenbach",
+          authorUrl: "https://www.linkedin.com/in/stella-achenbach/",
+        },
+        {
+          title: "Creator Contract Builder",
+          description: t.resources.items.creatorcontractbuilder,
+          url: "https://creatorcontractbuilder.com/",
           author: "Stella Achenbach",
           authorUrl: "https://www.linkedin.com/in/stella-achenbach/",
         },
@@ -69,15 +72,15 @@ export default function Resources() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-primary border-b border-primary/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] py-6 sm:py-6">
         <div className="px-4 sm:px-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-start sm:items-end justify-between">
             <div>
-              <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-primary-foreground">Resources for Creators</h1>
+              <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-primary-foreground">{t.resources.title}</h1>
               <p className="text-sm sm:text-sm text-[#fee6ea] mt-1">
-                Curated tools, guides, and resources to help you advance your creative career beyond just pricing.
+                {t.resources.subtitle}
               </p>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Action area — reserved for future use */}
+            <div className="flex-shrink-0">
+              <LanguageToggle />
             </div>
           </div>
         </div>
@@ -92,7 +95,7 @@ export default function Resources() {
               <div key={section.category}>
                 <div className="flex items-center gap-3 mb-6">
                   <IconComponent className="h-6 w-6 text-primary" />
-                  <h2 className="font-semibold text-[25px]">{section.category}</h2>
+                  <h2 className="font-semibold text-[25px]">{t.resources.sections[section.category]}</h2>
                 </div>
 
                 <div className="grid gap-6">
@@ -110,7 +113,7 @@ export default function Resources() {
                             </p>
                             {item.author && (
                               <p className="text-sm text-muted-foreground">
-                                Created by{" "}
+                                {t.resources.createdBy}{" "}
                                 <a 
                                   href={item.authorUrl}
                                   target="_blank"
@@ -129,7 +132,7 @@ export default function Resources() {
                               rel="noopener noreferrer"
                             >
                               <Button className="w-full sm:w-auto">
-                                {section.category === "Help" ? "Learn More" : section.category === "Platforms" ? "Visit Platform" : "Visit Tool"}
+                                {section.category === "Help" ? t.resources.buttons.learnMore : section.category === "Platforms" ? t.resources.buttons.visitPlatform : t.resources.buttons.visitTool}
                               </Button>
                             </a>
                           </div>
@@ -150,22 +153,22 @@ export default function Resources() {
       {/* Footer */}
       <footer className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-muted-foreground px-[16px] pt-[0px] pb-24 lg:pb-[16px]">
         <p>
-          Share this calculator, use it, and consider{' '}
-          <a 
-            href="https://ko-fi.com/stellaachenbach" 
-            target="_blank" 
+          {t.resources.footer.share}{' '}
+          <a
+            href="https://ko-fi.com/stellaachenbach"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline font-bold"
           >
-            donating
+            {t.resources.footer.donating}
           </a>
-          {' '}if you found it helpful.
+          {' '}{t.resources.footer.helpful}
         </p>
         <p className="mt-2">
-          Made with 💜 by{' '}
-          <a 
-            href="https://www.linkedin.com/in/stella-achenbach/" 
-            target="_blank" 
+          {t.resources.footer.madeWith}{' '}
+          <a
+            href="https://www.linkedin.com/in/stella-achenbach/"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >

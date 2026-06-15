@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import gsap from "gsap";
 import { SEO } from "@/app/components/SEO";
+import { useLanguage, LanguageToggle } from "@/app/i18n/LanguageContext";
 
 export default function Intro() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const tubeRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLHeadingElement>(null);
@@ -12,7 +14,7 @@ export default function Intro() {
   const line3Ref = useRef<HTMLHeadingElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
-  // GSAP barrel-roll animation
+  // GSAP barrel-roll animation — re-runs when language changes
   useEffect(() => {
     if (!containerRef.current) return;
     gsap.set(containerRef.current, { visibility: "visible" });
@@ -20,7 +22,7 @@ export default function Intro() {
     const lines = [line1Ref.current, line2Ref.current, line3Ref.current];
     if (!lines.every(Boolean)) return;
 
-    const textLines = ["Creator", "Pricing", "Calculator"];
+    const textLines = t.intro.words;
 
     // Split each word into individual char spans
     const splitLines = lines.map((line, lineIndex) => {
@@ -93,7 +95,8 @@ export default function Intro() {
     return () => {
       tl?.kill();
     };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t.intro.words]);
 
   // Exit: liquid glass dissolve
   const handleBeginJourney = () => {
@@ -119,9 +122,9 @@ export default function Intro() {
   return (
     <>
       <SEO
-        title="Creator Pricing Calculator - Know Your Worth, Set Your Rates"
-        description="Calculate your sustainable creator rates based on real expenses, taxes, and business needs. Stop guessing, start pricing with confidence."
-        keywords="creator pricing, freelance rates, rate calculator, creator economy, pricing strategy, freelance pricing, content creator rates"
+        title={t.intro.seoTitle}
+        description={t.intro.seoDescription}
+        keywords={t.intro.seoKeywords}
       />
 
       <div
@@ -129,13 +132,17 @@ export default function Intro() {
         className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
         style={{ backgroundColor: "#131718", visibility: "hidden" }}
       >
+        {/* Language toggle — top right */}
+        <div className="absolute top-6 right-6 z-10">
+          <LanguageToggle />
+        </div>
         {/* Rolling text container */}
         <div
           ref={tubeRef}
           className="relative w-full flex flex-col items-center justify-center"
           style={{ height: "clamp(300px, 30vw, 500px)" }}
         >
-          {["Creator", "Pricing", "Calculator"].map((word, i) => {
+          {t.intro.words.map((word, i) => {
             const refs = [line1Ref, line2Ref, line3Ref];
             return (
               <h1
@@ -185,15 +192,16 @@ export default function Intro() {
                 "0 0 30px rgba(254,230,234,0.3), 0 0 60px rgba(254,230,234,0.15)";
             }}
           >
-            Start Pricing Now
+            {t.intro.cta}
           </button>
 
           <p
             className="text-center mt-6 text-sm px-6"
             style={{ color: "rgba(254,230,234,0.6)", maxWidth: "400px" }}
           >
-            Optimized for desktop experience. 
-            Mobile works, but may feel less convenient.
+            {t.intro.mobileNote.split("\n").map((line, i) => (
+              <span key={i}>{line}{i < t.intro.mobileNote.split("\n").length - 1 && <br />}</span>
+            ))}
           </p>
         </div>
       </div>

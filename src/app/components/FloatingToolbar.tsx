@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Home, BookOpen, Upload, Download, FileImage, FileText } from "lucide-react";
 import { Link, useLocation } from "react-router";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 interface FloatingToolbarProps {
   currentStep?: number;
@@ -14,8 +15,6 @@ interface FloatingToolbarProps {
   showSteps?: boolean;
 }
 
-const STEP_LABELS = ["Expenses", "Foundation", "Creator", "Pricing"];
-
 export function FloatingToolbar({
   currentStep = 1,
   onStepChange,
@@ -26,6 +25,8 @@ export function FloatingToolbar({
   onExportPDF,
   showSteps = true,
 }: FloatingToolbarProps) {
+  const { t } = useLanguage();
+  const STEP_LABELS = t.toolbar.stepLabels;
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [stepDropdownOpen, setStepDropdownOpen] = useState(false);
   const downloadRef = useRef<HTMLDivElement>(null);
@@ -114,7 +115,7 @@ export function FloatingToolbar({
             : "bg-[#131718] text-[#FEE6EA]/60 hover:text-[#FEE6EA]"
         }`}
         style={{ transition: "all 400ms cubic-bezier(0.175, 0.885, 0.32, 2.2)" }}
-        title={`Step ${step}: ${STEP_LABELS[step - 1]}`}
+        title={`${t.toolbar.step} ${step}: ${STEP_LABELS[step - 1]}`}
       >
         {step}
       </button>
@@ -137,13 +138,13 @@ export function FloatingToolbar({
         {/* Contextual nav: show Resources on calculator, Home on resources */}
         {isCalculator ? (
           <Link to="/resources">
-            <ToolbarButton label="Resources">
+            <ToolbarButton label={t.toolbar.resources}>
               <BookOpen className="w-5 h-5" />
             </ToolbarButton>
           </Link>
         ) : (
           <Link to="/calculator">
-            <ToolbarButton label="Home">
+            <ToolbarButton label={t.toolbar.home}>
               <Home className="w-5 h-5" />
             </ToolbarButton>
           </Link>
@@ -166,7 +167,7 @@ export function FloatingToolbar({
         {/* Upload */}
         {showSteps && (
           <ToolbarButton
-            label="Upload Data"
+            label={t.toolbar.uploadData}
             onClick={() => fileInputRef.current?.click()}
           >
             <Upload className="w-5 h-5" />
@@ -177,7 +178,7 @@ export function FloatingToolbar({
         {showSteps && (
           <div ref={downloadRef} className="relative">
             <ToolbarButton
-              label="Download"
+              label={t.toolbar.download}
               onClick={() => setDownloadOpen(!downloadOpen)}
             >
               <Download className="w-5 h-5" />
@@ -202,7 +203,7 @@ export function FloatingToolbar({
                       style={{ transition: "all 100ms" }}
                     >
                       <Download className="w-4 h-4" />
-                      Save JSON
+                      {t.toolbar.saveJson}
                     </button>
                     <button
                       onClick={() => {
@@ -213,7 +214,7 @@ export function FloatingToolbar({
                       style={{ transition: "all 100ms" }}
                     >
                       <FileImage className="w-4 h-4" />
-                      Export PNG
+                      {t.toolbar.exportPng}
                     </button>
                     <button
                       onClick={() => {
@@ -224,7 +225,7 @@ export function FloatingToolbar({
                       style={{ transition: "all 100ms" }}
                     >
                       <FileText className="w-4 h-4" />
-                      Export PDF
+                      {t.toolbar.exportPdf}
                     </button>
                   </div>
                 </motion.div>
@@ -246,7 +247,7 @@ export function FloatingToolbar({
               >
                 <BookOpen className="w-5 h-5" />
               </motion.div>
-              <span className="text-[10px] text-[#FEE6EA]/70">Resources</span>
+              <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.resources}</span>
             </Link>
           ) : (
             <Link to="/calculator" className="flex flex-col items-center gap-1">
@@ -256,7 +257,7 @@ export function FloatingToolbar({
               >
                 <Home className="w-5 h-5" />
               </motion.div>
-              <span className="text-[10px] text-[#FEE6EA]/70">Home</span>
+              <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.home}</span>
             </Link>
           )}
 
@@ -272,7 +273,7 @@ export function FloatingToolbar({
               >
                 <Upload className="w-5 h-5" />
               </motion.div>
-              <span className="text-[10px] text-[#FEE6EA]/70">Import</span>
+              <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.import}</span>
             </button>
           )}
 
@@ -287,7 +288,7 @@ export function FloatingToolbar({
                 {currentStep}
               </motion.button>
               <span className="text-[10px] text-[#FEE6EA]/70">
-                Step {currentStep}
+                {t.toolbar.step} {currentStep}
               </span>
 
               <AnimatePresence>
@@ -338,7 +339,7 @@ export function FloatingToolbar({
               >
                 <Download className="w-5 h-5" />
               </motion.button>
-              <span className="text-[10px] text-[#FEE6EA]/70">Export</span>
+              <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.export}</span>
 
               <AnimatePresence>
                 {downloadOpen && (
@@ -359,7 +360,7 @@ export function FloatingToolbar({
                         style={{ transition: "all 100ms" }}
                       >
                         <Download className="w-4 h-4" />
-                        Save JSON
+                        {t.toolbar.saveJson}
                       </button>
                       <button
                         onClick={() => {
@@ -370,7 +371,7 @@ export function FloatingToolbar({
                         style={{ transition: "all 100ms" }}
                       >
                         <FileImage className="w-4 h-4" />
-                        Export PNG
+                        {t.toolbar.exportPng}
                       </button>
                       <button
                         onClick={() => {
@@ -381,7 +382,7 @@ export function FloatingToolbar({
                         style={{ transition: "all 100ms" }}
                       >
                         <FileText className="w-4 h-4" />
-                        Export PDF
+                        {t.toolbar.exportPdf}
                       </button>
                     </div>
                   </motion.div>
