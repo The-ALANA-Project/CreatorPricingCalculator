@@ -40,6 +40,13 @@ export default function Resources() {
       icon: FileText,
       items: [
         {
+          title: "Borker",
+          description: t.resources.items.borker,
+          url: "https://borker.xyz/ref/stella-achenbach-drcr",
+          author: "",
+          authorUrl: "",
+        },
+        {
           title: "Freelance Rate Guide",
           description: t.resources.items.freelancerate,
           url: "https://www.freelancerateguide.com/",
