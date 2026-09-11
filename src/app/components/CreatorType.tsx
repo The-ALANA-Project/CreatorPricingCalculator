@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent } from "@/app/components/ui/card";
-import { Palette, Package, Video, Lightbulb } from "lucide-react";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export type CreatorTypeValue = "digital" | "physical" | "content";
@@ -85,19 +84,16 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
   const creatorTypes = [
     {
       value: "digital" as CreatorTypeValue,
-      icon: Palette,
       title: tc.types.digital.title,
       description: tc.types.digital.desc,
     },
     {
       value: "physical" as CreatorTypeValue,
-      icon: Package,
       title: tc.types.physical.title,
       description: tc.types.physical.desc,
     },
     {
       value: "content" as CreatorTypeValue,
-      icon: Video,
       title: tc.types.content.title,
       description: tc.types.content.desc,
     },
@@ -178,7 +174,6 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
       {/* Creator Type Selection with Dropdown Fields */}
       <div className="grid grid-cols-1 gap-3 sm:gap-4">
         {creatorTypes.map((type) => {
-          const Icon = type.icon;
           const isSelected = data.type === type.value;
           
           // Get the appropriate ref for this card
@@ -242,7 +237,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           <button
                             onClick={() => updateData({ experienceLevel: item.level as any })}
                             className={`
-                              px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border
+                              px-3 py-2 rounded text-xs sm:text-sm font-medium transition-all duration-200 border
                               ${data.experienceLevel === item.level
                                 ? 'bg-primary text-primary-foreground shadow-md border-primary'
                                 : 'bg-[#FEE6EA] text-[#131718] border-transparent hover:border-[#131718]'
@@ -273,7 +268,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           <button
                             onClick={() => updateData({ projectTerms: item.term as any })}
                             className={`
-                              px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border
+                              px-3 py-2 rounded text-xs sm:text-sm font-medium transition-all duration-200 border
                               ${data.projectTerms === item.term
                                 ? 'bg-primary text-primary-foreground shadow-md border-primary'
                                 : 'bg-[#FEE6EA] text-[#131718] border-transparent hover:border-[#131718]'
@@ -292,7 +287,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
 
                   {/* Your Adjusted Rates Preview - Digital Creator */}
                   {data.experienceLevel && (
-                    <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg shadow-md p-4">
+                    <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded shadow-md p-4">
                       <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">{tc.adjustedRates}</h3>
                       <div className="space-y-3">
                         {(() => {
@@ -337,7 +332,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   )}
 
                   {/* Why This Matters for Digital Creators */}
-                  <div className="backdrop-blur-xl bg-primary/5 rounded-lg shadow-sm p-4 mt-4">
+                  <div className="backdrop-blur-xl bg-primary/5 rounded shadow-sm p-4 mt-4">
                     <div className="flex items-start gap-3 mb-3">
                       <h3 className="font-semibold text-[16px]">{tc.whyMatters}</h3>
                     </div>
@@ -398,7 +393,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         <button
                           onClick={() => updateData({ salesChannel: "wholesale" })}
                           className={`
-                            px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 border
+                            px-4 py-3 rounded text-sm font-medium transition-all duration-200 border
                             ${data.salesChannel === "wholesale"
                               ? 'bg-primary text-primary-foreground shadow-md border-primary'
                               : 'bg-[#FEE6EA] text-[#131718] border-transparent hover:border-[#131718]'
@@ -411,7 +406,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         <button
                           onClick={() => updateData({ salesChannel: "retail" })}
                           className={`
-                            px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 border
+                            px-4 py-3 rounded text-sm font-medium transition-all duration-200 border
                             ${data.salesChannel === "retail"
                               ? 'bg-primary text-primary-foreground shadow-md border-primary'
                               : 'bg-[#FEE6EA] text-[#131718] border-transparent hover:border-[#131718]'
@@ -448,7 +443,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
 
                   {/* Your Product Pricing Preview - Physical Creator */}
                   {data.avgMaterialCost && data.hoursPerUnit && data.salesChannel && (
-                    <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg shadow-md p-4">
+                    <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded shadow-md p-4">
                       <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">{tc.productPricing}</h3>
                       <div className="space-y-3">
                         {(() => {
@@ -490,7 +485,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   )}
 
                   {/* Why This Matters for Physical Creators */}
-                  <div className="backdrop-blur-xl bg-primary/5 rounded-lg shadow-sm p-4 mt-4">
+                  <div className="backdrop-blur-xl bg-primary/5 rounded shadow-sm p-4 mt-4">
                     <div className="flex items-start gap-3 mb-3">
                       <h3 className="font-semibold text-[16px]">{tc.whyMatters}</h3>
                     </div>
@@ -516,7 +511,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                               key={platform}
                               onClick={() => updateData({ primaryPlatform: isPlatformSelected ? undefined : platform as any })}
                               className={`
-                                px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border
+                                px-3 py-2 rounded text-xs sm:text-sm font-medium transition-all duration-200 border
                                 ${isPlatformSelected
                                   ? 'bg-primary text-primary-foreground shadow-md border-primary'
                                   : 'bg-[#FEE6EA] text-[#131718] border-transparent hover:border-[#131718]'
@@ -604,7 +599,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
+                        <div className="flex items-center gap-2 p-3 rounded bg-[#FEE6EA]">
                           <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">{tc.viewToSubscriber}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
@@ -680,7 +675,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
+                        <div className="flex items-center gap-2 p-3 rounded bg-[#FEE6EA]">
                           <span className="text-muted-foreground text-[#131718] text-[16px] font-bold">{tc.engagementRate}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
@@ -757,7 +752,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
+                        <div className="flex items-center gap-2 p-3 rounded bg-[#FEE6EA]">
                           <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">{tc.viewToFollower}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
@@ -821,7 +816,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
+                        <div className="flex items-center gap-2 p-3 rounded bg-[#FEE6EA]">
                           <span className="text-muted-foreground text-[16px] text-[#131718] font-bold">{tc.engagementRate}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
@@ -885,7 +880,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
+                        <div className="flex items-center gap-2 p-3 rounded bg-[#FEE6EA]">
                           <span className="text-muted-foreground text-[16px] font-bold text-[#131718]">{tc.engagementRate}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
@@ -957,7 +952,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                           <p className="text-xs text-muted-foreground -mt-2.5">{tc.ctrHint}</p>
                         </div>
 
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-[#FEE6EA]">
+                        <div className="flex items-center gap-2 p-3 rounded bg-[#FEE6EA]">
                           <span className="text-muted-foreground text-[16px] font-bold text-[#131718]">{tc.overallEngagement}</span>
                           <span className="font-semibold text-[16px]">
                             {typeof data.engagementRate === 'number' ? `${data.engagementRate}%` : '—'}
@@ -975,7 +970,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                         id="contentType"
                         value={data.contentType || ""}
                         onChange={(e) => updateData({ contentType: e.target.value })}
-                        className="w-full px-3 py-2 rounded-lg bg-input-background border border-border text-sm focus:outline-none focus:ring-1 focus:ring-border"
+                        className="w-full px-3 py-2 rounded bg-input-background border border-border text-sm focus:outline-none focus:ring-1 focus:ring-border"
                       >
                         <option value="">{tc.selectType}</option>
                         {data.primaryPlatform === "Blog/Newsletter" ? (
@@ -1010,7 +1005,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                             key={right.value}
                             onClick={() => updateData({ usageRights: right.value as any })}
                             className={`
-                              px-4 py-3 rounded-lg text-left transition-all duration-200 border
+                              px-4 py-3 rounded text-left transition-all duration-200 border
                               ${data.usageRights === right.value
                                 ? 'bg-primary text-primary-foreground shadow-md border-primary'
                                 : 'bg-[#FEE6EA] text-[#131718] border-transparent hover:border-[#131718]'
@@ -1139,7 +1134,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                     const finalPrice = baseContentCost * rightsMultiplier;
 
                     return (
-                      <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded-lg shadow-md p-4">
+                      <div className="bg-[#FEE6EA] border border-[#FEE6EA] rounded shadow-md p-4">
                         <h3 className="font-semibold mb-3 text-[#131718] text-[16px]">{tc.contentPricing}</h3>
                         <div className="space-y-3">
                           {/* Hourly Rate Breakdown */}
@@ -1196,7 +1191,7 @@ export function CreatorType({ data, onDataChange, targetIncome, billableHours, s
                   })()}
 
                   {/* Why This Matters for Content Creators */}
-                  <div className="backdrop-blur-xl bg-primary/5 rounded-lg shadow-sm p-4 mt-4">
+                  <div className="backdrop-blur-xl bg-primary/5 rounded shadow-sm p-4 mt-4">
                     <div className="flex items-start gap-3 mb-3">
                       <h3 className="font-semibold text-[16px]">{tc.whyMatters}</h3>
                     </div>

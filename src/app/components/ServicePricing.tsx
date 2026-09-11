@@ -2,7 +2,7 @@ import { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Button } from "@/app/components/ui/button";
-import { Download, FileImage, FileText, Plus, Trash2 } from "lucide-react";
+import { Icon } from "@/app/components/ui/icon";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { CreatorTypeData } from "./CreatorType";
@@ -419,7 +419,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                     const val = parseFloat(e.target.value);
                     if (!isNaN(val)) onMarkupChange(Math.max(0, Math.min(100, val)));
                   }}
-                  className="w-20 px-3 py-2 bg-input-background border border-border rounded-lg text-center text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-20 px-3 py-2 bg-input-background border border-border rounded text-center text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 />
                 <span className="text-sm text-muted-foreground min-w-[20px]">%</span>
               </div>
@@ -453,7 +453,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                 size="sm"
                 className="flex-shrink-0"
               >
-                <Plus className="h-4 w-4 mr-1" />
+                <Icon name="add" size={16} className="mr-1" />
                 {tp.add}
               </Button>
             </div>
@@ -519,14 +519,14 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
                             size="sm"
                             className="h-9 w-9 p-0 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
                           >
-                            <Trash2 className="h-4 w-4 text-[#131718]" />
+                            <Icon name="delete" size={16} className="text-[#131718]" />
                           </Button>
                         </div>
                       </div>
 
                       {/* Hour Breakdown */}
                       {totalHours > 0 && (
-                        <div className="rounded-lg p-3 text-xs text-muted-foreground bg-[#fee6ea]">
+                        <div className="rounded p-3 text-xs text-muted-foreground bg-[#fee6ea]">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span>{service.deliveryHours}h {tp.delivery}</span>
                             <span>+</span>
@@ -747,7 +747,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               width: '800px', 
               padding: '48px', 
               backgroundColor: '#FEE6EA',
-              fontFamily: 'Work Sans, system-ui, sans-serif'
+              fontFamily: 'Geist, system-ui, sans-serif'
             }}>
               {/* Header */}
               <div style={{ marginBottom: '32px' }}>
@@ -1012,7 +1012,7 @@ export const ServicePricing = forwardRef<ServicePricingRef, ServicePricingProps>
               width: '800px', 
               padding: '48px', 
               backgroundColor: '#FEE6EA',
-              fontFamily: 'Work Sans, system-ui, sans-serif'
+              fontFamily: 'Geist, system-ui, sans-serif'
             }}>
               {/* Header */}
               <div style={{ marginBottom: '32px' }}>

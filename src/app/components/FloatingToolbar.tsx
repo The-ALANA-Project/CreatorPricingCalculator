@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Home, BookOpen, Upload, Download, FileImage, FileText } from "lucide-react";
+import { Icon } from "@/app/components/ui/icon";
 import { Link, useLocation } from "react-router";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 
@@ -36,7 +36,6 @@ export function FloatingToolbar({
   const location = useLocation();
   const isCalculator = location.pathname === "/calculator";
 
-  // Close dropdowns on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (
@@ -68,7 +67,6 @@ export function FloatingToolbar({
     if (file && onUpload) {
       onUpload(file);
     }
-    // Reset input
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -100,7 +98,6 @@ export function FloatingToolbar({
     </button>
   );
 
-  // Step circle for desktop sidebar
   const StepCircle = ({ step }: { step: number }) => {
     const isActive = currentStep === step;
     return (
@@ -124,7 +121,6 @@ export function FloatingToolbar({
 
   return (
     <>
-      {/* Hidden file input for upload */}
       <input
         ref={fileInputRef}
         type="file"
@@ -135,53 +131,46 @@ export function FloatingToolbar({
 
       {/* Desktop: Floating left sidebar */}
       <nav className="hidden lg:flex fixed top-40 left-6 z-50 flex-col items-center gap-3">
-        {/* Contextual nav: show Resources on calculator, Home on resources */}
         {isCalculator ? (
           <Link to="/resources">
             <ToolbarButton label={t.toolbar.resources}>
-              <BookOpen className="w-5 h-5" />
+              <Icon name="menu_book" size={20} />
             </ToolbarButton>
           </Link>
         ) : (
           <Link to="/calculator">
             <ToolbarButton label={t.toolbar.home}>
-              <Home className="w-5 h-5" />
+              <Icon name="home" size={20} />
             </ToolbarButton>
           </Link>
         )}
 
-        {/* Separator */}
         {showSteps && (
           <>
             <div className="w-6 h-px bg-[#FEE6EA]/15 my-1" />
-
-            {/* Step indicators */}
             {Array.from({ length: totalSteps }, (_, i) => (
               <StepCircle key={i + 1} step={i + 1} />
             ))}
-
             <div className="w-6 h-px bg-[#FEE6EA]/15 my-1" />
           </>
         )}
 
-        {/* Upload */}
         {showSteps && (
           <ToolbarButton
             label={t.toolbar.uploadData}
             onClick={() => fileInputRef.current?.click()}
           >
-            <Upload className="w-5 h-5" />
+            <Icon name="upload" size={20} />
           </ToolbarButton>
         )}
 
-        {/* Download with dropdown */}
         {showSteps && (
           <div ref={downloadRef} className="relative">
             <ToolbarButton
               label={t.toolbar.download}
               onClick={() => setDownloadOpen(!downloadOpen)}
             >
-              <Download className="w-5 h-5" />
+              <Icon name="download" size={20} />
             </ToolbarButton>
 
             <AnimatePresence>
@@ -193,38 +182,29 @@ export function FloatingToolbar({
                   transition={{ duration: 0.15 }}
                   className="absolute left-14 md:left-14 right-auto md:right-auto top-0 z-30"
                 >
-                  <div className="bg-[#131718] rounded-2xl shadow-lg min-w-[200px] p-2 space-y-1">
+                  <div className="bg-[#131718] rounded-lg shadow-lg min-w-[200px] p-2 space-y-1">
                     <button
-                      onClick={() => {
-                        onExportJSON?.();
-                        setDownloadOpen(false);
-                      }}
-                      className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded-xl"
+                      onClick={() => { onExportJSON?.(); setDownloadOpen(false); }}
+                      className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded"
                       style={{ transition: "all 100ms" }}
                     >
-                      <Download className="w-4 h-4" />
+                      <Icon name="download" size={16} />
                       {t.toolbar.saveJson}
                     </button>
                     <button
-                      onClick={() => {
-                        onExportPNG?.();
-                        setDownloadOpen(false);
-                      }}
-                      className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded-xl"
+                      onClick={() => { onExportPNG?.(); setDownloadOpen(false); }}
+                      className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded"
                       style={{ transition: "all 100ms" }}
                     >
-                      <FileImage className="w-4 h-4" />
+                      <Icon name="image" size={16} />
                       {t.toolbar.exportPng}
                     </button>
                     <button
-                      onClick={() => {
-                        onExportPDF?.();
-                        setDownloadOpen(false);
-                      }}
-                      className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded-xl"
+                      onClick={() => { onExportPDF?.(); setDownloadOpen(false); }}
+                      className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded"
                       style={{ transition: "all 100ms" }}
                     >
-                      <FileText className="w-4 h-4" />
+                      <Icon name="picture_as_pdf" size={16} />
                       {t.toolbar.exportPdf}
                     </button>
                   </div>
@@ -238,14 +218,13 @@ export function FloatingToolbar({
       {/* Mobile: Fixed bottom navigation bar */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#131718] border-t border-[#FEE6EA]/10 px-2 pb-[env(safe-area-inset-bottom)]">
         <div className="flex items-center justify-around py-2">
-          {/* Contextual nav: show Resources on calculator, Home on resources */}
           {isCalculator ? (
             <Link to="/resources" className="flex flex-col items-center gap-1">
               <motion.div
                 whileTap={{ scale: 0.9 }}
                 className="w-10 h-10 rounded-full flex items-center justify-center text-[#FEE6EA]"
               >
-                <BookOpen className="w-5 h-5" />
+                <Icon name="menu_book" size={20} />
               </motion.div>
               <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.resources}</span>
             </Link>
@@ -255,13 +234,12 @@ export function FloatingToolbar({
                 whileTap={{ scale: 0.9 }}
                 className="w-10 h-10 rounded-full flex items-center justify-center text-[#FEE6EA]"
               >
-                <Home className="w-5 h-5" />
+                <Icon name="home" size={20} />
               </motion.div>
               <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.home}</span>
             </Link>
           )}
 
-          {/* Upload (only on calculator) */}
           {showSteps && (
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -271,13 +249,12 @@ export function FloatingToolbar({
                 whileTap={{ scale: 0.9 }}
                 className="w-10 h-10 rounded-full flex items-center justify-center text-[#FEE6EA]"
               >
-                <Upload className="w-5 h-5" />
+                <Icon name="upload" size={20} />
               </motion.div>
               <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.import}</span>
             </button>
           )}
 
-          {/* Step Dropdown (only on calculator) */}
           {showSteps && (
             <div ref={stepDropdownRef} className="relative flex flex-col items-center gap-1">
               <motion.button
@@ -306,10 +283,7 @@ export function FloatingToolbar({
                       return (
                         <button
                           key={step}
-                          onClick={() => {
-                            onStepChange?.(step);
-                            setStepDropdownOpen(false);
-                          }}
+                          onClick={() => { onStepChange?.(step); setStepDropdownOpen(false); }}
                           className={`w-full px-4 py-3 text-left text-sm flex items-center gap-3 transition-colors ${
                             isActive
                               ? "bg-[#FEE6EA] text-[#131718]"
@@ -329,7 +303,6 @@ export function FloatingToolbar({
             </div>
           )}
 
-          {/* Download (only on calculator) */}
           {showSteps && (
             <div ref={!showSteps ? undefined : mobileDownloadRef} className="relative flex flex-col items-center gap-1">
               <motion.button
@@ -337,7 +310,7 @@ export function FloatingToolbar({
                 onClick={() => setDownloadOpen(!downloadOpen)}
                 className="w-10 h-10 rounded-full flex items-center justify-center text-[#FEE6EA]"
               >
-                <Download className="w-5 h-5" />
+                <Icon name="download" size={20} />
               </motion.button>
               <span className="text-[10px] text-[#FEE6EA]/70">{t.toolbar.export}</span>
 
@@ -350,38 +323,29 @@ export function FloatingToolbar({
                     transition={{ duration: 0.15 }}
                     className="absolute bottom-16 right-0 z-30"
                   >
-                    <div className="bg-[#131718] rounded-2xl shadow-lg min-w-[200px] p-2 space-y-1">
+                    <div className="bg-[#131718] rounded-lg shadow-lg min-w-[200px] p-2 space-y-1">
                       <button
-                        onClick={() => {
-                          onExportJSON?.();
-                          setDownloadOpen(false);
-                        }}
-                        className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded-xl"
+                        onClick={() => { onExportJSON?.(); setDownloadOpen(false); }}
+                        className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded"
                         style={{ transition: "all 100ms" }}
                       >
-                        <Download className="w-4 h-4" />
+                        <Icon name="download" size={16} />
                         {t.toolbar.saveJson}
                       </button>
                       <button
-                        onClick={() => {
-                          onExportPNG?.();
-                          setDownloadOpen(false);
-                        }}
-                        className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded-xl"
+                        onClick={() => { onExportPNG?.(); setDownloadOpen(false); }}
+                        className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded"
                         style={{ transition: "all 100ms" }}
                       >
-                        <FileImage className="w-4 h-4" />
+                        <Icon name="image" size={16} />
                         {t.toolbar.exportPng}
                       </button>
                       <button
-                        onClick={() => {
-                          onExportPDF?.();
-                          setDownloadOpen(false);
-                        }}
-                        className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded-xl"
+                        onClick={() => { onExportPDF?.(); setDownloadOpen(false); }}
+                        className="w-full px-4 py-3 text-left text-sm text-[#FEE6EA]/90 hover:text-[#FEE6EA] hover:bg-[#FEE6EA]/10 flex items-center gap-3 rounded"
                         style={{ transition: "all 100ms" }}
                       >
-                        <FileText className="w-4 h-4" />
+                        <Icon name="picture_as_pdf" size={16} />
                         {t.toolbar.exportPdf}
                       </button>
                     </div>

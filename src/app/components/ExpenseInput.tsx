@@ -1,7 +1,7 @@
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Button } from "@/app/components/ui/button";
-import { Trash2, Plus } from "lucide-react";
+import { Icon } from "@/app/components/ui/icon";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export interface Expense {
@@ -93,7 +93,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
               onClick={() => deleteExpense(expense.id)}
               className="h-9 w-9 flex-shrink-0"
             >
-              <Trash2 className="h-4 w-4" />
+              <Icon name="delete" size={16} />
             </Button>
           </div>
         ))}
@@ -105,7 +105,7 @@ export function ExpenseInput({ expenses, onExpensesChange }: ExpenseInputProps) 
         onClick={addExpense}
         className="w-full border-border"
       >
-        <Plus className="h-4 w-4 mr-2" />
+        <Icon name="add" size={16} className="mr-2" />
         {t.expenses.addExpense}
       </Button>
 

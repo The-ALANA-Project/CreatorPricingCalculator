@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { Icon } from "@/app/components/ui/icon";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export function CookieBanner() {
@@ -106,7 +106,7 @@ export function CookieBanner() {
                 className="p-1.5 rounded-full text-[#FEE6EA] hover:bg-white/10 transition-colors shrink-0 md:hidden"
                 aria-label="Close cookie banner"
               >
-                <X className="w-4 h-4" />
+                <Icon name="close" size={16} />
               </button>
             </div>
 
@@ -114,13 +114,13 @@ export function CookieBanner() {
             <div className="flex items-center gap-3 shrink-0">
               <button
                 onClick={handleDecline}
-                className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded-lg border border-[#FEE6EA] bg-[#131718] text-[#FEE6EA] hover:bg-[#FEE6EA] hover:text-[#131718] transition-all whitespace-nowrap"
+                className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded border border-[#FEE6EA] bg-[#131718] text-[#FEE6EA] hover:bg-[#FEE6EA] hover:text-[#131718] transition-all whitespace-nowrap"
               >
                 {t.cookie.decline}
               </button>
               <button
                 onClick={handleAccept}
-                className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded-lg border border-[#FEE6EA] bg-[#FEE6EA] text-[#131718] hover:bg-[#131718] hover:text-[#FEE6EA] transition-all whitespace-nowrap"
+                className="flex-1 md:flex-none py-2 px-5 text-xs font-medium rounded border border-[#FEE6EA] bg-[#FEE6EA] text-[#131718] hover:bg-[#131718] hover:text-[#FEE6EA] transition-all whitespace-nowrap"
               >
                 {t.cookie.accept}
               </button>
@@ -131,7 +131,7 @@ export function CookieBanner() {
                 className="hidden md:block p-2 rounded-full text-[#FEE6EA] hover:bg-white/10 transition-colors ml-2"
                 aria-label="Close cookie banner"
               >
-                <X className="w-4 h-4" />
+                <Icon name="close" size={16} />
               </button>
             </div>
           </div>

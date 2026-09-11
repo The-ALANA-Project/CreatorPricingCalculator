@@ -1,7 +1,7 @@
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/app/components/ui/tooltip";
-import { Info } from "lucide-react";
+import { Icon } from "@/app/components/ui/icon";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export interface IncomeSettings {
@@ -88,7 +88,7 @@ export function IncomeCalculator({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button type="button" className="inline-flex">
-                    <Info className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                    <Icon name="info" size={14} className="text-muted-foreground hover:text-foreground transition-colors" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">

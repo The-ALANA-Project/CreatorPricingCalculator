@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { ExternalLink, Shield, Zap, FileText } from "lucide-react";
+import { Icon } from "@/app/components/ui/icon";
 import { Link } from "react-router";
 import { FloatingToolbar } from "@/app/components/FloatingToolbar";
 import { useLanguage, LanguageToggle } from "@/app/i18n/LanguageContext";
@@ -11,7 +11,7 @@ export default function Resources() {
   const resources = [
     {
       category: "Help" as const,
-      icon: Shield,
+      icon: "shield",
       items: [
         {
           title: "HateAid",
@@ -24,7 +24,7 @@ export default function Resources() {
     },
     {
       category: "Platforms" as const,
-      icon: Zap,
+      icon: "bolt",
       items: [
         {
           title: "Paragraph",
@@ -37,7 +37,7 @@ export default function Resources() {
     },
     {
       category: "Tools" as const,
-      icon: FileText,
+      icon: "construction",
       items: [
         {
           title: "Borker",
@@ -97,11 +97,9 @@ export default function Resources() {
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 lg:pl-24 pb-24 lg:pb-12">
         <div className="max-w-4xl mx-auto space-y-8">
           {resources.map((section) => {
-            const IconComponent = section.icon;
             return (
               <div key={section.category}>
                 <div className="flex items-center gap-3 mb-6">
-                  <IconComponent className="h-6 w-6 text-primary" />
                   <h2 className="font-semibold text-[25px]">{t.resources.sections[section.category]}</h2>
                 </div>
 
