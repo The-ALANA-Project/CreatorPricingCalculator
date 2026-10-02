@@ -1,52 +1,23 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 interface SEOProps {
   title?: string;
   description?: string;
   keywords?: string;
+  canonical?: string;
 }
 
-export function SEO({ title, description, keywords }: SEOProps) {
-  useEffect(() => {
-    if (title) {
-      document.title = title;
-    }
-
-    const setMeta = (name: string, content: string) => {
-      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-      if (!el) {
-        el = document.createElement("meta");
-        el.name = name;
-        document.head.appendChild(el);
-      }
-      el.content = content;
-    };
-
-    const setOg = (property: string, content: string) => {
-      let el = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement | null;
-      if (!el) {
-        el = document.createElement("meta");
-        el.setAttribute("property", property);
-        document.head.appendChild(el);
-      }
-      el.content = content;
-    };
-
-    if (description) {
-      setMeta("description", description);
-      setOg("og:description", description);
-      setMeta("twitter:description", description);
-    }
-
-    if (title) {
-      setOg("og:title", title);
-      setMeta("twitter:title", title);
-    }
-
-    if (keywords) {
-      setMeta("keywords", keywords);
-    }
-  }, [title, description, keywords]);
-
-  return null;
+export function SEO({ title, description, keywords, canonical }: SEOProps) {
+  return (
+    <Helmet>
+      {title && <title>{title}</title>}
+      {description && <meta name="description" content={description} />}
+      {keywords && <meta name="keywords" content={keywords} />}
+      {canonical && <link rel="canonical" href={canonical} />}
+      {title && <meta property="og:title" content={title} />}
+      {description && <meta property="og:description" content={description} />}
+      {title && <meta name="twitter:title" content={title} />}
+      {description && <meta name="twitter:description" content={description} />}
+    </Helmet>
+  );
 }

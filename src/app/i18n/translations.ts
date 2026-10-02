@@ -10,6 +10,9 @@ const en = {
     seoKeywords: "creator pricing, freelance rates, rate calculator, creator economy, pricing strategy, freelance pricing, content creator rates",
   },
   calculator: {
+    seoTitle: "Creator Pricing Calculator — Set Sustainable Rates",
+    seoDescription: "A free 4-step tool to calculate fair rates for your creative work — based on your real expenses, taxes, capacity, and goals.",
+    seoKeywords: "creator pricing calculator, freelance rate calculator, day rate, hourly rate, retainer pricing, content creator rates, sustainable pricing",
     title: "Creator Pricing Calculator",
     subtitle: "Calculate your sustainable rates based on real expenses, taxes, and business needs.",
     nextStep: "Next Step",
@@ -34,6 +37,9 @@ const en = {
     },
   },
   resources: {
+    seoTitle: "Creator Resources — Tools, Platforms & Support",
+    seoDescription: "Curated tools, platforms, and support resources for creators — from contract builders and branding studios to legal help and publishing platforms.",
+    seoKeywords: "creator resources, creator tools, freelance tools, creator contract builder, creator branding, creator platforms, HateAid",
     title: "Resources for Creators",
     subtitle: "Curated tools, guides, and resources to help you advance your creative career beyond just pricing.",
     createdBy: "Created by",
@@ -331,6 +337,9 @@ const es: typeof en = {
     seoKeywords: "tarifas para creadores, tarifas freelance, calculadora de tarifas, economía creativa, estrategia de precios, precios freelance, tarifas de creadores de contenido",
   },
   calculator: {
+    seoTitle: "Calculadora de Tarifas para Creadores — Fija Precios Sostenibles",
+    seoDescription: "Una herramienta gratuita de 4 pasos para calcular tarifas justas para tu trabajo creativo, basadas en gastos reales, impuestos, capacidad y objetivos.",
+    seoKeywords: "calculadora de tarifas, tarifas freelance, tarifa diaria, tarifa por hora, precios para creadores, tarifas sostenibles",
     title: "Calculadora de Tarifas",
     subtitle: "Calcula tus tarifas sostenibles basadas en gastos reales, impuestos y necesidades de negocio.",
     nextStep: "Siguiente Paso",
@@ -355,6 +364,9 @@ const es: typeof en = {
     },
   },
   resources: {
+    seoTitle: "Recursos para Creadores — Herramientas, Plataformas y Apoyo",
+    seoDescription: "Herramientas, plataformas y recursos de apoyo curados para creadores — desde constructores de contratos y estudios de marca hasta ayuda legal y plataformas de publicación.",
+    seoKeywords: "recursos para creadores, herramientas freelance, constructor de contratos, plataformas para creadores, HateAid",
     title: "Recursos para Creadores",
     subtitle: "Herramientas, guías y recursos curados para ayudarte a avanzar en tu carrera creativa más allá de los precios.",
     createdBy: "Creado por",

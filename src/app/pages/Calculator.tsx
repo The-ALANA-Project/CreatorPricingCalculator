@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/app/components/ui/card";
 import { Link } from "react-router";
 import { FloatingToolbar } from "@/app/components/FloatingToolbar";
 import { useLanguage, LanguageToggle } from "@/app/i18n/LanguageContext";
+import { SEO } from "@/app/components/SEO";
 import gsap from "gsap";
 
 interface CalculatorData {
@@ -204,6 +205,12 @@ export default function Calculator() {
 
   return (
     <div ref={pageRef} className="min-h-screen bg-background text-foreground">
+      <SEO
+        title={t.calculator.seoTitle}
+        description={t.calculator.seoDescription}
+        keywords={t.calculator.seoKeywords}
+        canonical="https://creatorpricing.com/calculator"
+      />
       {/* Floating Toolbar */}
       <FloatingToolbar
         currentStep={currentStep}

@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { Icon } from "@/app/components/ui/icon";
 import { Link } from "react-router";
 import { FloatingToolbar } from "@/app/components/FloatingToolbar";
 import { useLanguage, LanguageToggle } from "@/app/i18n/LanguageContext";
+import { SEO } from "@/app/components/SEO";
 
 export default function Resources() {
   const { t } = useLanguage();
@@ -11,7 +11,6 @@ export default function Resources() {
   const resources = [
     {
       category: "Help" as const,
-      icon: "shield",
       items: [
         {
           title: "HateAid",
@@ -24,7 +23,6 @@ export default function Resources() {
     },
     {
       category: "Platforms" as const,
-      icon: "bolt",
       items: [
         {
           title: "Paragraph",
@@ -37,7 +35,6 @@ export default function Resources() {
     },
     {
       category: "Tools" as const,
-      icon: "construction",
       items: [
         {
           title: "Borker",
@@ -73,6 +70,12 @@ export default function Resources() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEO
+        title={t.resources.seoTitle}
+        description={t.resources.seoDescription}
+        keywords={t.resources.seoKeywords}
+        canonical="https://creatorpricing.com/resources"
+      />
       {/* Floating Toolbar - no steps on Resources page */}
       <FloatingToolbar showSteps={false} />
 

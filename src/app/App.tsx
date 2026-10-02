@@ -3,9 +3,11 @@ import { router } from "./routes";
 import { TooltipProvider } from "@/app/components/ui/tooltip";
 import { CookieBanner } from "@/app/components/CookieBanner";
 import { LanguageProvider } from "@/app/i18n/LanguageContext";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   return (
+    <HelmetProvider>
     <LanguageProvider>
       <TooltipProvider>
         {/* Hidden SVG filter for liquid glass distortion effect */}
@@ -29,6 +31,7 @@ function App() {
         <CookieBanner />
       </TooltipProvider>
     </LanguageProvider>
+    </HelmetProvider>
   );
 }
 

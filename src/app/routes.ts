@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router";
-import Intro from "./pages/Intro";
-import Calculator from "./pages/Calculator";
-import Resources from "./pages/Resources";
+import { lazy } from "react";
+
+const Intro = lazy(() => import("./pages/Intro"));
+const Calculator = lazy(() => import("./pages/Calculator"));
+const Resources = lazy(() => import("./pages/Resources"));
 
 export const router = createBrowserRouter([
   { path: "/", Component: Intro },
