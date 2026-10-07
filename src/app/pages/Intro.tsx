@@ -125,6 +125,7 @@ export default function Intro() {
         title={t.intro.seoTitle}
         description={t.intro.seoDescription}
         keywords={t.intro.seoKeywords}
+        canonical="https://creatorpricing.com/"
       />
 
       <div
